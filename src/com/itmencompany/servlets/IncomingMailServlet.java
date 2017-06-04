@@ -1,11 +1,14 @@
 package com.itmencompany.servlets;
 
-
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 import java.util.logging.Logger;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -22,17 +25,28 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.util.CellReference;
+
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.api.urlfetch.FetchOptions;
+import com.google.appengine.api.urlfetch.HTTPHeader;
+import com.google.appengine.api.urlfetch.HTTPMethod;
+import com.google.appengine.api.urlfetch.HTTPRequest;
+import com.google.appengine.api.urlfetch.URLFetchService;
+import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
+import com.itmencompany.datastore.entities.IncomingInfo;
 
 @WebServlet("/ah/mail/*")
 public class IncomingMailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final String URL_PREFIX = "http://itmen-1261.appspot.com";
 
 	private static final Logger log = Logger.getLogger(IncomingMailServlet.class.getName());
 
 	public IncomingMailServlet() {
 		super();
 	}
-	
+
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		Properties props = new Properties();
@@ -42,13 +56,13 @@ public class IncomingMailServlet extends HttpServlet {
 			// debug option
 			log.info("Received mail message. ");
 			MimeMultipart mp = (MimeMultipart) message.getContent();
-			log.info("Count:" +  mp.getCount());
+			log.info("Count:" + mp.getCount());
 			for (int index = 0; index < mp.getCount(); index++) {
 				try {
 					MimeBodyPart attachment = (MimeBodyPart) mp.getBodyPart(index);
 					log.info(attachment.getContentType());
 					if (attachment.getContentType().contains("application/vnd.ms-excel")) {
-					
+
 						String filename = attachment.getFileName();
 						log.info("Found an excel file!" + filename);
 						InputStream is = attachment.getInputStream();
@@ -59,17 +73,17 @@ public class IncomingMailServlet extends HttpServlet {
 					// do nothing and try again
 				}
 			}
-			
+
 			log.info("Message parsed");
 
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
 
-	public void read(InputStream in) {
+	private static Random random = new Random();
+
+	public void read(InputStream in) throws IOException {
 
 		String result = "";
 		HSSFWorkbook wb = null;
@@ -84,37 +98,72 @@ public class IncomingMailServlet extends HttpServlet {
 		for (Iterator<HSSFPictureData> it = lst.iterator(); it.hasNext();) {
 			HSSFPictureData pict = it.next();
 			String ext = pict.suggestFileExtension();
-			//byte[] data = pict.getData();
-			if (ext.equals("jpeg")) {
-				log.info("Найдено изображение!!");
-				
-			}
+			byte[] data = pict.getData();
+			sendToBlobStore(String.valueOf(random.nextLong()), "save", data);
 		}
 
 		Sheet sheet = wb.getSheetAt(0);
-		Iterator<Row> it = sheet.iterator();
-		while (it.hasNext()) {
-			Row row = it.next();
-			Iterator<Cell> cells = row.iterator();
-			while (cells.hasNext()) {
-				Cell cell = cells.next();
-				CellType type = cell.getCellTypeEnum();
-				switch (type) {
-				case STRING:
-					result += cell.getStringCellValue();
-					break;
-				case NUMERIC:
-					result += cell.getNumericCellValue();
-					break;
-				default:
-					break;
 
-				}
-			}
-			result += "\n";
-		}
+		CellReference cellReference = new CellReference(1, 2);
+		Row row = sheet.getRow(cellReference.getRow());
+		Cell cell = row.getCell(cellReference.getCol());
+		
+		IncomingInfo iinfo = new IncomingInfo();
+		
+		iinfo.setTitle(cell.getStringCellValue());
 
 		log.info(result);
 	}
-	
+
+	private static String randomString() {
+		return Long.toString(random.nextLong(), 36);
+	}
+
+	private String makeBoundary() {
+		return "---------------------------" + randomString() + randomString() + randomString();
+	}
+
+	private void write(OutputStream os, String s) throws IOException {
+		os.write(s.getBytes());
+	}
+
+	private void writeParameter(OutputStream os, String name, String value) throws IOException {
+		write(os, "Content-Disposition: form-data; name=\"" + name + "\"\r\n\r\n" + value + "\r\n");
+	}
+
+	private void writeImage(OutputStream os, String name, byte[] bs) throws IOException {
+		write(os, "Content-Disposition: form-data; name=\"" + name + "\"; filename=\"image.jpg\"\r\n");
+		write(os, "Content-Type: image/jpeg\r\n\r\n");
+		os.write(bs);
+		write(os, "\r\n");
+	}
+
+	private void sendToBlobStore(String id, String cmd, byte[] imageBytes) throws IOException {
+		String urlStr = URL_PREFIX + BlobstoreServiceFactory.getBlobstoreService().createUploadUrl("/blobimage");
+		log.info(urlStr + " IMG UPLOADED");
+		URLFetchService urlFetch = URLFetchServiceFactory.getURLFetchService();
+		HTTPRequest req = new HTTPRequest(new URL(urlStr), HTTPMethod.POST, FetchOptions.Builder.withDeadline(10.0));
+
+		String boundary = makeBoundary();
+
+		req.setHeader(new HTTPHeader("Content-Type", "multipart/form-data; boundary=" + boundary));
+
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+		write(baos, "--" + boundary + "\r\n");
+		writeParameter(baos, "id", id);
+		write(baos, "--" + boundary + "\r\n");
+		writeImage(baos, cmd, imageBytes);
+		write(baos, "--" + boundary + "--\r\n");
+
+		req.setPayload(baos.toByteArray());
+		try {
+			urlFetch.fetch(req);
+		} catch (IOException e) {
+			// Need a better way of handling Timeout exceptions here - 10 second
+			// deadline
+			log.info("Error: " + e.getMessage());
+		}
+	}
+
 }
