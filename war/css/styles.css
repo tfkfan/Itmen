@@ -1,0 +1,85 @@
+@CHARSET "UTF-8";
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+.wrapper {
+  height: 90%;
+}
+
+.content {
+  box-sizing: border-box;
+  min-height: 90%;
+  padding-bottom: 90px;
+}
+
+.footer {
+  height: 80px;
+  margin-top: -80px;
+}
+
+#black-container {
+	background: black;
+}
+
+.cuadro_intro_hover {
+	padding: 0px;
+	position: relative;
+	overflow: hidden;
+	height: 200px;
+}
+
+.custom-container{
+	padding:20px;
+	padding-top:0px;
+}
+
+.custom-input{
+	margin-top:5px;
+}
+
+.cuadro_intro_hover:hover .caption {
+	opacity: 1;
+	transform: translateY(-150px);
+	-webkit-transform: translateY(-150px);
+	-moz-transform: translateY(-150px);
+	-ms-transform: translateY(-150px);
+	-o-transform: translateY(-150px);
+}
+
+.cuadro_intro_hover img {
+	z-index: 4;
+}
+
+.cuadro_intro_hover .caption {
+	position: absolute;
+	top: 150px;
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+	width: 100%;
+}
+
+.cuadro_intro_hover .blur {
+	background-color: rgba(0, 0, 0, 0.7);
+	height: 300px;
+	z-index: 5;
+	position: absolute;
+	width: 100%;
+}
+
+.cuadro_intro_hover .caption-text {
+	z-index: 10;
+	color: #fff;
+	position: absolute;
+	height: 300px;
+	text-align: center;
+	top: -20px;
+	width: 100%;
+}
