@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -34,7 +35,10 @@ import com.google.appengine.api.urlfetch.HTTPMethod;
 import com.google.appengine.api.urlfetch.HTTPRequest;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
+import com.itmencompany.datastore.dao.IncomingInfoDao;
+import com.itmencompany.datastore.dao.UserOrderDao;
 import com.itmencompany.datastore.entities.IncomingInfo;
+import com.itmencompany.datastore.entities.UserOrder;
 
 @WebServlet("/ah/mail/*")
 public class IncomingMailServlet extends HttpServlet {
@@ -84,7 +88,7 @@ public class IncomingMailServlet extends HttpServlet {
 	private static Random random = new Random();
 
 	public void read(InputStream in) throws IOException {
-
+		IncomingInfo iinfo = new IncomingInfo();
 		String result = "";
 		HSSFWorkbook wb = null;
 		try {
@@ -95,24 +99,129 @@ public class IncomingMailServlet extends HttpServlet {
 
 		List<HSSFPictureData> lst = wb.getAllPictures();
 		log.info("Кол-во изображений в сообщении:" + lst.size());
-		for (Iterator<HSSFPictureData> it = lst.iterator(); it.hasNext();) {
-			HSSFPictureData pict = it.next();
-			String ext = pict.suggestFileExtension();
-			byte[] data = pict.getData();
-			sendToBlobStore(String.valueOf(random.nextLong()), "save", data);
+		List<String> images = new ArrayList<String>();
+		try{
+			for (Iterator<HSSFPictureData> it = lst.iterator(); it.hasNext();) {
+				HSSFPictureData pict = it.next();
+				//String ext = pict.suggestFileExtension();
+				byte[] data = pict.getData();
+				images.add(sendToBlobStore(String.valueOf(random.nextLong()), "save", data));
+			}
+		}catch(Exception e){
+			log.info("Error during images saving");
 		}
+		UserOrderDao orderDao = new UserOrderDao(UserOrder.class);
 
+		//images
+		iinfo.setImages(images);
 		Sheet sheet = wb.getSheetAt(0);
 
+		//Title
 		CellReference cellReference = new CellReference(1, 2);
 		Row row = sheet.getRow(cellReference.getRow());
 		Cell cell = row.getCell(cellReference.getCol());
-		
-		IncomingInfo iinfo = new IncomingInfo();
-		
-		iinfo.setTitle(cell.getStringCellValue());
 
-		log.info(result);
+		String title = cell.getStringCellValue();
+		iinfo.setTitle(title != null ? cell.getStringCellValue() : "");
+		
+		//Description
+		cellReference = new CellReference(2, 2);
+		row = sheet.getRow(cellReference.getRow());
+		cell = row.getCell(cellReference.getCol());
+		
+		String description = cell.getStringCellValue();
+		iinfo.setDescription(description);
+
+		//Height
+		cellReference = new CellReference(3, 2);
+		row = sheet.getRow(cellReference.getRow());
+		cell = row.getCell(cellReference.getCol());
+		
+		String height = cell.getStringCellValue();
+		iinfo.setHeight(height);
+		
+		//Length
+		cellReference = new CellReference(4, 2);
+		row = sheet.getRow(cellReference.getRow());
+		cell = row.getCell(cellReference.getCol());
+		
+		String length = cell.getStringCellValue();
+		iinfo.setLength(length);
+		
+		//Material
+		cellReference = new CellReference(5, 2);
+		row = sheet.getRow(cellReference.getRow());
+		cell = row.getCell(cellReference.getCol());
+		
+		String material = cell.getStringCellValue();
+		iinfo.setMaterial(material);
+
+		//Release date
+		cellReference = new CellReference(6, 2);
+		row = sheet.getRow(cellReference.getRow());
+		cell = row.getCell(cellReference.getCol());
+		
+		String releaseDate = cell.getStringCellValue();
+		iinfo.setDate(releaseDate);
+
+		//Cost
+		cellReference = new CellReference(7, 2);
+		row = sheet.getRow(cellReference.getRow());
+		cell = row.getCell(cellReference.getCol());
+		
+		String cost = cell.getStringCellValue();
+		iinfo.setCost(cost);
+		//Additional info
+		
+		cellReference = new CellReference(8, 2);
+		row = sheet.getRow(cellReference.getRow());
+		cell = row.getCell(cellReference.getCol());
+		
+		String addInfo = cell.getStringCellValue();
+		iinfo.setAddInfo(addInfo);
+		
+		//Order ID
+		cellReference = new CellReference(9, 2);
+		row = sheet.getRow(cellReference.getRow());
+		cell = row.getCell(cellReference.getCol());
+		
+		String orderIDStr = cell.getStringCellValue();
+		Long orderID = Long.parseLong(orderIDStr);
+		iinfo.setOrderID(orderID);
+
+		//Phone
+		cellReference = new CellReference(10, 2);
+		row = sheet.getRow(cellReference.getRow());
+		cell = row.getCell(cellReference.getCol());
+		
+		String phone = cell.getStringCellValue();
+		iinfo.setContactPhone(phone);
+
+
+		//Email
+		cellReference = new CellReference(11, 2);
+		row = sheet.getRow(cellReference.getRow());
+		cell = row.getCell(cellReference.getCol());
+		
+		String email = cell.getStringCellValue();
+		iinfo.setCampaignEmail(email);
+		
+		//company name
+		cellReference = new CellReference(12, 2);
+		row = sheet.getRow(cellReference.getRow());
+		cell = row.getCell(cellReference.getCol());
+		
+		String companyTitle = cell.getStringCellValue();
+		iinfo.setCompanyTitle(companyTitle);
+
+		UserOrder order = orderDao.get(orderID);
+		if(order!= null){
+			iinfo.setUserId(order.getUserId());
+		}else
+			log.info("CANNOT FIND THE ORDER BY ORDER ID [" + orderID + "]");
+		IncomingInfoDao dao = new IncomingInfoDao();
+		dao.save(iinfo);
+		log.info("INCOMING INFO HAS BEEN SAVED");
 	}
 
 	private static String randomString() {
@@ -138,7 +247,7 @@ public class IncomingMailServlet extends HttpServlet {
 		write(os, "\r\n");
 	}
 
-	private void sendToBlobStore(String id, String cmd, byte[] imageBytes) throws IOException {
+	private String sendToBlobStore(String id, String cmd, byte[] imageBytes) throws IOException {
 		String urlStr = URL_PREFIX + BlobstoreServiceFactory.getBlobstoreService().createUploadUrl("/blobimage");
 		log.info(urlStr + " IMG UPLOADED");
 		URLFetchService urlFetch = URLFetchServiceFactory.getURLFetchService();
@@ -159,11 +268,15 @@ public class IncomingMailServlet extends HttpServlet {
 		req.setPayload(baos.toByteArray());
 		try {
 			urlFetch.fetch(req);
+			
+			return urlStr;
 		} catch (IOException e) {
 			// Need a better way of handling Timeout exceptions here - 10 second
 			// deadline
 			log.info("Error: " + e.getMessage());
 		}
+		
+		return null;
 	}
 
 }

@@ -2,15 +2,16 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="com.itmencompany.datastore.entities.AppUser"%>
 <%@ page import="com.itmencompany.datastore.entities.UserOrder"%>
+<%@ page import="com.itmencompany.datastore.entities.IncomingInfo"%>
 <%@ page import="com.itmencompany.datastore.dao.AppUserDao"%>
 <%@ page import="com.itmencompany.datastore.dao.UserOrderDao"%>
+<%@ page import="com.itmencompany.datastore.dao.IncomingInfoDao"%>
 <%@ page import="com.itmencompany.helpers.AppUserHelper"%>
 <%@ page import="com.itmencompany.common.UserInfo"%>
 <%@ page import="java.util.logging.Logger"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.text.SimpleDateFormat"%>
 <%@ page import="java.util.Date"%>
-
 <%
 	Logger log = Logger.getLogger("admin.jsp");
 %>
@@ -21,9 +22,11 @@
 	String userPageObj = request.getParameter("userPage");
 	String orderPageObj = request.getParameter("orderPage");
 	String chosenUserIdObj = request.getParameter("chosenUser");
+	String answerPageObj = request.getParameter("answerPage");
 
 	Integer userPageNum = 1;
 	Integer orderPageNum = 1;
+	Integer answerPageNum = 1;
 	Long chosenUserId = null;
 	try {
 		userPageNum = Integer.parseInt(userPageObj);
@@ -40,17 +43,29 @@
 	} catch (Exception e) {
 
 	}
+	
+	try {
+		answerPageNum = Integer.parseInt(answerPageObj);
+	} catch (Exception e) {
+
+	}
+
 	AppUserDao userDao = new AppUserDao(AppUser.class);
 	UserOrderDao orderDao = new UserOrderDao(UserOrder.class);
+	IncomingInfoDao answerDao = new IncomingInfoDao();
 
 	List<AppUser> users = userDao.getWithOffset(userPageNum, limit.intValue());
 	List<UserOrder> orders = null;
+	List<IncomingInfo> answers = null;
 	AppUser chosenUser = null;
-	if (chosenUserId == null)
+	if (chosenUserId == null){
 		orders = orderDao.getWithOffset(orderPageNum, limit.intValue());
+		answers = answerDao.getWithOffset(answerPageNum, limit.intValue());
+	}
 	else {
 		chosenUser = userDao.get(chosenUserId);
 		orders = orderDao.getWithOffsetAndProperty(orderPageNum, limit.intValue(), "userId", chosenUserId);
+		answers = answerDao.getWithOffsetAndProperty(answerPageNum, limit.intValue(), "userId",  chosenUserId);
 	}
 	SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm");
 %>
@@ -91,8 +106,8 @@
 								class="btn btn-success"> <span
 									class=" glyphicon glyphicon-ok" aria-hidden="true"></span>
 							</a> <%
- 	} else {
- %> <a href="" onclick="choseUser(<%=user.getId()%>)"
+								 	} else {
+								 %> <a href="" onclick="choseUser(<%=user.getId()%>)"
 								class="btn btn-info"> <span
 									class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 									<%
@@ -208,16 +223,44 @@
 					<thead>
 						<tr>
 							<th>#</th>
+							<th>Имя пользователя</th>
 							<th>Имя кампании</th>
 							<th>E-mail</th>
+							<th>Дата</th>
 							<th>Просмотреть</th>
 							<th>Удалить</th>
 						</tr>
 					</thead>
-					<tbody id="usersTable">
+					<tbody id="answersTable">
+					<%
+							count = 1;
+							for (IncomingInfo answer : answers) {
 
+								Long userId = answer.getUserId();
+
+								AppUser user = userDao.get(userId);
+								String date = df.format(new Date(answer.getDate()));
+						%>
+						<tr id="<%=answer.getId()%>">
+							<th scope="row"><%=(count)%></th>
+							<td><%=user.getUserName()%></td>
+							<td><%=answer.getCompanyTitle() %></td>
+							<td><%=answer.getCampaignEmail()%></td>
+							<td><%=date%></td>
+							<td><button class="btn btn-info"
+									onclick="showAnswer(<%=answer.getId()%>)">
+									<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+								</button></td>
+							<td><button class="btn btn-danger"
+									onclick="deleteAnswer(<%=answer.getId()%>)">
+									<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+								</button></td>
+						</tr>
+						<%
+							count++;
+							}
+						%>
 					</tbody>
-
 				</table>
 			</fieldset>
 			<nav aria-label="Page navigation">

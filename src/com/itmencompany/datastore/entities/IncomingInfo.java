@@ -16,7 +16,7 @@ public class IncomingInfo extends DatabaseObject {
 	private String description;
 	
 	@Index
-	private String width;
+	private String length;
 	
 	@Index
 	private String height;
@@ -47,12 +47,24 @@ public class IncomingInfo extends DatabaseObject {
 	
 	@Index
 	private Long orderID;
+	
+	@Index
+	private Long userId;
+
 
 	@Index
-	private Long date;
+	private String date;
 	
 	public IncomingInfo() {
 
+	}
+	
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 	
 	public String getTitle() {
@@ -71,12 +83,12 @@ public class IncomingInfo extends DatabaseObject {
 		this.description = description;
 	}
 
-	public String getWidth() {
-		return width;
+	public String getLength() {
+		return length;
 	}
 
-	public void setWidth(String width) {
-		this.width = width;
+	public void setLength(String length) {
+		this.length = length;
 	}
 
 	public String getHeight() {
@@ -151,11 +163,11 @@ public class IncomingInfo extends DatabaseObject {
 		this.orderID = orderID;
 	}
 	
-	public Long getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Long date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
