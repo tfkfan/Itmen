@@ -1,6 +1,7 @@
 package com.itmencompany.servlets;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -24,9 +25,7 @@ public class TestServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try{
-			EmailSender es = new EmailSender();
-			es.sendTextMessage("sylar131@live.ru", "hi", "hi");
-			log.info("The message has been sent");
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}

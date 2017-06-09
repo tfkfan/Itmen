@@ -2,12 +2,16 @@ package com.itmencompany.datastore.entities;
 
 import java.util.List;
 
+import com.google.appengine.labs.repackaged.org.json.JSONArray;
+import com.google.appengine.labs.repackaged.org.json.JSONException;
+import com.google.appengine.labs.repackaged.org.json.JSONObject;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import com.itmencompany.common.UserInfo;
+import com.itmencompany.datastore.entities.interfaces.JSONObj;
 
 @Entity
-public class IncomingInfo extends DatabaseObject {
+public class IncomingInfo extends DatabaseObject implements JSONObj{
 	private static final long serialVersionUID = 1L;
 	@Index
 	private String title;
@@ -177,6 +181,37 @@ public class IncomingInfo extends DatabaseObject {
 
 	public void setCampaignEmail(String campaignEmail) {
 		this.campaignEmail = campaignEmail;
+	}
+
+	@Override
+	public String toJSON() throws JSONException {
+		JSONObject res = new JSONObject();
+		if(images != null && !images.isEmpty())
+			res.put("images", new JSONArray(images));
+		if(length != null)
+			res.put("length", length);
+		if(material != null)
+			res.put("material", material);
+		if(title != null)
+			res.put("title", title);
+		if(description != null)
+			res.put("description", description);
+		if(height != null)
+			res.put("height", height);
+		if(date != null)
+			res.put("release_date", date);
+		if(cost != null)
+			res.put("cost", cost);
+		if(addInfo != null)
+			res.put("add_info", addInfo);
+		if(contactPhone!= null)
+			res.put("campaign_phone", contactPhone);
+		if(campaignEmail != null)
+			res.put("campaign_email", campaignEmail);
+		if(companyTitle != null)
+			res.put("campaign_title", companyTitle);
+		
+		return res.toString();
 	}
 
 }

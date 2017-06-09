@@ -274,9 +274,19 @@
 			</fieldset>
 			<nav aria-label="Page navigation">
 				<ul class="pagination">
+					<%
+						Integer answersCount = ((Double) Math.ceil((answerDao.getCount()) / limit)).intValue();
+						for (Integer pageValue = 1; pageValue <= answersCount; pageValue++) {
+					%>
+					<li <%if (pageValue.equals(answerPageNum)) {%> class="active" <%}%>><a
+						href="" onclick="answersPaginationClick(<%=pageValue%>)"><%=pageValue%></a></li>
 
+					<%
+						}
+					%>
 				</ul>
 			</nav>
+
 		</div>
 	</div>
 
@@ -404,12 +414,112 @@
 			</div>
 		</div>
 	</div>
+	
+	<div class="modal fade" id="answerShow" tabindex="-1" role="dialog"
+		aria-labelledby="answerModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="orderModalLabel">Ответ компании пользователю</h4>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group">
+							<label for="title" class="control-label">Наименование изделия</label> 
+							<input type="text" class="form-control"
+								id="answer_title" disabled>
+						</div>
+
+						<div class="form-group">
+							<label for="description" class="control-label">Описание
+							</label> 
+							<textarea class="form-control" rows="5" id="answer_description"
+								name="description" disabled></textarea>
+						</div>
+
+						<div class="form-group">
+							<label for="height" class="control-label">Высота</label> <input
+								disabled type="text" class="form-control" id="answer_height">
+						</div>
+
+						<div class="form-group">
+							<label for="length" class="control-label">Длина</label>
+							<input type="text" class="form-control" id="answer_length"
+								disabled>
+						</div>
+
+						<div class="form-group">
+							<label for="material" class="control-label">Материал</label> 
+							<input type="text" class="form-control"
+								id="answer_material" name="material" disabled>
+						</div>
+
+						<div class="form-group">
+							<label for="release" class="control-label">Срок изготовления</label>
+							<input  class="form-control"
+								type="text" id="answer_release" name="release" 
+								disabled>
+						</div>
+
+						<div class="form-group">
+							<label for="cost" class="control-label">Цена</label>
+							<input  class="form-control"
+								type="text" id="answer_cost" name="cost" 
+								disabled>
+						</div>
+
+						<div class="form-group">
+							<label for="additional_info" class="control-label">Дополнительная информация об изделии</label>
+							<textarea class="form-control" rows="5" id="answer_additional_info"
+								name="additional_info" disabled></textarea>
+						</div>
+
+						<div class="form-group">
+							<label for="phone" class="control-label">Контактный телефон</label> <input
+								type="text" class="form-control" id="answer_phone" name="phone"
+								disabled>
+						</div>
+						
+						<div class="form-group">
+							<label for="email" class="control-label">Email компании</label> <input
+								type="text" class="form-control" id="answer_email" name="email"
+								disabled>
+						</div>
+						
+						<div class="form-group">
+							<label for="campaign_title" class="control-label">Название компании</label> <input
+								type="text" class="form-control" id="answer_campaign_title" name="campaign_title"
+								disabled>
+						</div>
+						
+						<div class="form-group">
+
+							<div class="row jumbotron" id="answer_images"></div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 </div>
 
 <script>
 function usersPaginationClick(usersPage){
 	event.preventDefault();
 	setGetParameter("userPage", usersPage);	
+}
+
+function answersPaginationClick(answerPage){
+	event.preventDefault();
+	setGetParameter("answerPage", answerPage);	
 }
 
 function ordersPaginationClick(ordersPage){
@@ -521,6 +631,40 @@ function showOrder(id){
 	    alert("#1" + textStatus);
 	});
 }
+
+function showAnswer(id){
+	$.post("/get_answer", {
+		answer_id : id
+	}, function(info) {
+		$("#answer_length").val(info["length"]);
+		$("#answer_height").val(info["height"]);
+		$("#answer_description").val(info["description"]);
+    	$("#answer_title").val(info["title"]);
+		$("#answer_material").val(info["material"]);
+		$("#answer_release").val(info["release_date"]);
+		$("#answer_additional_info").val(info["add_info"]);
+		$("#answer_phone").val(info["campaign_phone"]);
+		$("#answer_cost").val(info["cost"]);
+		$("#answer_campaign_title").val(info["campaign_title"]);
+		$("#answer_email").val(info["campaign_email"]);
+		
+		var images = info["images"];
+		
+		var imgJUMB = $("#answer_images");
+		imgJUMB.empty();
+       	for(var key in images){
+       		var src = images[key];
+       		imgJUMB.append('<div><a  class="thumbnail">'
+			   +'<img class="savedImages" src="' + src + '" alt="...">'
+			   +'</a></div>');
+       	}
+       	
+		$("#answerShow").modal('show');
+	}).fail( function(jqXHR, textStatus, errorThrown) {
+	    alert("#1" + textStatus);
+	});
+}
+
 
 $(document).ready(function() {
 	$("#btn-save-user").click(function(){

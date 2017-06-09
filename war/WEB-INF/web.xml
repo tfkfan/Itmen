@@ -133,7 +133,17 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     <url-pattern>/get_order</url-pattern>
   </servlet-mapping>
   
+  
    <servlet>
+    <servlet-name>GetAnswerService</servlet-name>
+    <servlet-class>com.itmencompany.servlets.services.GetAnswerService</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetAnswerService</servlet-name>
+    <url-pattern>/get_answer</url-pattern>
+  </servlet-mapping>
+  
+<servlet>
     <servlet-name>DeleteOrderService</servlet-name>
     <servlet-class>com.itmencompany.servlets.services.DeleteOrderService</servlet-class>
   </servlet>
