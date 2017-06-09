@@ -54,7 +54,7 @@ public class UploadServlet extends HttpServlet {
 			String servingUrl = ImagesServiceFactory.getImagesService().getServingUrl(
 					ServingUrlOptions.Builder.withBlobKey(blobKey).secureUrl(true));
 
-			response.getWriter().println(servingUrl);
+			response.getWriter().print(servingUrl);
 			response.getWriter().close();
 		} catch (Exception e) {
 

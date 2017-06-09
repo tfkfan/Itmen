@@ -22,7 +22,7 @@ public class CampaignsSender extends EmailSender {
 	
 	private static final String theme = "Theme message";
 	private static final String htmlBody = "<div><h2>Уважаемый/ая, @campaign@. Пользователь сервиса @service@ отправил вам заявку.</h2>"
-			+ "<hr>@photos@@length@@material@@parlor@@wishes@@height@@addWishes@@links@</div>";
+			+ "<hr>@photos@@length@@material@@parlor@@wishes@@height@@addWishes@</div>";
 
 	private static final String photosHTML = "<p><h4>Фотографии/эскизы</h4></p>";
 	private static final String lengthHTML = "<p><h4>Длина гарнитуры</h4></p>";
@@ -31,7 +31,6 @@ public class CampaignsSender extends EmailSender {
 	private static final String wishesHTML = "<p><h4>Пожелания по фурнитуре</h4></p>";
 	private static final String heightHTML = "<p><h4>Высота</h4></p>";
 	private static final String addWishesHTML = "<p><h4>Дополнительные пожелания к изделию</h4></p>";
-	private static final String linksHTML = "<p><h4>Необходимые файлы для скачивания</h4></p>";
 
 	public CampaignsSender() {
 
@@ -112,8 +111,6 @@ public class CampaignsSender extends EmailSender {
 			buf = addWishesHTML + info.getAdditional_wishes();
 		body = body.replace("@addWishes@", buf);
 		
-		body = body.replace("@links@", linksHTML +  "Пример excel - документа для заполнения информации о товаре: " + xlsURL + 
-				"<br>Файл с пояснениями: " + readmeURL);
 		
 		log.info("ok, data has been output");
 		

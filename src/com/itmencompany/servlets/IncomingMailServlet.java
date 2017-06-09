@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -33,8 +34,10 @@ import com.google.appengine.api.urlfetch.FetchOptions;
 import com.google.appengine.api.urlfetch.HTTPHeader;
 import com.google.appengine.api.urlfetch.HTTPMethod;
 import com.google.appengine.api.urlfetch.HTTPRequest;
+import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
+import com.itmencompany.common.ServerUtils;
 import com.itmencompany.datastore.dao.IncomingInfoDao;
 import com.itmencompany.datastore.dao.UserOrderDao;
 import com.itmencompany.datastore.entities.IncomingInfo;
@@ -73,7 +76,8 @@ public class IncomingMailServlet extends HttpServlet {
 						read(is);
 					}
 				} catch (Exception e) {
-					log.info("Some error occured during parsing incoming message");
+					e.printStackTrace();
+					log.info("Some error occured during parsing incoming message ");
 					// do nothing and try again
 				}
 			}
@@ -100,128 +104,99 @@ public class IncomingMailServlet extends HttpServlet {
 		List<HSSFPictureData> lst = wb.getAllPictures();
 		log.info("Кол-во изображений в сообщении:" + lst.size());
 		List<String> images = new ArrayList<String>();
-		try{
+		try {
 			for (Iterator<HSSFPictureData> it = lst.iterator(); it.hasNext();) {
 				HSSFPictureData pict = it.next();
-				//String ext = pict.suggestFileExtension();
+				// String ext = pict.suggestFileExtension();
 				byte[] data = pict.getData();
 				images.add(sendToBlobStore(String.valueOf(random.nextLong()), "save", data));
 			}
-		}catch(Exception e){
+		} catch (Exception e) {
 			log.info("Error during images saving");
 		}
 		UserOrderDao orderDao = new UserOrderDao(UserOrder.class);
 
-		//images
+		// images
 		iinfo.setImages(images);
 		Sheet sheet = wb.getSheetAt(0);
 
-		//Title
-		CellReference cellReference = new CellReference(1, 2);
-		Row row = sheet.getRow(cellReference.getRow());
-		Cell cell = row.getCell(cellReference.getCol());
+		// Title
+		String title = getCellValue(sheet, 0, 1);
+		iinfo.setTitle(title);
 
-		String title = cell.getStringCellValue();
-		iinfo.setTitle(title != null ? cell.getStringCellValue() : "");
-		
-		//Description
-		cellReference = new CellReference(2, 2);
-		row = sheet.getRow(cellReference.getRow());
-		cell = row.getCell(cellReference.getCol());
-		
-		String description = cell.getStringCellValue();
+		// Description
+		String description = getCellValue(sheet, 1, 1);
 		iinfo.setDescription(description);
 
-		//Height
-		cellReference = new CellReference(3, 2);
-		row = sheet.getRow(cellReference.getRow());
-		cell = row.getCell(cellReference.getCol());
-		
-		String height = cell.getStringCellValue();
+		// Height
+		String height = getCellValue(sheet, 2, 1);
 		iinfo.setHeight(height);
-		
-		//Length
-		cellReference = new CellReference(4, 2);
-		row = sheet.getRow(cellReference.getRow());
-		cell = row.getCell(cellReference.getCol());
-		
-		String length = cell.getStringCellValue();
+
+		// Length
+		String length = getCellValue(sheet, 3, 1);
 		iinfo.setLength(length);
-		
-		//Material
-		cellReference = new CellReference(5, 2);
-		row = sheet.getRow(cellReference.getRow());
-		cell = row.getCell(cellReference.getCol());
-		
-		String material = cell.getStringCellValue();
+
+		// Material
+		String material = getCellValue(sheet, 4, 1);
 		iinfo.setMaterial(material);
 
-		//Release date
-		cellReference = new CellReference(6, 2);
-		row = sheet.getRow(cellReference.getRow());
-		cell = row.getCell(cellReference.getCol());
-		
-		String releaseDate = cell.getStringCellValue();
+		// Release date
+		String releaseDate = getCellValue(sheet, 5, 1);
 		iinfo.setDate(releaseDate);
-
-		//Cost
-		cellReference = new CellReference(7, 2);
-		row = sheet.getRow(cellReference.getRow());
-		cell = row.getCell(cellReference.getCol());
-		
-		String cost = cell.getStringCellValue();
+		// Cost
+		String cost = getCellValue(sheet, 6, 1);
 		iinfo.setCost(cost);
-		//Additional info
-		
-		cellReference = new CellReference(8, 2);
-		row = sheet.getRow(cellReference.getRow());
-		cell = row.getCell(cellReference.getCol());
-		
-		String addInfo = cell.getStringCellValue();
+
+		// Additional info
+		String addInfo = getCellValue(sheet, 7, 1);
 		iinfo.setAddInfo(addInfo);
-		
-		//Order ID
-		cellReference = new CellReference(9, 2);
-		row = sheet.getRow(cellReference.getRow());
-		cell = row.getCell(cellReference.getCol());
-		
-		String orderIDStr = cell.getStringCellValue();
+
+		// Order ID
+		String orderIDStr = getCellValue(sheet, 8, 1);
 		Long orderID = Long.parseLong(orderIDStr);
 		iinfo.setOrderID(orderID);
 
-		//Phone
-		cellReference = new CellReference(10, 2);
-		row = sheet.getRow(cellReference.getRow());
-		cell = row.getCell(cellReference.getCol());
-		
-		String phone = cell.getStringCellValue();
+		// Phone
+		String phone = getCellValue(sheet, 9, 1);
 		iinfo.setContactPhone(phone);
 
-
-		//Email
-		cellReference = new CellReference(11, 2);
-		row = sheet.getRow(cellReference.getRow());
-		cell = row.getCell(cellReference.getCol());
-		
-		String email = cell.getStringCellValue();
+		// Email
+		String email = getCellValue(sheet, 10, 1);
 		iinfo.setCampaignEmail(email);
-		
-		//company name
-		cellReference = new CellReference(12, 2);
-		row = sheet.getRow(cellReference.getRow());
-		cell = row.getCell(cellReference.getCol());
-		
-		String companyTitle = cell.getStringCellValue();
+
+		// company name
+		String companyTitle = getCellValue(sheet, 11, 1);
 		iinfo.setCompanyTitle(companyTitle);
 
 		UserOrder order = orderDao.get(orderID);
-		if(order!= null){
+		if (order != null) {
 			iinfo.setUserId(order.getUserId());
-		}else
+		} else
 			log.info("CANNOT FIND THE ORDER BY ORDER ID [" + orderID + "]");
 		IncomingInfoDao dao = new IncomingInfoDao();
 		dao.save(iinfo);
 		log.info("INCOMING INFO HAS BEEN SAVED");
+	}
+
+	private static String getCellValue(Sheet sheet, int r, int c) {
+
+		String result = "";
+		try {
+			CellReference cellReference = new CellReference(r, c);
+			Row row = sheet.getRow(cellReference.getRow());
+			Cell cell = row.getCell(cellReference.getCol());
+
+			if (cell != null) {
+				if (cell.getCellTypeEnum().equals(CellType.STRING))
+					result = cell.getStringCellValue();
+				else if (cell.getCellTypeEnum().equals(CellType.NUMERIC)) {
+					result = "" + Math.round(cell.getNumericCellValue());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 	private static String randomString() {
@@ -248,8 +223,7 @@ public class IncomingMailServlet extends HttpServlet {
 	}
 
 	private String sendToBlobStore(String id, String cmd, byte[] imageBytes) throws IOException {
-		String urlStr = URL_PREFIX + BlobstoreServiceFactory.getBlobstoreService().createUploadUrl("/blobimage");
-		log.info(urlStr + " IMG UPLOADED");
+		String urlStr = BlobstoreServiceFactory.getBlobstoreService().createUploadUrl(ServerUtils.UPLOAD_PATH);
 		URLFetchService urlFetch = URLFetchServiceFactory.getURLFetchService();
 		HTTPRequest req = new HTTPRequest(new URL(urlStr), HTTPMethod.POST, FetchOptions.Builder.withDeadline(10.0));
 
@@ -267,15 +241,20 @@ public class IncomingMailServlet extends HttpServlet {
 
 		req.setPayload(baos.toByteArray());
 		try {
-			urlFetch.fetch(req);
-			
-			return urlStr;
+			HTTPResponse resp = urlFetch.fetch(req);
+			if (resp.getResponseCode() == 200){
+				   String result = new String(resp.getContent(), "UTF-8");
+					log.info("!IMG UPLOADED: " + result);
+					return result;
+			}
+
+			return "";
 		} catch (IOException e) {
 			// Need a better way of handling Timeout exceptions here - 10 second
 			// deadline
 			log.info("Error: " + e.getMessage());
 		}
-		
+
 		return null;
 	}
 

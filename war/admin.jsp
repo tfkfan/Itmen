@@ -57,6 +57,7 @@
 	List<AppUser> users = userDao.getWithOffset(userPageNum, limit.intValue());
 	List<UserOrder> orders = null;
 	List<IncomingInfo> answers = null;
+	
 	AppUser chosenUser = null;
 	if (chosenUserId == null){
 		orders = orderDao.getWithOffset(orderPageNum, limit.intValue());
@@ -235,11 +236,19 @@
 					<%
 							count = 1;
 							for (IncomingInfo answer : answers) {
-
+								
 								Long userId = answer.getUserId();
-
+								if(userId == null){
+									log.info(answer.getId() + " IncomingInfo with this ID has not user ID or ID is incorrect");
+									continue;
+								}
 								AppUser user = userDao.get(userId);
-								String date = df.format(new Date(answer.getDate()));
+								if(user == null){
+									log.info("user is null for IncomingInfo " + answer.getId());
+									continue;
+								}
+									
+								String date  =  df.format(answer.getDoModified());
 						%>
 						<tr id="<%=answer.getId()%>">
 							<th scope="row"><%=(count)%></th>
