@@ -85,7 +85,7 @@
 <nav aria-label="Page navigation">
 	<ul class="pagination">
 		<%
-			Integer answersCount = ((Double) Math.ceil((answerDao.getCount()) / limit)).intValue();
+			Integer answersCount = ((Double) Math.ceil(((double)answerDao.getCount()) / limit)).intValue();
 			for (Integer pageValue = 1; pageValue <= answersCount; pageValue++) {
 		%>
 		<li <%if (pageValue.equals(answerPageNum)) {%> class="active" <%}%>><a
