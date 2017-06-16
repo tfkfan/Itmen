@@ -67,7 +67,7 @@
 					<div class="panel-heading">
 						<h4>Избранное</h4>
 					</div>
-					<div class="panel-body">sdffg</div>
+					<div class="panel-body">Избранное</div>
 				</div>
 			</div>
 		</div>
@@ -75,10 +75,10 @@
 
 	<div class="row">
 		<div class="col-xs-6 col-md-2"></div>
-		<div class="col-xs-6 col-md-8">
-			<h:CompanyAnswers chosenUserId="${userId}"
-				answerPageNum="${answerPageNum}" limit="${limit}"
-				displayIfEmpty="true" />
+		<div class="col-xs-6 col-md-8 ">
+			<h:CompanyAnswers chosenUserId="<%=userId%>"
+				answerPageNum="<%=answerPageNum%>" limit="<%=limit%>"
+				displayIfEmpty="false" />
 		</div>
 	</div>
 	<%

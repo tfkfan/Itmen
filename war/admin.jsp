@@ -59,6 +59,7 @@
 	List<UserOrder> orders = null;
 	List<IncomingInfo> answers = null;
 	Integer intLimit = limit.intValue();
+	
 	AppUser chosenUser = null;
 	if (chosenUserId == null){
 		orders = orderDao.getWithOffset(orderPageNum, limit.intValue());
@@ -218,7 +219,7 @@
 			</nav>
 		</div>
 		<div class="col-xs-6 col-md-6">
-			<h:CompanyAnswers chosenUserId="${chosenUserId}" answerPageNum="${answerPageNum}" limit="${intLimit}"/>
+			<h:CompanyAnswers chosenUserId="<%=chosenUserId%>" answerPageNum="<%=answerPageNum%>" limit="<%=intLimit%>"/>
 		</div>
 	</div>
 

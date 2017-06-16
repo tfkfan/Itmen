@@ -18,9 +18,6 @@
 	AppUserDao usersDao = new AppUserDao(AppUser.class);
 	IncomingInfoDao answerDao = new IncomingInfoDao();
 	
-	if(limit.equals(0))
-		limit = 5;
-	
 	List<IncomingInfo> answers = answersBean.getAnswers(chosenUserId, limit, answerPageNum, answerDao);
 	
 	SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yy HH:mm");
