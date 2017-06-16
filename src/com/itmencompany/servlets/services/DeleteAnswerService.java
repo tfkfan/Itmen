@@ -8,15 +8,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.itmencompany.datastore.dao.IncomingInfoDao;
 import com.itmencompany.datastore.dao.UserOrderDao;
+import com.itmencompany.datastore.entities.IncomingInfo;
 import com.itmencompany.datastore.entities.UserOrder;
 
-@WebServlet("/delete_order")
-public class DeleteOrderService extends HttpServlet {
+@WebServlet("/delete_answer")
+public class DeleteAnswerService extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String ORDER_ID_KEY = "order_id";
+	private static final String ANSWER_ID_KEY = "answer_id";
 
-	public DeleteOrderService() {
+	public DeleteAnswerService() {
 		super();
 	}
 
@@ -27,21 +29,20 @@ public class DeleteOrderService extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String order_id = request.getParameter(ORDER_ID_KEY);
+		String answer_id = request.getParameter(ANSWER_ID_KEY);
 
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("text");
 		PrintWriter pw = response.getWriter();
-		UserOrderDao dao = new UserOrderDao(UserOrder.class);
+		IncomingInfoDao dao = new IncomingInfoDao();
 		String res = "ok";
 		try {
-			if (order_id != null) {
-
-				UserOrder userOrder = dao.get(Long.parseLong(order_id));
-				dao.delete(userOrder);
+			if (answer_id != null) {
+				IncomingInfo info = dao.get(Long.parseLong(answer_id));
+				dao.delete(info);
 			}
 		} catch (Exception e) {
-			res = "Some error occured during deleting order";
+			res = "Some error occured during deleting answer";
 		}
 		pw.println(res);
 		pw.close();

@@ -143,6 +143,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     <url-pattern>/get_answer</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>DeleteAnswerService</servlet-name>
+    <servlet-class>com.itmencompany.servlets.services.DeleteAnswerService</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteAnswerService</servlet-name>
+    <url-pattern>/delete_answer</url-pattern>
+  </servlet-mapping>
+  
 <servlet>
     <servlet-name>DeleteOrderService</servlet-name>
     <servlet-class>com.itmencompany.servlets.services.DeleteOrderService</servlet-class>

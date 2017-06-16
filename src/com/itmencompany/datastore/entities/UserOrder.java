@@ -83,6 +83,8 @@ public class UserOrder extends DatabaseObject implements JSONObj {
 		}
 		if(info != null)
 			res.put("userInfo", info.toJSON());
+		if(getId() != null)
+			res.put("Id", getId());
 		return res.toString();
 	}
 }

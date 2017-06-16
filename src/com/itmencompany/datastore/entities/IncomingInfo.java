@@ -210,6 +210,8 @@ public class IncomingInfo extends DatabaseObject implements JSONObj{
 			res.put("campaign_email", campaignEmail);
 		if(companyTitle != null)
 			res.put("campaign_title", companyTitle);
+		if(orderID != null)
+			res.put("order_id", orderID);
 		
 		return res.toString();
 	}

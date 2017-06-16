@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="h" %>
 <%@ page import="com.itmencompany.datastore.entities.AppUser"%>
 <%@ page import="com.itmencompany.datastore.entities.UserOrder"%>
 <%@ page import="com.itmencompany.datastore.entities.IncomingInfo"%>
@@ -57,16 +58,16 @@
 	List<AppUser> users = userDao.getWithOffset(userPageNum, limit.intValue());
 	List<UserOrder> orders = null;
 	List<IncomingInfo> answers = null;
-	
+	Integer intLimit = limit.intValue();
 	AppUser chosenUser = null;
 	if (chosenUserId == null){
 		orders = orderDao.getWithOffset(orderPageNum, limit.intValue());
-		answers = answerDao.getWithOffset(answerPageNum, limit.intValue());
+		//answers = answerDao.getWithOffset(answerPageNum, limit.intValue());
 	}
 	else {
 		chosenUser = userDao.get(chosenUserId);
 		orders = orderDao.getWithOffsetAndProperty(orderPageNum, limit.intValue(), "userId", chosenUserId);
-		answers = answerDao.getWithOffsetAndProperty(answerPageNum, limit.intValue(), "userId",  chosenUserId);
+		//answers = answerDao.getWithOffsetAndProperty(answerPageNum, limit.intValue(), "userId",  chosenUserId);
 	}
 	SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm");
 %>
@@ -217,76 +218,7 @@
 			</nav>
 		</div>
 		<div class="col-xs-6 col-md-6">
-			<fieldset class="form-group">
-				<legend>Ответы компаний</legend>
-				<table class="table table-striped">
-
-					<thead>
-						<tr>
-							<th>#</th>
-							<th>Имя пользователя</th>
-							<th>Имя кампании</th>
-							<th>E-mail</th>
-							<th>Дата</th>
-							<th>Просмотреть</th>
-							<th>Удалить</th>
-						</tr>
-					</thead>
-					<tbody id="answersTable">
-					<%
-							count = 1;
-							for (IncomingInfo answer : answers) {
-								
-								Long userId = answer.getUserId();
-								if(userId == null){
-									log.info(answer.getId() + " IncomingInfo with this ID has not user ID or ID is incorrect");
-									continue;
-								}
-								AppUser user = userDao.get(userId);
-								if(user == null){
-									log.info("user is null for IncomingInfo " + answer.getId());
-									continue;
-								}
-									
-								String date  =  df.format(answer.getDoModified());
-						%>
-						<tr id="<%=answer.getId()%>">
-							<th scope="row"><%=(count)%></th>
-							<td><%=user.getUserName()%></td>
-							<td><%=answer.getCompanyTitle() %></td>
-							<td><%=answer.getCampaignEmail()%></td>
-							<td><%=date%></td>
-							<td><button class="btn btn-info"
-									onclick="showAnswer(<%=answer.getId()%>)">
-									<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-								</button></td>
-							<td><button class="btn btn-danger"
-									onclick="deleteAnswer(<%=answer.getId()%>)">
-									<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-								</button></td>
-						</tr>
-						<%
-							count++;
-							}
-						%>
-					</tbody>
-				</table>
-			</fieldset>
-			<nav aria-label="Page navigation">
-				<ul class="pagination">
-					<%
-						Integer answersCount = ((Double) Math.ceil((answerDao.getCount()) / limit)).intValue();
-						for (Integer pageValue = 1; pageValue <= answersCount; pageValue++) {
-					%>
-					<li <%if (pageValue.equals(answerPageNum)) {%> class="active" <%}%>><a
-						href="" onclick="answersPaginationClick(<%=pageValue%>)"><%=pageValue%></a></li>
-
-					<%
-						}
-					%>
-				</ul>
-			</nav>
-
+			<h:CompanyAnswers chosenUserId="${chosenUserId}" answerPageNum="${answerPageNum}" limit="${intLimit}"/>
 		</div>
 	</div>
 
@@ -346,6 +278,12 @@
 				</div>
 				<div class="modal-body">
 					<form>
+						<div class="form-group">
+							<label for="order_id" class="control-label">Идентификатор</label> 
+							<input type="text" class="form-control"
+								id="order_id" disabled>
+						</div>
+						
 						<div class="form-group">
 							<label for="user_name" class="control-label">Имя
 								пользователя</label> <input type="text" class="form-control"
@@ -428,6 +366,12 @@
 				</div>
 				<div class="modal-body">
 					<form>
+						<div class="form-group">
+							<label for="answer_order_id" class="control-label">Идентификатор Заявки</label> 
+							<input type="text" class="form-control"
+								id="answer_order_id" disabled>
+						</div>
+					
 						<div class="form-group">
 							<label for="title" class="control-label">Наименование изделия</label> 
 							<input type="text" class="form-control"
@@ -581,6 +525,14 @@ function deleteOrder(id){
 	});
 }
 
+function deleteAnswer(id){
+	$.post("/delete_answer", {
+		answer_id : id
+	}, function(data) {
+		location.reload();
+	});
+}
+
 function showOrder(id){
 	$.post("/get_order", {
 		order_id : id
@@ -591,6 +543,7 @@ function showOrder(id){
 			$("#order_user_name").val(json2["username"]);
 			$("#order_user_email").val(json2["email"]);
 			
+			$("#order_id").val(json1["Id"]);
 			
 			$("#date").val(json1["date"]);
 			
@@ -636,6 +589,7 @@ function showAnswer(id){
 	$.post("/get_answer", {
 		answer_id : id
 	}, function(info) {
+		$("#answer_order_id").val(info["order_id"]);
 		$("#answer_length").val(info["length"]);
 		$("#answer_height").val(info["height"]);
 		$("#answer_description").val(info["description"]);
