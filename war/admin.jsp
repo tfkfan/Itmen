@@ -456,21 +456,6 @@
 </div>
 
 <script>
-function usersPaginationClick(usersPage){
-	event.preventDefault();
-	setGetParameter("userPage", usersPage);	
-}
-
-function answersPaginationClick(answerPage){
-	event.preventDefault();
-	setGetParameter("answerPage", answerPage);	
-}
-
-function ordersPaginationClick(ordersPage){
-	event.preventDefault();
-	setGetParameter("orderPage", ordersPage);	
-}
-
 function choseUser(id){
     event.preventDefault();
 	setGetParameter("chosenUser", id);	

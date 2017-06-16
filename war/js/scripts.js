@@ -1,3 +1,19 @@
+function answersPaginationClick(answerPage){
+	event.preventDefault();
+	setGetParameter("answerPage", answerPage);	
+}
+
+function usersPaginationClick(usersPage){
+	event.preventDefault();
+	setGetParameter("userPage", usersPage);	
+}
+
+function ordersPaginationClick(ordersPage){
+	event.preventDefault();
+	setGetParameter("orderPage", ordersPage);	
+}
+
+
 function setGetParameter(paramName, paramValue){
     var url = window.location.href;
     var hash = location.hash;

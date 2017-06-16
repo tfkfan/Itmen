@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
+<%@ taglib tagdir="/WEB-INF/tags" prefix="h" %>
 <%@ page import="com.itmencompany.datastore.entities.AppUser"%>
 <%@ page import="com.itmencompany.helpers.AppUserHelper"%>
 <%@ page import="com.itmencompany.common.UserInfo"%>
@@ -9,32 +11,51 @@
 	Logger log = Logger.getLogger("privateOffice.jsp");
 %>
 <%@ include file="header.jsp"%>
+<%
+	Long userId = appUser != null ? appUser.getId() : null;
+
+	String answerPageObj = request.getParameter("answerPage");
+	Integer answerPageNum = 1;
+	Integer limit = 5;
+	try {
+		answerPageNum = Integer.parseInt(answerPageObj);
+	} catch (Exception e) {
+
+	}
+%>
 <div class="custom-container">
 	<div class="page-header">
 		<h2>Личный кабинет</h2>
 	</div>
-	<div class="row">
-		<div class="col-xs-6 col-md-2">
-			<%if(appUser != null){ %>
-			<div>
-				Здавствуйте, <span id="user_name"> <span
-					class="label label-info"><%=appUser.getUserName()%></span>
-
-				</span>
+	<%if(appUser != null){ %>
+		<div class="row">
+			<div class="col-xs-6 col-md-2"></div>
+			<div class="col-xs-6 col-md-2">
+				<div>
+					Здавствуйте, <span id="user_name"> <span
+						class="label label-info"><%=appUser.getUserName()%></span>
+	
+					</span>
+				</div>
+				<div>
+					Ваш телефон: <span id="user_phone"> <span
+						class="label label-info"><%=appUser.getPhone()%></span>
+					</span>
+				</div>
+				<div>
+	
+					Ваш email: <span id="user_email"> <span
+						class="label label-info"><%=appUser.getEmail()%></span>
+					</span>
+				</div>
 			</div>
-			<div>
-				Ваш телефон: <span id="user_phone"> <span
-					class="label label-info"><%=appUser.getPhone()%></span>
-				</span>
+			<div class="col-xs-6 col-md-6">
+				<h:CompanyAnswers chosenUserId="${userId}" answerPageNum="${answerPageNum}" limit="${limit}"/>
 			</div>
-			<div>
-
-				Ваш email: <span id="user_email"> <span
-					class="label label-info"><%=appUser.getEmail()%></span>
-				</span>
-			</div>
-			<%}%>
 		</div>
+	<%} %>
+	<div class="row">
+		<div class="col-xs-6 col-md-2"></div>
 		<div class="col-xs-6 col-md-8">
 			<form id="privateParams" class="form-horizontal" role="form">
 				<div id="errors" style="display: none"

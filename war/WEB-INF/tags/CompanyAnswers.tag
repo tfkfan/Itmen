@@ -10,6 +10,7 @@
 <%@ attribute name="chosenUserId" type="java.lang.Long" required="true" %>
 <%@ attribute name="answerPageNum" type="java.lang.Integer" required="true" %>
 <%@ attribute name="limit" type="java.lang.Integer" required="true" %>
+<%@ attribute name="displayIfEmpty" type="java.lang.Boolean" required="false" %>
 <%
 	Logger log = Logger.getLogger("CompanyAnswers.tag");
 	CompanyAnswersBean answersBean = new CompanyAnswersBean();
@@ -23,6 +24,11 @@
 	List<IncomingInfo> answers = answersBean.getAnswers(chosenUserId, limit, answerPageNum, answerDao);
 	
 	SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yy HH:mm");
+	
+	if(displayIfEmpty != null && !displayIfEmpty){
+		if(answers.isEmpty())
+			return;
+	}
 %>
 <fieldset class="form-group">
 	<legend>Ответы компаний</legend>
@@ -87,7 +93,6 @@
 		%>
 		<li <%if (pageValue.equals(answerPageNum)) {%> class="active" <%}%>><a
 			href="" onclick="answersPaginationClick(<%=pageValue%>)"><%=pageValue%></a></li>
-
 		<%
 			}
 		%>
