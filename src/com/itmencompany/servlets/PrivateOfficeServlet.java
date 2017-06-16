@@ -99,12 +99,10 @@ public class PrivateOfficeServlet extends HttpServlet {
 	public UserInfo getUserInfo(HttpServletRequest request){
 		String[] files = request.getParameterValues("images[]");
 		List<String> images = new ArrayList<String>();
-		//TODO remove on local server and put
-		// images = Arrays.asList(files);
-		log.info("https://itmen-1261.appspot.com");
+	
 		if(files != null)
 		for(String img : files)
-			images.add("https://itmen-1261.appspot.com" + img);
+			images.add(img);
 
 		String length = request.getParameter("length");
 		String fasade_material = request.getParameter("fasade_material");
