@@ -7,7 +7,6 @@ import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
-import com.itmencompany.common.UserInfo;
 import com.itmencompany.datastore.entities.interfaces.JSONObj;
 
 @Entity
@@ -55,12 +54,15 @@ public class IncomingInfo extends DatabaseObject implements JSONObj{
 	@Index
 	private Long userId;
 
+	@Index
+	private Boolean isFavorite;
+
 
 	@Index
 	private String date;
 	
 	public IncomingInfo() {
-
+		isFavorite = false;
 	}
 	
 	public Long getUserId() {
@@ -69,6 +71,14 @@ public class IncomingInfo extends DatabaseObject implements JSONObj{
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+	
+	public Boolean getIsFavorite() {
+		return isFavorite;
+	}
+
+	public void setIsFavorite(Boolean isFavorite) {
+		this.isFavorite = isFavorite;
 	}
 	
 	public String getTitle() {

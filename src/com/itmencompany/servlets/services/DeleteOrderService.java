@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.itmencompany.datastore.dao.UserOrderDao;
+import com.itmencompany.datastore.entities.AppUser;
 import com.itmencompany.datastore.entities.UserOrder;
+import com.itmencompany.helpers.AppUserHelper;
 
 @WebServlet("/delete_order")
 public class DeleteOrderService extends HttpServlet {
@@ -27,6 +29,11 @@ public class DeleteOrderService extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		AppUser appUser = AppUserHelper.getUserFromRequest(request);
+		if(appUser == null){
+			response.sendRedirect("/login");
+			return;
+		}
 		String order_id = request.getParameter(ORDER_ID_KEY);
 
 		response.setCharacterEncoding("utf-8");
@@ -35,8 +42,7 @@ public class DeleteOrderService extends HttpServlet {
 		UserOrderDao dao = new UserOrderDao(UserOrder.class);
 		String res = "ok";
 		try {
-			if (order_id != null) {
-
+			if (order_id != null && appUser.getIsAdmin()) {
 				UserOrder userOrder = dao.get(Long.parseLong(order_id));
 				dao.delete(userOrder);
 			}

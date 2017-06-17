@@ -23,11 +23,9 @@
 	String userPageObj = request.getParameter("userPage");
 	String orderPageObj = request.getParameter("orderPage");
 	String chosenUserIdObj = request.getParameter("chosenUser");
-	String answerPageObj = request.getParameter("answerPage");
 
 	Integer userPageNum = 1;
 	Integer orderPageNum = 1;
-	Integer answerPageNum = 1;
 	Long chosenUserId = null;
 	try {
 		userPageNum = Integer.parseInt(userPageObj);
@@ -44,12 +42,6 @@
 	} catch (Exception e) {
 
 	}
-	
-	try {
-		answerPageNum = Integer.parseInt(answerPageObj);
-	} catch (Exception e) {
-
-	}
 
 	AppUserDao userDao = new AppUserDao(AppUser.class);
 	UserOrderDao orderDao = new UserOrderDao(UserOrder.class);
@@ -61,14 +53,11 @@
 	Integer intLimit = limit.intValue();
 	
 	AppUser chosenUser = null;
-	if (chosenUserId == null){
+	if (chosenUserId == null)
 		orders = orderDao.getWithOffset(orderPageNum, limit.intValue());
-		//answers = answerDao.getWithOffset(answerPageNum, limit.intValue());
-	}
 	else {
 		chosenUser = userDao.get(chosenUserId);
 		orders = orderDao.getWithOffsetAndProperty(orderPageNum, limit.intValue(), "userId", chosenUserId);
-		//answers = answerDao.getWithOffsetAndProperty(answerPageNum, limit.intValue(), "userId",  chosenUserId);
 	}
 	SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm");
 %>
@@ -219,7 +208,7 @@
 			</nav>
 		</div>
 		<div class="col-xs-6 col-md-6">
-			<h:CompanyAnswers chosenUserId="<%=chosenUserId%>" answerPageNum="<%=answerPageNum%>" limit="<%=intLimit%>"/>
+			<h:CompanyAnswers limit="<%=intLimit%>"/>
 		</div>
 	</div>
 
@@ -352,108 +341,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
-	
-	<div class="modal fade" id="answerShow" tabindex="-1" role="dialog"
-		aria-labelledby="answerModalLabel">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-					<h4 class="modal-title" id="orderModalLabel">Ответ компании пользователю</h4>
-				</div>
-				<div class="modal-body">
-					<form>
-						<div class="form-group">
-							<label for="answer_order_id" class="control-label">Идентификатор Заявки</label> 
-							<input type="text" class="form-control"
-								id="answer_order_id" disabled>
-						</div>
-					
-						<div class="form-group">
-							<label for="title" class="control-label">Наименование изделия</label> 
-							<input type="text" class="form-control"
-								id="answer_title" disabled>
-						</div>
-
-						<div class="form-group">
-							<label for="description" class="control-label">Описание
-							</label> 
-							<textarea class="form-control" rows="5" id="answer_description"
-								name="description" disabled></textarea>
-						</div>
-
-						<div class="form-group">
-							<label for="height" class="control-label">Высота</label> <input
-								disabled type="text" class="form-control" id="answer_height">
-						</div>
-
-						<div class="form-group">
-							<label for="length" class="control-label">Длина</label>
-							<input type="text" class="form-control" id="answer_length"
-								disabled>
-						</div>
-
-						<div class="form-group">
-							<label for="material" class="control-label">Материал</label> 
-							<input type="text" class="form-control"
-								id="answer_material" name="material" disabled>
-						</div>
-
-						<div class="form-group">
-							<label for="release" class="control-label">Срок изготовления</label>
-							<input  class="form-control"
-								type="text" id="answer_release" name="release" 
-								disabled>
-						</div>
-
-						<div class="form-group">
-							<label for="cost" class="control-label">Цена</label>
-							<input  class="form-control"
-								type="text" id="answer_cost" name="cost" 
-								disabled>
-						</div>
-
-						<div class="form-group">
-							<label for="additional_info" class="control-label">Дополнительная информация об изделии</label>
-							<textarea class="form-control" rows="5" id="answer_additional_info"
-								name="additional_info" disabled></textarea>
-						</div>
-
-						<div class="form-group">
-							<label for="phone" class="control-label">Контактный телефон</label> <input
-								type="text" class="form-control" id="answer_phone" name="phone"
-								disabled>
-						</div>
-						
-						<div class="form-group">
-							<label for="email" class="control-label">Email компании</label> <input
-								type="text" class="form-control" id="answer_email" name="email"
-								disabled>
-						</div>
-						
-						<div class="form-group">
-							<label for="campaign_title" class="control-label">Название компании</label> <input
-								type="text" class="form-control" id="answer_campaign_title" name="campaign_title"
-								disabled>
-						</div>
-						
-						<div class="form-group">
-
-							<div class="row jumbotron" id="answer_images"></div>
-						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	
+	</div>	
 </div>
 
 <script>
@@ -511,14 +399,6 @@ function deleteOrder(id){
 	});
 }
 
-function deleteAnswer(id){
-	$.post("/delete_answer", {
-		answer_id : id
-	}, function(data) {
-		location.reload();
-	});
-}
-
 function showOrder(id){
 	$.post("/get_order", {
 		order_id : id
@@ -566,40 +446,6 @@ function showOrder(id){
 		    alert("#2" + textStatus);
 		});
 
-	}).fail( function(jqXHR, textStatus, errorThrown) {
-	    alert("#1" + textStatus);
-	});
-}
-
-function showAnswer(id){
-	$.post("/get_answer", {
-		answer_id : id
-	}, function(info) {
-		$("#answer_order_id").val(info["order_id"]);
-		$("#answer_length").val(info["length"]);
-		$("#answer_height").val(info["height"]);
-		$("#answer_description").val(info["description"]);
-    	$("#answer_title").val(info["title"]);
-		$("#answer_material").val(info["material"]);
-		$("#answer_release").val(info["release_date"]);
-		$("#answer_additional_info").val(info["add_info"]);
-		$("#answer_phone").val(info["campaign_phone"]);
-		$("#answer_cost").val(info["cost"]);
-		$("#answer_campaign_title").val(info["campaign_title"]);
-		$("#answer_email").val(info["campaign_email"]);
-		
-		var images = info["images"];
-		
-		var imgJUMB = $("#answer_images");
-		imgJUMB.empty();
-       	for(var key in images){
-       		var src = images[key];
-       		imgJUMB.append('<div><a  class="thumbnail">'
-			   +'<img class="savedImages" src="' + src + '" alt="...">'
-			   +'</a></div>');
-       	}
-       	
-		$("#answerShow").modal('show');
 	}).fail( function(jqXHR, textStatus, errorThrown) {
 	    alert("#1" + textStatus);
 	});

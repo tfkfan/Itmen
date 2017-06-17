@@ -1,39 +1,104 @@
-function answersPaginationClick(answerPage){
+function answersPaginationClick(answerPage) {
 	event.preventDefault();
-	setGetParameter("answerPage", answerPage);	
+	setGetParameter("answerPage", answerPage);
 }
 
-function usersPaginationClick(usersPage){
+function usersPaginationClick(usersPage) {
 	event.preventDefault();
-	setGetParameter("userPage", usersPage);	
+	setGetParameter("userPage", usersPage);
 }
 
-function ordersPaginationClick(ordersPage){
+function ordersPaginationClick(ordersPage) {
 	event.preventDefault();
-	setGetParameter("orderPage", ordersPage);	
+	setGetParameter("orderPage", ordersPage);
 }
 
+function allAnswers() {
+	setGetParameter("showFavorites", false);
+}
 
-function setGetParameter(paramName, paramValue){
-    var url = window.location.href;
-    var hash = location.hash;
-    url = url.replace(hash, '');
-    if (url.indexOf(paramName + "=") >= 0)
-    {
-        var prefix = url.substring(0, url.indexOf(paramName));
-        var suffix = url.substring(url.indexOf(paramName));
-        suffix = suffix.substring(suffix.indexOf("=") + 1);
-        suffix = (suffix.indexOf("&") >= 0) ? suffix.substring(suffix.indexOf("&")) : "";
-        url = prefix + paramName + "=" + paramValue + suffix;
-    }
-    else
-    {
-    if (url.indexOf("?") < 0)
-        url += "?" + paramName + "=" + paramValue;
-    else
-        url += "&" + paramName + "=" + paramValue;
-    }
-    window.location.href = url + hash;
+function favoriteAnswers() {
+	setGetParameter("showFavorites", true);
+}
+
+function setFavorite(id, val) {
+	$.post("/update_answer", {
+		answer_id : id,
+		set_favorite : val
+	}, function(res) {
+		val = !res["isFavorite"];
+		var td = $("td#favoriteAnswer" + id);
+		td.empty();
+		td.append("<button class='btn btn-success'" + "onclick='setFavorite("
+				+ id + ", " + val + ")'>" + "<span class='glyphicon glyphicon-"
+				+ (val ? "star" : "remove") + "' aria-hidden='true'></span>"
+				+ "</button>");
+	});
+}
+
+function showAnswer(id) {
+	$.post(
+			"/get_answer",
+			{
+				answer_id : id
+			},
+			function(info) {
+				$("#answer_order_id").val(info["order_id"]);
+				$("#answer_length").val(info["length"]);
+				$("#answer_height").val(info["height"]);
+				$("#answer_description").val(info["description"]);
+				$("#answer_title").val(info["title"]);
+				$("#answer_material").val(info["material"]);
+				$("#answer_release").val(info["release_date"]);
+				$("#answer_additional_info").val(info["add_info"]);
+				$("#answer_phone").val(info["campaign_phone"]);
+				$("#answer_cost").val(info["cost"]);
+				$("#answer_campaign_title").val(info["campaign_title"]);
+				$("#answer_email").val(info["campaign_email"]);
+
+				var images = info["images"];
+
+				var imgJUMB = $("#answer_images");
+				imgJUMB.empty();
+				for ( var key in images) {
+					var src = images[key];
+					imgJUMB.append('<div><a  class="thumbnail">'
+							+ '<img class="savedImages" src="' + src
+							+ '" alt="...">' + '</a></div>');
+				}
+
+				$("#answerShow").modal('show');
+			}).fail(function(jqXHR, textStatus, errorThrown) {
+		alert("#1" + textStatus);
+	});
+}
+
+function deleteAnswer(id) {
+	$.post("/delete_answer", {
+		answer_id : id
+	}, function(data) {
+		location.reload();
+	});
+}
+
+function setGetParameter(paramName, paramValue) {
+	var url = window.location.href;
+	var hash = location.hash;
+	url = url.replace(hash, '');
+	if (url.indexOf(paramName + "=") >= 0) {
+		var prefix = url.substring(0, url.indexOf(paramName));
+		var suffix = url.substring(url.indexOf(paramName));
+		suffix = suffix.substring(suffix.indexOf("=") + 1);
+		suffix = (suffix.indexOf("&") >= 0) ? suffix.substring(suffix
+				.indexOf("&")) : "";
+		url = prefix + paramName + "=" + paramValue + suffix;
+	} else {
+		if (url.indexOf("?") < 0)
+			url += "?" + paramName + "=" + paramValue;
+		else
+			url += "&" + paramName + "=" + paramValue;
+	}
+	window.location.href = url + hash;
 }
 
 function elementClickHandler(elem, callback) {
@@ -93,5 +158,5 @@ function getImages() {
 	return arr;
 }
 $(document).ready(function() {
-	
+
 });

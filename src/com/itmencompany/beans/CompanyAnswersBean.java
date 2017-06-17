@@ -9,7 +9,18 @@ import com.itmencompany.datastore.entities.IncomingInfo;
 public class CompanyAnswersBean {
 
 	final static Logger log = Logger.getLogger(CompanyAnswersBean.class.getName());
-	public List<IncomingInfo> getAnswers(Long chosenUserId, Integer limit, Integer answerPageNum, IncomingInfoDao answerDao){
+	
+	private IncomingInfoDao answerDao;
+	
+	public CompanyAnswersBean(){
+		answerDao = new IncomingInfoDao();
+	}
+	
+	public Integer getAnswersCount(){
+		return answerDao.getCount();
+	}
+	
+	public List<IncomingInfo> getAnswers(Long chosenUserId, Integer limit, Integer answerPageNum){
 		List<IncomingInfo> res = null;
 		if (chosenUserId == null)
 			res = answerDao.getWithOffset(answerPageNum, limit);
@@ -17,5 +28,11 @@ public class CompanyAnswersBean {
 			res = answerDao.getWithOffsetAndProperty(answerPageNum, limit, "userId",  chosenUserId);
 		log.info("Num answers: " + res.size() + " page:" + answerPageNum + " limit:" + limit);
 		return res;	
+	}
+	
+	public List<IncomingInfo> getFavoriteUserAnswers(Long chosenUserId, Integer limit, Integer answerPageNum){
+		if(chosenUserId == null)
+			return null;
+		return answerDao.getUserFavorites(chosenUserId, limit, answerPageNum);
 	}
 }

@@ -27,6 +27,11 @@ public class SaveUserService extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		AppUser appUser = AppUserHelper.getUserFromRequest(request);
+		if(appUser == null){
+			response.sendRedirect("/login");
+			return;
+		}
 		String user_id = request.getParameter(USER_ID_KEY);
 
 		response.setCharacterEncoding("utf-8");
@@ -35,7 +40,7 @@ public class SaveUserService extends HttpServlet {
 		AppUserDao dao = new AppUserDao(AppUser.class);
 		String res = "ok";
 		try {
-			if (user_id != null) {
+			if (user_id != null && appUser.getIsAdmin()) {
 				AppUser user = dao.get(Long.parseLong(user_id));
 				String username = request.getParameter("username");
 				String phone = request.getParameter("phone");

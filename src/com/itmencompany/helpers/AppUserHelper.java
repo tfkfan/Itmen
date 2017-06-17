@@ -30,11 +30,11 @@ public class AppUserHelper {
 				String user_email = req.getParameter(USER_EMAIL_PARAM);
 				String user_password = req.getParameter(USER_PASSWORD_PARAM);
 
-				if (user_email == null) {
+				if (user_email == null || user_password == null) {
 					return null;
 				}
 
-				appUser = getUserFromDB(user_email);
+				appUser = getUserFromDB(user_email, user_password);
 
 				if (appUser == null) {
 					Log.info("User is not found in db");
@@ -56,7 +56,7 @@ public class AppUserHelper {
 		return null;
 	}
 
-	public static AppUser getUserFromDB(String user_email) {
+	public static AppUser getUserFromDB(String user_email, String user_password) {
 		try {
 			AppUserDao dao = new AppUserDao(AppUser.class);
 			AppUser appUser = dao.getByEmail(user_email);

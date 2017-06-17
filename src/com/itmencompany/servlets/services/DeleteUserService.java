@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.itmencompany.datastore.dao.AppUserDao;
 import com.itmencompany.datastore.entities.AppUser;
+import com.itmencompany.helpers.AppUserHelper;
 
 @WebServlet("/delete_user")
 public class DeleteUserService extends HttpServlet {
@@ -26,6 +27,11 @@ public class DeleteUserService extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		AppUser appUser = AppUserHelper.getUserFromRequest(request);
+		if(appUser == null){
+			response.sendRedirect("/login");
+			return;
+		}
 		String user_id = request.getParameter(USER_ID_KEY);
 
 		response.setCharacterEncoding("utf-8");
@@ -33,8 +39,7 @@ public class DeleteUserService extends HttpServlet {
 		PrintWriter pw = response.getWriter();
 		AppUserDao dao = new AppUserDao(AppUser.class);
 		String res = "ok";
-		if (user_id != null) {
-		
+		if (user_id != null && appUser.getIsAdmin()) {
 			AppUser user = dao.get(Long.parseLong(user_id));
 			dao.delete(user);
 		}

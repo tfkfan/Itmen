@@ -143,6 +143,18 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     <url-pattern>/get_answer</url-pattern>
   </servlet-mapping>
   
+  
+  
+   <servlet>
+    <servlet-name>UpdateAnswerService</servlet-name>
+    <servlet-class>com.itmencompany.servlets.services.UpdateAnswerService</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateAnswerService</servlet-name>
+    <url-pattern>/update_answer</url-pattern>
+  </servlet-mapping>
+  
+  
   <servlet>
     <servlet-name>DeleteAnswerService</servlet-name>
     <servlet-class>com.itmencompany.servlets.services.DeleteAnswerService</servlet-class>

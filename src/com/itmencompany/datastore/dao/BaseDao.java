@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+
 import com.google.appengine.api.datastore.PreparedQuery.TooManyResultsException;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
@@ -67,9 +69,38 @@ public abstract class BaseDao<T> {
 		return obj;
 	}
 	
+
+	public T getByProperties(Map<String, Object> properties) throws TooManyResultsException {
+		Query<T> q = ObjectifyService.ofy().load().type(clazz);
+		for(Entry<String, Object> entry : properties.entrySet()){
+			String propName = entry.getKey();
+			Object propValue = entry.getValue();
+			q = q.filter(propName, propValue);
+		}
+		Iterator<T> fetch = q.limit(2).list().iterator();
+		if (!fetch.hasNext()) {
+			return null;
+		}
+		T obj = fetch.next();
+		if (fetch.hasNext()) {
+			throw new TooManyResultsException();
+		}
+		return obj;
+	}
+	
 	public List<T> getByPropertyAsList(String propName, Object propValue) {
 		Query<T> q = ObjectifyService.ofy().load().type(clazz);
 		q = q.filter(propName, propValue);
+		return q.list();
+	}
+	
+	public List<T> getByPropertiesAsList(Map<String, Object> properties) {
+		Query<T> q = ObjectifyService.ofy().load().type(clazz);
+		for(Entry<String, Object> entry : properties.entrySet()){
+			String propName = entry.getKey();
+			Object propValue = entry.getValue();
+			q = q.filter(propName, propValue);
+		}
 		return q.list();
 	}
 
@@ -81,6 +112,17 @@ public abstract class BaseDao<T> {
 	public List<T> getWithOffsetAndProperty(Integer offset, Integer limit, String propName, Object propValue){
 		int prevPage = (offset - 1) != -1 ? offset - 1 : 0;
 		return ObjectifyService.ofy().load().type(clazz).filter(propName, propValue).limit(limit).offset(prevPage * limit).list();
+	}
+	
+	public List<T> getWithOffsetAndProperties(Integer offset, Integer limit, Map<String, Object> properties){
+		int prevPage = (offset - 1) != -1 ? offset - 1 : 0;
+		Query<T> q = ObjectifyService.ofy().load().type(clazz);
+		for(Entry<String, Object> entry : properties.entrySet()){
+			String propName = entry.getKey();
+			Object propValue = entry.getValue();
+			q = q.filter(propName, propValue);
+		}
+		return q.limit(limit).offset(prevPage * limit).list();
 	}
 
 	public int getCount() {

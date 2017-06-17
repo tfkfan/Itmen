@@ -3,7 +3,6 @@ package com.itmencompany.datastore.entities;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
 import com.googlecode.objectify.annotation.Entity;
-import com.itmencompany.common.UserInfo;
 import com.itmencompany.datastore.entities.interfaces.JSONObj;
 import com.googlecode.objectify.annotation.Index;
 
