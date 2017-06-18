@@ -13,6 +13,9 @@ public class AppUser extends DatabaseObject implements JSONObj {
 
 	@Index
 	protected Boolean isAdmin;
+	
+	@Index
+	protected Boolean isNtfsEnabled;
 
 	@Index
 	protected String email;
@@ -36,9 +39,18 @@ public class AppUser extends DatabaseObject implements JSONObj {
 	public AppUser(String email, String userName, String phone) {
 		setIsAdmin(false);
 		setIsVerified(false);
+		setIsNtfsEnabled(true);
 		setEmail(email);
 		setUserName(userName);
 		setPhone(phone);
+	}
+
+	public Boolean getIsNtfsEnabled() {
+		return isNtfsEnabled;
+	}
+
+	public void setIsNtfsEnabled(Boolean isNtfsEnabled) {
+		this.isNtfsEnabled = isNtfsEnabled;
 	}
 
 	public String getPhone() {

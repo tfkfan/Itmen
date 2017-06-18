@@ -59,7 +59,7 @@ public class AppUserHelper {
 	public static AppUser getUserFromDB(String user_email, String user_password) {
 		try {
 			AppUserDao dao = new AppUserDao(AppUser.class);
-			AppUser appUser = dao.getByEmail(user_email);
+			AppUser appUser = dao.getByEmailAndPassword(user_email, user_password);
 			if (appUser != null) {
 				String userEmail = appUser.getEmail();
 

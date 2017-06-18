@@ -101,27 +101,23 @@ function setGetParameter(paramName, paramValue) {
 	window.location.href = url + hash;
 }
 
-function elementClickHandler(elem, callback) {
-	elem
-			.click(function() {
-				var span = elem.children().first();
-
-				if (span.prop('tagName') !== "SPAN")
-					return;
-
-				var val = span.text();
-				callback(val);
-
-				span.remove();
-				elem
-						.append("<input class='custom-input form-control' style='display:inline;width: 150px;' type='text' value='"
-								+ val + "' />");
-			});
+function editableElemClickHandler(elem, callback) {
+	elem.click(function() {
+		if(elem.has("input").length)
+			return;
+		var val = elem.text();
+		elem.empty();
+		elem.append("<input class='custom-input form-control btn-small' style='display:inline;width: 150px;' type='text' value='"
+						+ val + "' />");
+	});
 
 	elem.keypress(function(e) {
 		if (e.which == 13) {
+			var chlds = elem.children();
+			if(chlds.length === 0)
+				return;
+			
 			var input = elem.children().first();
-
 			if (input.prop('tagName') !== "INPUT")
 				return;
 
@@ -129,7 +125,7 @@ function elementClickHandler(elem, callback) {
 			callback(val);
 
 			input.remove();
-			elem.append("<span class='label label-info'>" + val + "</span>");
+			elem.append(val);
 			return false;
 		}
 	});

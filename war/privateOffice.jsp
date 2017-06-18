@@ -32,51 +32,77 @@
 	%>
 	<div class="">
 		<div class="row">
-			<div class="col-xs-6 col-md-2"></div>
-			<div class="col-xs-6 col-md-8">
+			<div class="col-xs-8 col-md-offset-2 col-md-8">
 				<div class="custom-form-container">
-					<fieldset class="form-group">
-						<legend>
-							<h3>Личная информация</h3>
-						</legend>
+					<form id="privateUserInfo" class="form-horizontal" role="form">
+						<fieldset>
+							<legend>
+								<h3>Личная информация</h3>
+							</legend>
 
-						<div>
-							Ваше имя: <span id="user_name"> <span
-								class="label label-info"><%=appUser.getUserName()%></span>
+							<div class="form-group">
+								<label for="p_user_name" class="col-md-2 control-label">Ваше
+									имя</label>
+								<div class="col-md-6">
+									<p id="p_user_name" class="form-control-static"><%=appUser.getUserName()%></p>
+								</div>
+							</div>
 
-							</span>
-						</div>
-						<div>
-							Ваш телефон: <span id="user_phone"> <span
-								class="label label-info"><%=appUser.getPhone()%></span>
-							</span>
-						</div>
-						<div>
+							<div class="form-group">
+								<label for="p_user_phone" class="col-md-2 control-label">Ваш
+									телефон</label>
+								<div class="col-md-6">
+									<p id="p_user_phone" class="form-control-static"><%=appUser.getPhone()%>
+									</p>
+								</div>
+							</div>
 
-							Ваш email: <span id="user_email"> <span
-								class="label label-info"><%=appUser.getEmail()%></span>
-							</span>
-						</div>
-
-					</fieldset>
+							<div class="form-group">
+								<label for="p_user_email" class="col-md-2 control-label">Ваша
+									почта</label>
+								<div class="col-md-6">
+									<p id="p_user_email" class="form-control-static"><%=appUser.getEmail()%>
+									</p>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="p_user_password" class="col-md-2 control-label">Сменить
+									пароль</label>
+								<div class="col-md-6">
+									<button id="p_user_password_change" class="btn btn-default">Сменить</button>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="p_user_notifications" class="col-md-2 control-label">
+								<%if(appUser.getIsNtfsEnabled() == null || appUser.getIsNtfsEnabled()){%>
+									Отключить уведомления по почте</label>
+									<div class="col-md-6">
+										<button class="btn btn-success">Отключить</button>
+								<%}else{ %>Включить уведомления по почте</label>
+									<div class="col-md-6">
+										<button class="btn btn-default">Включить</button>
+								<%} %>
+									</div>
+							</div>
+						</fieldset>
+					</form>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<div class="row">
-		<div class="col-xs-6 col-md-2"></div>
-		<div class="col-xs-6 col-md-8 ">
-			<h:CompanyAnswers  limit="<%=limit%>"
-				displayIfEmpty="false" isAdminPage="false" />
+		<div class="col-xs-6 col-md-offset-2 col-md-8 ">
+			<h:CompanyAnswers limit="<%=limit%>" isAdminPage="false" />
 		</div>
 	</div>
 	<%
 		}
 	%>
 	<div class="row">
-		<div class="col-xs-6 col-md-2"></div>
-		<div class="col-xs-6 col-md-8">
+		<div class="col-xs-6 col-md-offset-2 col-md-8">
 			<div class="custom-form-container">
 				<form id="privateParams" class="form-horizontal" role="form">
 					<fieldset class="form-group">
@@ -142,7 +168,7 @@
 								открывания дверей)</label>
 							<div class="col-md-9">
 								<textarea class="form-control" rows="5" id="wishes"
-									name="wishes"></textarea>
+									name="wishes" style="resize:vertical;"></textarea>
 							</div>
 						</div>
 
@@ -161,7 +187,7 @@
 								поле для более точного подсчета изготовления. </label>
 							<div class="col-md-9">
 								<textarea class="form-control" rows="5" id="additional_wishes"
-									name="additional_wishes"></textarea>
+									name="additional_wishes" style="resize:vertical;"></textarea>
 							</div>
 						</div>
 						<%
@@ -200,7 +226,8 @@
 						<div class="form-group">
 							<label for="sendInfo" class="col-md-3 control-label"></label>
 							<div class="col-md-offset-3 col-md-9">
-								<button id="btn-post-info" name="sendInfo" class="btn btn-default btn-lg">
+								<button id="btn-post-info" name="sendInfo"
+									class="btn btn-default btn-lg">
 									<i class="icon-hand-right"></i> &nbsp Отправить заявку
 								</button>
 							</div>
@@ -217,183 +244,156 @@
 			return;
 		elem.remove();
 	}
-	$(document)
-			.ready(
-					function() {
-						$('#privateParams').submit(false);
+	$(document).ready(function() {
+		$('#privateParams').submit(false);
+		$('#privateUserInfo').submit(false);
+		$('#photo').on('change',function() {
+			var file = this.files[0];
+			var savedFiles = $(".savedImages").length;
+			
+			if (savedFiles > 3)
+				return;
+			
+			$.get("/get_upload",function(upload_url) {
+				if (upload_url === undefined) {
+					console.log("Some error ocured during getting upload url");
+					return;
+				}
+				$.ajax({
+					url : upload_url,
+					type : 'POST',
+					data : new FormData($('#privateParams')[0]),
+					cache : false,
+					contentType : false,
+					processData : false,
+					async : false,
+					success : function(src) {
+						var imgJUMB = $("#images");
+						imgJUMB.css("display", "block");
+						imgJUMB.append('<div class="removable col-xs-6 col-md-3" onclick="removeIMG(this)">'
+							+ '<a  class="thumbnail">'
+							+ '<img class="savedImages" src="' + src + '" alt="...">'
+							+ '</a></div>');
+					},
+					error : function(msg) {
+						alert(msg);
+					}
+				});
+			
+			});
+		});
 
-						$('#photo')
-								.on(
-										'change',
-										function() {
-											var file = this.files[0];
-											var savedFiles = $(".savedImages").length;
+		$("#user_email").on('input', function() {
+			$.post("/verify", {
+				user_email : $("#user_email").val()
+			}, function(data) {
+				if (data.message !== undefined) {
+					setButtonEnabled(true);
+					printErrorMsg(data.message);
+				} else {
+					clearErrorMsg();
+					setButtonEnabled(false);
+				}
+			});
+		});
 
-											if (savedFiles > 3) {
-												return;
-											}
+		editableElemClickHandler($("#p_user_name"), function(val) {
+			$.post("/private", {
+				mode : "edit_private_info",
+				property : "user_name",
+				value : val
+			}, function(data) {
+				if (data.error != undefined)
+					alert(data.message);
+			});
+		});
+		editableElemClickHandler($("#p_user_phone"), function(val) {
+			$.post("/private", {
+				mode : "edit_private_info",
+				property : "user_phone",
+				value : val
+			}, function(data) {
+				if (data.error != undefined)
+					alert(data.message);
+			});
+		});
+		editableElemClickHandler($("#p_user_email"), function(val) {
+			$.post("/private", {
+				mode : "edit_private_info",
+				property : "user_email",
+				value : val
+			}, function(data) {
+				if (data.error != undefined)
+					alert(data.message);
+			});
+		});
 
-											$
-													.get(
-															"/get_upload",
-															function(upload_url) {
-																if (upload_url === undefined) {
-																	console
-																			.log("Some error ocured during getting upload url");
-																	return;
-																}
+		$("#btn-post-info").click(function() {
+			try {
+				var files = getImages();
+				var length = $("#length").val();
+				var fasade_material = $(
+						"#fasade_material")
+						.val();
+				var is_parlor = $("#is_parlor")
+						.is(":checked");
+				var wishes = $("#wishes").val();
+				var height = $("#height").val();
+				var additional_wishes = $(
+						"#additional_wishes")
+						.val();
+	
+				var user_email = $(
+						"#user_email").val();
+				var user_phone = $(
+						"#user_phone").val();
+				var user_name = $("#user_name")
+						.val();
 
-																$
-																		.ajax({
-																			url : upload_url,
-																			type : 'POST',
-																			data : new FormData(
-																					$('#privateParams')[0]),
-																			cache : false,
-																			contentType : false,
-																			processData : false,
-																			async : false,
-																			success : function(
-																					src) {
-																				var imgJUMB = $("#images");
-																				imgJUMB
-																						.css(
-																								"display",
-																								"block");
-																				imgJUMB
-																						.append('<div class="removable col-xs-6 col-md-3" onclick="removeIMG(this)">'
-																								+ '<a  class="thumbnail">'
-																								+ '<img class="savedImages" src="' + src + '" alt="...">'
-																								+ '</a></div>');
-																			},
-																			error : function(
-																					msg) {
-																				alert(msg);
-																			}
-																		});
+				$.post("/private",{
+						mode : "post_user_info",
+						images : files,
+						length : length,
+						fasade_material : fasade_material,
+						is_parlor : is_parlor,
+						wishes : wishes,
+						height : height,
+						additional_wishes : additional_wishes,
 
-															});
-										});
-
-						$("#user_email").on('input', function() {
-							$.post("/verify", {
-								user_email : $("#user_email").val()
-							}, function(data) {
-								if (data.message !== undefined) {
-									setButtonEnabled(true);
-									printErrorMsg(data.message);
-								} else {
-									clearErrorMsg();
-									setButtonEnabled(false);
-								}
-							});
+						user_email : user_email,
+						user_phone : user_phone,
+						user_name : user_name
+					},
+					function(data) {
+						if (data.error != undefined) {
+							printErrorMsg(data.message);
+						} else {
+							alert(data.message);
+							location
+									.reload();
+						}
+					}).fail(function(
+								jqXHR,
+								textStatus,
+								errorThrown) {
+							alert("ERROR "
+									+ textStatus);
 						});
+					} catch (e) {
+						console
+								.log("Some error occured gathering info parameters");
+					}
+				});
 
-						elementClickHandler($("#user_name"), function(val) {
-							$.post("/private", {
-								mode : "edit_private_info",
-								property : "user_name",
-								value : val
-							}, function(data) {
-								if (data.error != undefined)
-									alert(data.message);
-							});
-						});
-						elementClickHandler($("#user_phone"), function(val) {
-							$.post("/private", {
-								mode : "edit_private_info",
-								property : "user_phone",
-								value : val
-							}, function(data) {
-								if (data.error != undefined)
-									alert(data.message);
-							});
-						});
-						elementClickHandler($("#user_email"), function(val) {
-							$.post("/private", {
-								mode : "edit_private_info",
-								property : "user_email",
-								value : val
-							}, function(data) {
-								if (data.error != undefined)
-									alert(data.message);
-							});
-						});
+			$("#clearFiles").click(function() {
+				$("#images").empty();
+				$("#photo").val("");
+			});
 
-						$("#btn-post-info")
-								.click(
-										function() {
-											try {
-												var files = getImages();
-												var length = $("#length").val();
-												var fasade_material = $(
-														"#fasade_material")
-														.val();
-												var is_parlor = $("#is_parlor")
-														.is(":checked");
-												var wishes = $("#wishes").val();
-												var height = $("#height").val();
-												var additional_wishes = $(
-														"#additional_wishes")
-														.val();
+			$(".removable").click(function() {
+				removeIMG($(this));
+			});
 
-												var user_email = $(
-														"#user_email").val();
-												var user_phone = $(
-														"#user_phone").val();
-												var user_name = $("#user_name")
-														.val();
-
-												$
-														.post(
-																"/private",
-																{
-																	mode : "post_user_info",
-																	images : files,
-																	length : length,
-																	fasade_material : fasade_material,
-																	is_parlor : is_parlor,
-																	wishes : wishes,
-																	height : height,
-																	additional_wishes : additional_wishes,
-
-																	user_email : user_email,
-																	user_phone : user_phone,
-																	user_name : user_name
-																},
-																function(data) {
-																	if (data.error != undefined) {
-																		printErrorMsg(data.message);
-																	} else {
-																		alert(data.message);
-																		location
-																				.reload();
-																	}
-																})
-														.fail(
-																function(
-																		jqXHR,
-																		textStatus,
-																		errorThrown) {
-																	alert("ERROR "
-																			+ textStatus);
-																});
-
-											} catch (e) {
-												console
-														.log("Some error occured gathering info parameters");
-											}
-										});
-
-						$("#clearFiles").click(function() {
-							$("#images").empty();
-							$("#photo").val("");
-						});
-
-						$(".removable").click(function() {
-							removeIMG($(this));
-						});
-
-					});
+	});
 </script>
 <%@ include file="footer.jsp"%>

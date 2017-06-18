@@ -8,8 +8,6 @@
 <%@ tag import="java.util.List"%>
 <%@ tag import="java.text.SimpleDateFormat"%>
 <%@ attribute name="limit" type="java.lang.Integer" required="true"%>
-<%@ attribute name="displayIfEmpty" type="java.lang.Boolean"
-	required="false"%>
 <%@ attribute name="isAdminPage" type="java.lang.Boolean"
 	required="false"%>
 <%@ tag import="com.itmencompany.helpers.AppUserHelper"%>
@@ -55,11 +53,6 @@
 			: answersBean.getAnswers(chosenUserId, limit, answerPageNum);
 
 	String opt_action = isAdminPage ? "Удалить" : "Избранное";
-
-	if (displayIfEmpty != null && !displayIfEmpty) {
-		if (answers.isEmpty())
-			return;
-	}
 	if (!isAdminPage) {
 %>
 <div class="custom-form-container">
