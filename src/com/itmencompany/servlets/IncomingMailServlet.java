@@ -28,7 +28,6 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellReference;
-
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.urlfetch.FetchOptions;
 import com.google.appengine.api.urlfetch.HTTPHeader;
@@ -38,10 +37,14 @@ import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.itmencompany.common.ServerUtils;
+import com.itmencompany.datastore.dao.AppUserDao;
+import com.itmencompany.datastore.entities.AppUser;
 import com.itmencompany.datastore.dao.IncomingInfoDao;
 import com.itmencompany.datastore.dao.UserOrderDao;
 import com.itmencompany.datastore.entities.IncomingInfo;
 import com.itmencompany.datastore.entities.UserOrder;
+import com.itmencompany.mail.EmailSender;
+import com.itmencompany.mail.UserSender;
 
 @WebServlet("/ah/mail/*")
 public class IncomingMailServlet extends HttpServlet {
@@ -171,11 +174,20 @@ public class IncomingMailServlet extends HttpServlet {
 		UserOrder order = orderDao.get(orderID);
 		if (order != null) {
 			iinfo.setUserId(order.getUserId());
-		} else
+		} else{
 			log.info("CANNOT FIND THE ORDER BY ORDER ID [" + orderID + "]");
+			return;
+		}
 		IncomingInfoDao dao = new IncomingInfoDao();
 		dao.save(iinfo);
 		log.info("INCOMING INFO HAS BEEN SAVED");
+		
+		AppUserDao userDao = new AppUserDao(AppUser.class);
+		AppUser appUser = userDao.get(order.getUserId());
+		if(appUser.getIsNtfsEnabled()){
+			UserSender sender = new UserSender();
+			//appUser.getEmail()
+		}
 	}
 
 	private static String getCellValue(Sheet sheet, int r, int c) {

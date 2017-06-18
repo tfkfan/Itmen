@@ -76,14 +76,13 @@
 							
 							<div class="form-group">
 								<label for="p_user_notifications" class="col-md-2 control-label">
-								<%if(appUser.getIsNtfsEnabled() == null || appUser.getIsNtfsEnabled()){%>
-									Отключить уведомления по почте</label>
+									Уведомления по почте</label>
 									<div class="col-md-6">
-										<button class="btn btn-success">Отключить</button>
-								<%}else{ %>Включить уведомления по почте</label>
-									<div class="col-md-6">
-										<button class="btn btn-default">Включить</button>
-								<%} %>
+										<%if(appUser.getIsNtfsEnabled()){%>
+										<button id="userNotifications" class="btn btn-danger">Отключить</button>
+										<%}else{ %>
+										<button id="userNotifications" class="btn btn-success">Включить</button>
+										<%} %>
 									</div>
 							</div>
 						</fieldset>
@@ -105,7 +104,7 @@
 		<div class="col-xs-6 col-md-offset-2 col-md-8">
 			<div class="custom-form-container">
 				<form id="privateParams" class="form-horizontal" role="form">
-					<fieldset class="form-group">
+					<fieldset>
 						<legend>
 							<h3>Заявка компаниям</h3>
 						</legend>
@@ -283,6 +282,28 @@
 			});
 		});
 
+		var btnNtfs = $("#userNotifications");
+		btnNtfs.click(function(){
+			$.post("/private", {
+				mode : "edit_private_info",
+				property : "user_notifications"
+			}, function(data) {
+				var isEnabled = data["value"];
+				var removedClass = "btn-success";
+				var addedClass = "btn-danger";
+				var txt = "Отключить";
+				if(isEnabled == "false"){
+					removedClass = "btn-danger";
+					addedClass = "btn-success";
+					txt = "Включить";
+				}
+				btnNtfs.removeClass(removedClass);
+				btnNtfs.addClass(addedClass);
+				btnNtfs.text(txt);
+			}).fail(function() {
+			    console.log( "error changing user notifications settings" );
+			});
+		});
 		$("#user_email").on('input', function() {
 			$.post("/verify", {
 				user_email : $("#user_email").val()

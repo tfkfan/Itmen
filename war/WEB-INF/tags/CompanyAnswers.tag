@@ -73,8 +73,8 @@
 	<%
 		}
 	%>
-	<div class="row">
-		<fieldset class="form-group">
+
+		<fieldset>
 			<legend>Ответы компаний</legend>
 			<table class="table table-striped">
 
@@ -268,7 +268,6 @@
 				<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
 			</div>
 		</div>
-	</div>
 </div>
 
 

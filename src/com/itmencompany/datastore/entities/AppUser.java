@@ -46,6 +46,8 @@ public class AppUser extends DatabaseObject implements JSONObj {
 	}
 
 	public Boolean getIsNtfsEnabled() {
+		if(isNtfsEnabled == null)
+			isNtfsEnabled = true;
 		return isNtfsEnabled;
 	}
 

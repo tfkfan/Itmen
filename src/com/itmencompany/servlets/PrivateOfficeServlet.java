@@ -52,7 +52,7 @@ public class PrivateOfficeServlet extends HttpServlet {
 
 				switch (mode) {
 				case EDIT_PRIVATE_INFO:
-					editPrivateUserInfo(request, appUser);
+					obj.put("value", editPrivateUserInfo(request, appUser));
 					obj.put("message", "Профиль обновлен");
 					break;
 				case POST_USER_INFO:
@@ -76,24 +76,35 @@ public class PrivateOfficeServlet extends HttpServlet {
 		response.getWriter().close();
 	}
 
-	public void editPrivateUserInfo(HttpServletRequest request, AppUser appUser) throws Exception {
+	public String editPrivateUserInfo(HttpServletRequest request, AppUser appUser) throws Exception {
 		if (appUser == null || request == null)
 			throw new NullPointerException("App user is null or request is forbidden");
 		String property = request.getParameter("property");
 		String value = request.getParameter("value");
 		AppUserDao dao = new AppUserDao(AppUser.class);
+		String res = value;
 		switch (property) {
-		case "user_name":
-			appUser.setUserName(value);
-			break;
-		case "user_phone":
-			appUser.setPhone(value);
-			break;
-		case "user_email":
-			appUser.setEmail(value);
-			break;
+			case "user_name":
+				appUser.setUserName(value);
+				
+				break;
+			case "user_phone":
+				appUser.setPhone(value);
+				break;
+			case "user_email":
+				appUser.setEmail(value);
+				break;
+			case "user_notifications":
+				Boolean isEnabled = !appUser.getIsNtfsEnabled();
+				res = isEnabled.toString();
+				appUser.setIsNtfsEnabled(isEnabled);
+				break;
+			default:
+				log.info("Uknown user's property");
+				break;
 		}
 		dao.save(appUser);
+		return res;
 	}
 
 	public UserInfo getUserInfo(HttpServletRequest request){
