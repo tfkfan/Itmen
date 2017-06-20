@@ -27,18 +27,12 @@ public class AppUser extends DatabaseObject implements JSONObj {
 	@Index
 	protected String password;
 
-	@Index
-	protected Boolean isVerified;
-	@Index
-	protected String vUniqueKey;
-
 	public AppUser() {
 
 	}
 
 	public AppUser(String email, String userName, String phone) {
 		setIsAdmin(false);
-		setIsVerified(false);
 		setIsNtfsEnabled(true);
 		setEmail(email);
 		setUserName(userName);
@@ -61,22 +55,6 @@ public class AppUser extends DatabaseObject implements JSONObj {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-
-	public String getvUniqueKey() {
-		return vUniqueKey;
-	}
-
-	public void setvUniqueKey(String vUniqueKey) {
-		this.vUniqueKey = vUniqueKey;
-	}
-
-	public Boolean getIsVerified() {
-		return isVerified;
-	}
-
-	public void setIsVerified(Boolean isVerified) {
-		this.isVerified = isVerified;
 	}
 
 	public Boolean getIsAdmin() {
