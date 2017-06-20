@@ -30,14 +30,14 @@ public class UserSender extends EmailSender{
 	}
 	
 	public void sendCampaignsAnswerNotification(AppUser appUser, IncomingInfo info) throws MessagingException{
-		sendHtmlMessage(appUser.getEmail(), theme, getInfoMultipart(info, info.getCompanyTitle(), "ITMEN"));
+		sendHtmlMessage(appUser.getEmail(), theme, getInfoMultipart(info, appUser.getUserName(), "ITMEN"));
 	}
 	
-	public Multipart getInfoMultipart(IncomingInfo info, String campaignName, String serviceName)
+	public Multipart getInfoMultipart(IncomingInfo info, String userName, String serviceName)
 			throws MessagingException {
 		String body = new String(htmlBody);
 
-		body = body.replace("@campaign@", campaignName);
+		body = body.replace("@username@", userName);
 		body = body.replace("@service@", serviceName);
 
 		List<String> photos = info.getImages();

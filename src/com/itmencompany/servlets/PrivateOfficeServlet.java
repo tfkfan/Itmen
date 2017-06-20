@@ -96,6 +96,7 @@ public class PrivateOfficeServlet extends HttpServlet {
 				break;
 			case "user_notifications":
 				Boolean isEnabled = !appUser.getIsNtfsEnabled();
+				log.info(isEnabled.toString());
 				res = isEnabled.toString();
 				appUser.setIsNtfsEnabled(isEnabled);
 				break;
@@ -104,6 +105,7 @@ public class PrivateOfficeServlet extends HttpServlet {
 				break;
 		}
 		dao.save(appUser);
+		AppUserHelper.updateUserSession(request, appUser);
 		return res;
 	}
 
