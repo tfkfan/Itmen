@@ -19,7 +19,7 @@ public class CampaignsSender extends EmailSender {
 	private static final String readmeURL = "https://drive.google.com/open?id=0B9cddZ7KlyxbYm1NWWRqSGh5MFU";
 	private static final String xlsURL = "https://drive.google.com/open?id=0B9cddZ7KlyxbNGlSWU1fMHU4Nmc";
 	
-	private static final String theme = "ITMEN | Заявка";
+	private static final String theme = "ITMEN | Order";
 	private static final String htmlBody = "<div style='text-align:center;'><h2>Уважаемый/ая, @campaign@. Пользователь сервиса @service@ отправил вам заявку.</h2>"
 			+ "<hr>@photos@@length@@material@@parlor@@wishes@@height@@addWishes@@download@</div>";
 

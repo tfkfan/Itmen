@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="/css/styles.css" />
 <script src="/js/jquery-3.2.1.min.js"></script>
 <script src="/bootstrap/js/bootstrap.min.js"></script>
-<title>Авторизация</title>
+<title>Восстановление пароля</title>
 </head>
 
 <body id="black-container">
@@ -31,17 +31,17 @@
 			class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
 			<div class="panel panel-info">
 				<div class="panel-heading">
-					<div class="panel-title">Авторизация</div>
+					<div class="panel-title">Восстановление пароля</div>
 					<div
 						style="float: right; font-size: 80%; position: relative; top: -10px">
-						<a href="/forgot_password">Забыли пароль?</a>
+						<a href="/login">Войти</a>
 					</div>
 				</div>
 
 				<div style="padding-top: 30px" class="panel-body">
 					<div style="display: none" id="login-alert"
 						class="alert alert-danger col-sm-12"></div>
-					<form id="loginform" class="form-horizontal" action="/login"
+					<form id="loginform" class="form-horizontal" action="/forgot_password"
 						method="post" role="form">
 
 						<div style="margin-bottom: 25px" class="input-group">
@@ -51,24 +51,9 @@
 								placeholder="Введите почту">
 						</div>
 
-						<div style="margin-bottom: 25px" class="input-group">
-							<span class="input-group-addon"><i
-								class="glyphicon glyphicon-lock"></i></span> <input id="login-password"
-								type="password" class="form-control" name="user_password"
-								placeholder="Введите пароль">
-						</div>
-
-						<div class="input-group">
-							<div class="checkbox">
-								<label> <input id="login-remember" type="checkbox"
-									name="remember" value="1"> Запомнить меня
-								</label>
-							</div>
-						</div>
-
 						<div style="margin-top: 10px" class="form-group">
 							<div class="col-sm-12 controls">
-								<button id="btn-login" type="submit" class="btn btn-success">Войти
+								<button id="btn-send" type="submit" class="btn btn-success">Отослать пароль по почте
 								</button>
 							</div>
 						</div>

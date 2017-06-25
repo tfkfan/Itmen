@@ -27,6 +27,16 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     <servlet-name>LogInServlet</servlet-name>
     <url-pattern>/login</url-pattern>
   </servlet-mapping>
+  
+   <servlet>
+    <servlet-name>ForgotPasswordServlet</servlet-name>
+    <servlet-class>com.itmencompany.auth.ForgotPasswordServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ForgotPasswordServlet</servlet-name>
+    <url-pattern>/forgot_password</url-pattern>
+  </servlet-mapping>
+  
   <servlet>
     <servlet-name>LogUpServlet</servlet-name>
     <servlet-class>com.itmencompany.auth.LogUpServlet</servlet-class>

@@ -23,7 +23,7 @@ public class UserSender extends EmailSender{
 	private static final String heightHTML = "<p><h4>Высота</h4></p>";
 	private static final String addInfoHTML = "<p><h4>Дополнительная информация</h4></p>";
 	
-	private static final String theme = "ITMEN | Ответ от компании";
+	private static final String theme = "ITMEN | No Reply";
 	
 	public UserSender(){
 		

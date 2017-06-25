@@ -55,11 +55,11 @@ public class AppUserHelper {
 		}
 		return null;
 	}
-
+	
 	public static AppUser getUserFromDB(String user_email, String user_password) {
 		try {
 			AppUserDao dao = new AppUserDao(AppUser.class);
-			AppUser appUser = dao.getByEmailAndPassword(user_email, user_password);
+			AppUser appUser = user_password == null ? dao.getByEmail(user_email) : dao.getByEmailAndPassword(user_email, user_password);
 			if (appUser != null) {
 				String userEmail = appUser.getEmail();
 
@@ -88,6 +88,10 @@ public class AppUserHelper {
 		HttpSession session = req.getSession();
 		session.removeAttribute(USER_SESSION_KEY);
 	}
+	
+	public static String createRandomPassword(){
+		return  (new RandomString(8)).nextString();
+	}
 
 	public static AppUser createNewUser(HttpServletRequest req) throws UserAlreadyExistsException, InvalidPrivateInfoException {
 		String user_name = req.getParameter(USER_NAME_PARAM);
@@ -98,8 +102,7 @@ public class AppUserHelper {
 				|| user_name.isEmpty() || user_email.isEmpty() || user_phone.isEmpty())
 			throw new InvalidPrivateInfoException("Вы ввели некорректные поля пользователя");
 		
-		RandomString rndStr = new RandomString(8);
-		String password = rndStr.nextString();
+		String password = createRandomPassword();
 		AppUserDao dao = new AppUserDao(AppUser.class);
 		AppUser appUser = dao.getByEmail(user_email);
 		
@@ -112,10 +115,31 @@ public class AppUserHelper {
 		appUser.setPassword(password);
 		dao.save(appUser);
 	
-		EmailSender sender = new EmailSender();
-		sender.sendTextMessage(user_email, "Ваш пароль для входа: " + password, "ITMENCOM Верификация Аккаунта");
+		sendPasswordWithEmail(user_email, password);
 		updateUserSession(req, appUser);
 		
 		return appUser;
+	}
+	
+	public static void createNewUserPassword(HttpServletRequest request) throws InvalidPrivateInfoException{
+		String user_email = request.getParameter(USER_EMAIL_PARAM);
+		AppUser appUser = getUserFromDB(user_email, null);
+		if (appUser != null){
+			String newPassword = AppUserHelper.createRandomPassword();
+			
+			AppUserDao dao = new AppUserDao(AppUser.class);
+			appUser.setPassword(newPassword);
+			dao.save(appUser);
+			
+			AppUserHelper.sendPasswordWithEmail(appUser.getEmail(), newPassword);
+		}
+		else	
+			throw new InvalidPrivateInfoException("Такой пользователь не существует");
+	
+	}
+	
+	protected static void sendPasswordWithEmail(String user_email, String password){
+		EmailSender sender = new EmailSender();
+		sender.sendTextMessage(user_email, "Ваш пароль для входа: " + password, "ITMENCOM Пароль для доступа к сервису");
 	}
 }
