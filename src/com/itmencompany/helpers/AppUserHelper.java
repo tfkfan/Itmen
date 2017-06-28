@@ -121,8 +121,11 @@ public class AppUserHelper {
 		return appUser;
 	}
 	
-	public static void createNewUserPassword(HttpServletRequest request) throws InvalidPrivateInfoException{
-		String user_email = request.getParameter(USER_EMAIL_PARAM);
+	public static String getUserEmailFromRequest(HttpServletRequest request){
+		return request.getParameter(USER_EMAIL_PARAM);
+	}
+	
+	public static void createNewUserPassword(String user_email) throws InvalidPrivateInfoException{
 		AppUser appUser = getUserFromDB(user_email, null);
 		if (appUser != null){
 			String newPassword = AppUserHelper.createRandomPassword();

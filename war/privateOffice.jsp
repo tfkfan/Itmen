@@ -128,7 +128,7 @@
 						<div class="form-group">
 							<label for="photo" class="col-md-3 control-label"></label>
 							<div class="col-md-9">
-								<button id="clearFiles" class="btn btn-default">Очистить</button>
+								<button id="clearFiles" class="btn btn-default">Удалить фотографии</button>
 							</div>
 						</div>
 
@@ -138,7 +138,16 @@
 								будет стоять гарнитур в сантиметрах.</label>
 							<div class="col-md-9">
 								<input type="text" class="form-control" id="length"
-									name="length" placeholder="Введите длину гарнитура">
+									name="length" placeholder="Укажите длину">
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="height" class="col-md-3 control-label">Укажите
+								высоту в сантиметрах если нестандартная.</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" id="height"
+									name="height" placeholder="Укажите высоту">
 							</div>
 						</div>
 
@@ -168,15 +177,6 @@
 							<div class="col-md-9">
 								<textarea class="form-control" rows="5" id="wishes"
 									name="wishes" style="resize:vertical;"></textarea>
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label for="height" class="col-md-3 control-label">Укажите
-								высоту в сантиметрах если нестандартная.</label>
-							<div class="col-md-9">
-								<input type="text" class="form-control" id="height"
-									name="height" placeholder="Укажите высоту">
 							</div>
 						</div>
 
@@ -304,6 +304,16 @@
 			    console.log( "error changing user notifications settings" );
 			});
 		});
+		
+		$("#p_user_password_change").click(function(){
+			$.post("/forgot_password", {
+			}, function(data) {
+				alert("Новый пароль выслан по почте, указанной при регистрации");
+			}).fail(function() {
+			    console.log( "error changing user password");
+			});
+		});
+		
 		$("#user_email").on('input', function() {
 			$.post("/verify", {
 				user_email : $("#user_email").val()

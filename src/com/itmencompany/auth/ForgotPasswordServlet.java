@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.itmencompany.Exceptions.InvalidPrivateInfoException;
+import com.itmencompany.datastore.entities.AppUser;
 import com.itmencompany.helpers.AppUserHelper;
 
 @WebServlet("/forgot_password")
@@ -30,7 +31,12 @@ public class ForgotPasswordServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		try{
-			AppUserHelper.createNewUserPassword(request);
+			String user_email = AppUserHelper.getUserEmailFromRequest(request);
+			if(user_email == null){
+				AppUser currentUser = AppUserHelper.getUserFromRequest(request);
+				user_email = currentUser.getEmail();
+			}
+			AppUserHelper.createNewUserPassword(user_email);
 			response.setContentType("text/html");
 			response.setCharacterEncoding("UTF-8");
 			PrintWriter stream = response.getWriter();

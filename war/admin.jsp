@@ -12,6 +12,7 @@
 <%@ page import="java.util.logging.Logger"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.text.SimpleDateFormat"%>
+<%@ page import="java.util.TimeZone"%>
 <%@ page import="java.util.Date"%>
 <%
 	Logger log = Logger.getLogger("admin.jsp");
@@ -60,6 +61,7 @@
 		orders = orderDao.getWithOffsetAndProperty(orderPageNum, limit.intValue(), "userId", chosenUserId);
 	}
 	SimpleDateFormat df = new SimpleDateFormat("dd/MM/yy HH:mm");
+	df.setTimeZone(TimeZone.getTimeZone("Europe/Moscow"));
 %>
 
 <div class="custom-container">

@@ -7,6 +7,7 @@
 <%@ tag import="java.util.logging.Logger"%>
 <%@ tag import="java.util.List"%>
 <%@ tag import="java.text.SimpleDateFormat"%>
+<%@ tag import="java.util.TimeZone"%>
 <%@ attribute name="limit" type="java.lang.Integer" required="true"%>
 <%@ attribute name="isAdminPage" type="java.lang.Boolean"
 	required="false"%>
@@ -17,6 +18,7 @@
 	CompanyAnswersBean answersBean = new CompanyAnswersBean();
 	AppUserDao usersDao = new AppUserDao(AppUser.class);
 	SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yy HH:mm");
+	dateformat.setTimeZone(TimeZone.getTimeZone("Europe/Moscow"));
 
 	String chosenUserIdObj = request.getParameter("chosenUser");
 	String answerPageObj = request.getParameter("answerPage");
