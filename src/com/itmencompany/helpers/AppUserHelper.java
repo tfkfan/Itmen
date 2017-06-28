@@ -143,6 +143,6 @@ public class AppUserHelper {
 	
 	protected static void sendPasswordWithEmail(String user_email, String password){
 		EmailSender sender = new EmailSender();
-		sender.sendTextMessage(user_email, "Ваш пароль для входа: " + password, "ITMENCOM Пароль для доступа к сервису");
+		sender.sendTextMessage(user_email, "ITMENCOM Пароль для доступа к сервису", "Ваш пароль для входа: " + password);
 	}
 }
