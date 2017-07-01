@@ -20,9 +20,10 @@ public class CampaignsSender extends EmailSender {
 	private static final String xlsURL = "https://drive.google.com/open?id=0B9cddZ7KlyxbNGlSWU1fMHU4Nmc";
 	
 	private static final String theme = "ITMEN | Order";
-	private static final String htmlBody = "<div style='text-align:center;'><h2>Уважаемый/ая, @campaign@. Пользователь сервиса @service@ отправил вам заявку.</h2>"
-			+ "<hr>@photos@@length@@material@@parlor@@wishes@@height@@addWishes@@download@</div>";
+	private static final String htmlBody = "<div><h2 style='text-align:center'>Уважаемый/ая, @campaign@. Пользователь сервиса @service@ отправил вам заявку.</h2>"
+			+ "<hr>@orderId@@photos@@length@@material@@parlor@@wishes@@height@@addWishes@@download@</div>";
 
+	private static final String idHTML = "<p><h4>Идентификатор заявки пользователя</h4></p>";
 	private static final String photosHTML = "<p><h4>Фотографии/эскизы</h4></p>";
 	private static final String lengthHTML = "<p><h4>Длина гарнитуры</h4></p>";
 	private static final String materialHTML = "<p><h4>Материал фасадов</h4></p>";
@@ -54,7 +55,7 @@ public class CampaignsSender extends EmailSender {
 			return;
 	
 		for (Campaign campaign : campaigns)
-			sendHtmlMessage(campaign.getEmail(), theme, getInfoMultipart(info, campaign.getTitle(), "ITMEN"));
+			sendHtmlMessage(campaign.getEmail(), theme, getOrderMultipart(order, campaign.getTitle(), "ITMEN"));
 	}
 
 	public List<String> getCampaignsEmailsList(List<Campaign> campaigns) {
@@ -65,15 +66,22 @@ public class CampaignsSender extends EmailSender {
 		return res;
 	}
 
-	public Multipart getInfoMultipart(UserInfo info, String campaignName, String serviceName)
+	public Multipart getOrderMultipart(UserOrder userOrder, String campaignName, String serviceName)
 			throws MessagingException {
+		UserInfo info = userOrder.getInfo();
 		String body = new String(htmlBody);
-
+		
 		body = body.replace("@campaign@", campaignName);
 		body = body.replace("@service@", serviceName);
 
 		List<String> photos = info.getFiles();
+		
 		String buf = "";
+		if (info.getFasade_material() != null)
+			buf = idHTML + userOrder.getId();
+		body = body.replace("@orderId@", buf);
+		
+		buf = "";
 		if (photos != null && !photos.isEmpty()) {
 			String photosBufHtml = "<div>";
 			for (String photo : photos)
@@ -114,8 +122,8 @@ public class CampaignsSender extends EmailSender {
 		body = body.replace("@addWishes@", buf);
 		
 		buf = new String(downloadHTML);
-		buf.replace("@link1@", xlsURL);
-		buf.replace("@link2@", readmeURL);
+		buf = buf.replace("@link1@", xlsURL);
+		buf = buf.replace("@link2@", readmeURL);
 		body = body.replace("@download@", buf);
 		
 		log.info("ok, data has been output");

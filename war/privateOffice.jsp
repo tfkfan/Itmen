@@ -117,74 +117,74 @@
 						</div>
 
 						<div class="form-group">
-							<label for="photo" class="col-md-3 control-label">Прикрепите
+							<label for="photo" class="col-md-6 control-label">Прикрепите
 								фотографию или эскиз</label>
-							<div class="col-md-9">
+							<div class="col-md-6">
 								<input id="photo" name="photo" type="file">
 							</div>
 
 						</div>
 
 						<div class="form-group">
-							<label for="photo" class="col-md-3 control-label"></label>
-							<div class="col-md-9">
+							<label for="photo" class="col-md-6 control-label"></label>
+							<div class="col-md-6">
 								<button id="clearFiles" class="btn btn-default">Удалить фотографии</button>
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label for="length" class="col-md-3 control-label">Укажите
+							<label for="length" class="col-md-6 control-label">Укажите
 								длину гарнитура. Описание: Измерьте рулеткой длину стены, где
 								будет стоять гарнитур в сантиметрах.</label>
-							<div class="col-md-9">
+							<div class="col-md-6">
 								<input type="text" class="form-control" id="length"
 									name="length" placeholder="Укажите длину">
 							</div>
 						</div>
 						
 						<div class="form-group">
-							<label for="height" class="col-md-3 control-label">Укажите
+							<label for="height" class="col-md-6 control-label">Укажите
 								высоту в сантиметрах если нестандартная.</label>
-							<div class="col-md-9">
+							<div class="col-md-6">
 								<input type="text" class="form-control" id="height"
 									name="height" placeholder="Укажите высоту">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label for="fasade_material" class="col-md-3 control-label">Укажите
+							<label for="fasade_material" class="col-md-6 control-label">Укажите
 								материал фасадов. Описание: укажите какой материал вы хотели бы
 								использовать. ЛДСП, МДФ в Пленке, Пластиковые фасады</label>
-							<div class="col-md-9">
+							<div class="col-md-6">
 								<input type="text" class="form-control" id="fasade_material"
 									name="fasade_material" placeholder="Укажите материал">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label for="is_parlor" class="col-md-3 control-label">Укажите
+							<label for="is_parlor" class="col-md-6 control-label">Укажите
 								необходим ли пристенок</label>
-							<div class="col-md-9">
+							<div class="col-md-6">
 								<input type="checkbox" id="is_parlor" name="is_parlor"
 									aria-label="...">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label for="wishes" class="col-md-3 control-label">Укажите
+							<label for="wishes" class="col-md-6 control-label">Укажите
 								пожелания по фурнитуре если есть. (Петли, доводчики, системы
 								открывания дверей)</label>
-							<div class="col-md-9">
+							<div class="col-md-6">
 								<textarea class="form-control" rows="5" id="wishes"
 									name="wishes" style="resize:vertical;"></textarea>
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label for="additional_wishes" class="col-md-3 control-label">Дополнительные
+							<label for="additional_wishes" class="col-md-6 control-label">Дополнительные
 								пожелания к изделию. Описание: укажите ваши пожелания в этом
 								поле для более точного подсчета изготовления. </label>
-							<div class="col-md-9">
+							<div class="col-md-6">
 								<textarea class="form-control" rows="5" id="additional_wishes"
 									name="additional_wishes" style="resize:vertical;"></textarea>
 							</div>
@@ -194,27 +194,27 @@
 						%>
 						<hr>
 						<div class="form-group">
-							<label for="user_email" class="col-md-3 control-label">Ваша
+							<label for="user_email" class="col-md-6 control-label">Ваша
 								Почта</label>
-							<div class="col-md-9">
+							<div class="col-md-6">
 								<input type="text" class="form-control" id="user_email"
 									name="user_email" placeholder="Введите почту">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label for="user_name" class="col-md-3 control-label">Ваше
+							<label for="user_name" class="col-md-6 control-label">Ваше
 								Имя</label>
-							<div class="col-md-9">
+							<div class="col-md-6">
 								<input type="text" class="form-control" id="user_name"
 									name="user_name" placeholder="Введите имя">
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label for="user_phone" class="col-md-3 control-label">Ваш
+							<label for="user_phone" class="col-md-6 control-label">Ваш
 								Номер телефона</label>
-							<div class="col-md-9">
+							<div class="col-md-6">
 								<input type="text" class="form-control" id="user_phone"
 									name="user_phone" placeholder="Введите номер телефона">
 							</div>
@@ -223,8 +223,8 @@
 							}
 						%>
 						<div class="form-group">
-							<label for="sendInfo" class="col-md-3 control-label"></label>
-							<div class="col-md-offset-3 col-md-9">
+							<label for="sendInfo" class="col-md-6 control-label"></label>
+							<div class="col-md-offset-4 col-md-8">
 								<button id="btn-post-info" name="sendInfo"
 									class="btn btn-default btn-lg">
 									<i class="icon-hand-right"></i> &nbsp Отправить заявку

@@ -26,10 +26,6 @@ body,
 	background: black;
 }
 
-#privateParams input[type="text"] {
-    width: 300px;
-}
-
 .cuadro_intro_hover {
 	padding: 0px;
 	position: relative;
