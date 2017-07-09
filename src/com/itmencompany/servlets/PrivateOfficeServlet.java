@@ -57,7 +57,7 @@ public class PrivateOfficeServlet extends HttpServlet {
 					break;
 				case POST_USER_INFO:
 					UserInfo info = getUserInfo(request);
-					CampaignsSender sender = new CampaignsSender();
+					CampaignsSender sender = new CampaignsSender(this.getServletContext());
 					sender.sendMessageToCampaigns(appUser, info);
 					obj.put("message", "Сообщение отправлено компаниям");
 					break;

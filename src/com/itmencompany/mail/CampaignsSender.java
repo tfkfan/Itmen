@@ -1,5 +1,9 @@
 package com.itmencompany.mail;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,6 +11,13 @@ import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
+import javax.servlet.ServletContext;
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.itmencompany.common.UserInfo;
 import com.itmencompany.datastore.dao.CampaignDao;
@@ -16,14 +27,11 @@ import com.itmencompany.datastore.entities.Campaign;
 import com.itmencompany.datastore.entities.UserOrder;
 
 public class CampaignsSender extends EmailSender {
-	private static final String readmeURL = "https://drive.google.com/open?id=0B9cddZ7KlyxbYm1NWWRqSGh5MFU";
-	private static final String xlsURL = "https://drive.google.com/open?id=0B9cddZ7KlyxbNGlSWU1fMHU4Nmc";
-	
+	private ServletContext context;
 	private static final String theme = "ITMEN | Order";
 	private static final String htmlBody = "<div><h2 style='text-align:center'>Уважаемый/ая, @campaign@. Пользователь сервиса @service@ отправил вам заявку.</h2>"
-			+ "<hr>@orderId@@photos@@length@@material@@parlor@@wishes@@height@@addWishes@@download@</div>";
+			+ "<hr>@photos@@length@@material@@parlor@@wishes@@height@@addWishes@</div>";
 
-	private static final String idHTML = "<p><h4>Идентификатор заявки пользователя</h4></p>";
 	private static final String photosHTML = "<p><h4>Фотографии/эскизы</h4></p>";
 	private static final String lengthHTML = "<p><h4>Длина гарнитуры</h4></p>";
 	private static final String materialHTML = "<p><h4>Материал фасадов</h4></p>";
@@ -31,15 +39,12 @@ public class CampaignsSender extends EmailSender {
 	private static final String wishesHTML = "<p><h4>Пожелания по фурнитуре</h4></p>";
 	private static final String heightHTML = "<p><h4>Высота</h4></p>";
 	private static final String addWishesHTML = "<p><h4>Дополнительные пожелания к изделию</h4></p>";
-	private static final String downloadHTML = "<p><h4>Файлы для скачивания</h4></p><div><ul style='list-style-type: none;'>"
-				+ "<li><a href='@link1@'>Пример файла для заполнения</a></li>"
-				+ "<li><a href='@link2@'>Инструкция к заполнению</a></li></ul></div>";
 	
-	public CampaignsSender() {
-
+	public CampaignsSender(ServletContext context) {
+		this.context = context;
 	}
 
-	public void sendMessageToCampaigns(AppUser appUser, UserInfo info) throws JSONException, MessagingException {
+	public void sendMessageToCampaigns(AppUser appUser, UserInfo info) throws JSONException, MessagingException, IOException {
 		Long userId = appUser.getId();
 
 		CampaignDao campaignDao = new CampaignDao(Campaign.class);
@@ -67,7 +72,7 @@ public class CampaignsSender extends EmailSender {
 	}
 
 	public Multipart getOrderMultipart(UserOrder userOrder, String campaignName, String serviceName)
-			throws MessagingException {
+			throws MessagingException, IOException {
 		UserInfo info = userOrder.getInfo();
 		String body = new String(htmlBody);
 		
@@ -77,11 +82,6 @@ public class CampaignsSender extends EmailSender {
 		List<String> photos = info.getFiles();
 		
 		String buf = "";
-		if (info.getFasade_material() != null)
-			buf = idHTML + userOrder.getId();
-		body = body.replace("@orderId@", buf);
-		
-		buf = "";
 		if (photos != null && !photos.isEmpty()) {
 			String photosBufHtml = "<div>";
 			for (String photo : photos)
@@ -121,11 +121,6 @@ public class CampaignsSender extends EmailSender {
 			buf = addWishesHTML + info.getAdditional_wishes();
 		body = body.replace("@addWishes@", buf);
 		
-		buf = new String(downloadHTML);
-		buf = buf.replace("@link1@", xlsURL);
-		buf = buf.replace("@link2@", readmeURL);
-		body = body.replace("@download@", buf);
-		
 		log.info("ok, data has been output");
 		
 		Multipart mp = new MimeMultipart();
@@ -133,6 +128,50 @@ public class CampaignsSender extends EmailSender {
 		htmlPart.setContent(body, "text/html; charset=utf-8");
 		mp.addBodyPart(htmlPart);
 
+
+		//Attachments
+	    MimeBodyPart attachment = new MimeBodyPart();
+	    InputStream attachmentDataStream = new ByteArrayInputStream(getRewritedXlsBytes(userOrder.getId()));
+	    attachment.setFileName("message.xls");
+	    attachment.setContent(attachmentDataStream, "application/vnd.ms-excel");
+	    mp.addBodyPart(attachment);
+	    
+	    MimeBodyPart attachment2 = new MimeBodyPart();
+	    InputStream attachmentDataStream2 = new ByteArrayInputStream(getTxtBytes());
+	    attachment2.setFileName("readme.txt");
+	    attachment2.setContent(attachmentDataStream2, "text/plain");
+	    mp.addBodyPart(attachment2);
+	    
 		return mp;
+	}
+	
+	public byte[] getRewritedXlsBytes(Long orderId) throws IOException{
+		InputStream xlsStream = context.getResourceAsStream("/WEB-INF/resources/Message.xls");
+		HSSFWorkbook wb = new HSSFWorkbook(xlsStream);
+		Sheet sheet = wb.getSheetAt(0);
+		Row row = (Row) sheet.getRow(8);
+		Cell cell = row.getCell(1);
+		cell.setCellValue(orderId.toString());
+		
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		wb.write(bos);
+		wb.close();
+		bos.close();
+		return bos.toByteArray();
+	}
+	
+	public byte[] getTxtBytes() throws IOException{
+		InputStream inStream = context.getResourceAsStream("/WEB-INF/resources/readme.txt");
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+		int nRead;
+		byte[] data = new byte[16384];
+
+		while ((nRead = inStream.read(data, 0, data.length)) != -1)
+		  buffer.write(data, 0, nRead);
+
+		buffer.flush();
+		
+		return data;
 	}
 }

@@ -8,7 +8,8 @@ public class ServerUtils {
 	private ServerUtils() {
 	}
 
-	public static String UPLOAD_PATH = "/upload";
+	public static final String UPLOAD_PATH = "/upload";
+	public static final String APP_NAME = "itmen-1261";
 
 	public static String readTextFile(String filepath) {
 		String res = "";

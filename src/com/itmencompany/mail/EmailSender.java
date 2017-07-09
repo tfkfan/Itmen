@@ -13,11 +13,15 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import com.itmencompany.common.ServerUtils;
+
 public class EmailSender {
 	final static Logger log = Logger.getLogger(EmailSender.class.getName());
 	
-	protected final static String senderEmail = "vasiliykolesov13@gmail.com";
-	protected final static String senderSubject = "ITMEN No-Reply";
+	//protected final static String senderEmail = "vasiliykolesov13@gmail.com";
+	protected final static String senderSubject = "ITMEN Service";
+	
+	protected final static String senderEmail = "no-reply@" + ServerUtils.APP_NAME + ".appspotmail.com";
 
 	public EmailSender() {
 	}

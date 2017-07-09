@@ -59,13 +59,13 @@
 %>
 <div class="custom-form-container">
 	<div class="row">
-		<div class="col-xs-6 col-md-2">
+		<div class="col-xs-3 col-md-3">
 			<div class="form-group">
 				<button class="btn btn-default btn-sm" onclick="favoriteAnswers()">Показать
 					только избранное</button>
 			</div>
 		</div>
-		<div class="col-xs-6 col-md-2">
+		<div class="col-xs-9 col-md-9">
 			<div class="form-group">
 				<button class="btn btn-default btn-sm" onclick="allAnswers()">Показать
 					все</button>
