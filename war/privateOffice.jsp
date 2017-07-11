@@ -30,68 +30,7 @@
 	<%
 		if (appUser != null) {
 	%>
-	<div class="">
-		<div class="row">
-			<div class="col-xs-8 col-md-offset-2 col-md-8">
-				<div class="custom-form-container">
-					<form id="privateUserInfo" class="form-horizontal" role="form">
-						<fieldset>
-							<legend>
-								<h3>Личная информация</h3>
-							</legend>
-
-							<div class="form-group">
-								<label for="p_user_name" class="col-md-2 control-label">Ваше
-									имя</label>
-								<div class="col-md-6">
-									<p id="p_user_name" class="form-control-static"><%=appUser.getUserName()%></p>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label for="p_user_phone" class="col-md-2 control-label">Ваш
-									телефон</label>
-								<div class="col-md-6">
-									<p id="p_user_phone" class="form-control-static"><%=appUser.getPhone()%>
-									</p>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label for="p_user_email" class="col-md-2 control-label">Ваша
-									почта</label>
-								<div class="col-md-6">
-									<p id="p_user_email" class="form-control-static"><%=appUser.getEmail()%>
-									</p>
-								</div>
-							</div>
-							
-							<div class="form-group">
-								<label for="p_user_password" class="col-md-2 control-label">Сменить
-									пароль</label>
-								<div class="col-md-6">
-									<button id="p_user_password_change" class="btn btn-default">Сменить</button>
-								</div>
-							</div>
-							
-							<div class="form-group">
-								<label for="p_user_notifications" class="col-md-2 control-label">
-									Уведомления по почте</label>
-									<div class="col-md-6">
-										<%if(appUser.getIsNtfsEnabled()){%>
-										<button id="userNotifications" class="btn btn-danger">Отключить</button>
-										<%}else{ %>
-										<button id="userNotifications" class="btn btn-success">Включить</button>
-										<%} %>
-									</div>
-							</div>
-						</fieldset>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-
+	
 	<div class="row">
 		<div class="col-xs-6 col-md-offset-2 col-md-8 ">
 			<h:CompanyAnswers limit="<%=limit%>" isAdminPage="false" />
@@ -239,6 +178,73 @@
 			</div>
 		</div>
 	</div>
+	<%
+		if (appUser != null) {
+	%>
+	<div class="">
+		<div class="row">
+			<div class="col-xs-8 col-md-offset-2 col-md-8">
+				<div class="custom-form-container">
+					<form id="privateUserInfo" class="form-horizontal" role="form">
+						<fieldset>
+							<legend>
+								<h3>Личная информация</h3>
+							</legend>
+
+							<div class="form-group">
+								<label for="p_user_name" class="col-md-2 control-label">Ваше
+									имя</label>
+								<div class="col-md-6">
+									<p id="p_user_name" class="form-control-static"><%=appUser.getUserName()%></p>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="p_user_phone" class="col-md-2 control-label">Ваш
+									телефон</label>
+								<div class="col-md-6">
+									<p id="p_user_phone" class="form-control-static"><%=appUser.getPhone()%>
+									</p>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="p_user_email" class="col-md-2 control-label">Ваша
+									почта</label>
+								<div class="col-md-6">
+									<p id="p_user_email" class="form-control-static"><%=appUser.getEmail()%>
+									</p>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="p_user_password" class="col-md-2 control-label">Сменить
+									пароль</label>
+								<div class="col-md-6">
+									<button id="p_user_password_change" class="btn btn-default">Сменить</button>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="p_user_notifications" class="col-md-2 control-label">
+									Уведомления по почте</label>
+									<div class="col-md-6">
+										<%if(appUser.getIsNtfsEnabled()){%>
+										<button id="userNotifications" class="btn btn-danger">Отключить</button>
+										<%}else{ %>
+										<button id="userNotifications" class="btn btn-success">Включить</button>
+										<%} %>
+									</div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<%
+		}
+	%>
 </div>
 <script>
 	function removeIMG(elem) {

@@ -1,21 +1,6 @@
 package com.itmencompany.mail;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringWriter;
-import java.util.logging.Logger;
-
-import javax.servlet.ServletContext;
-
-import com.github.mustachejava.DefaultMustacheFactory;
-import com.github.mustachejava.Mustache;
-import com.github.mustachejava.MustacheFactory;
-import com.itmencompany.common.ServerUtils;
-
-public class GenerateCampaignEmail {
-	final static Logger log = Logger.getLogger(GenerateCampaignEmail.class.getName());
+public class GenerateCampaignEmail extends CustomMustacheLoader {
 	String photos;
 	String length;
 	String height;
@@ -48,22 +33,5 @@ public class GenerateCampaignEmail {
 		this.answers_url = answers_url;
 	}
 
-	public String generateEmailTemplate(ServletContext context) {
-		MustacheFactory mf = new DefaultMustacheFactory();
-		String filename = ServerUtils.RESOURCES_PATH + "campaignMessage.mustache";
-		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(context.getResourceAsStream(filename), "UTF-8"));
-			Mustache mustache = mf.compile(reader, filename);
-			StringWriter sw = new StringWriter();
-			mustache.execute(sw, this).flush();
-			String toReturn = sw.toString();
-			sw.flush();
-			sw.close();
-			return toReturn;
-		} catch (IOException e) {
-			e.printStackTrace();
-			log.info("ERROR creating email!");
-		}
-		return "";
-	}
+
 }

@@ -185,7 +185,7 @@ public class IncomingMailServlet extends HttpServlet {
 		AppUserDao userDao = new AppUserDao(AppUser.class);
 		AppUser appUser = userDao.get(order.getUserId());
 		if(appUser.getIsNtfsEnabled()){
-			UserSender sender = new UserSender();
+			UserSender sender = new UserSender(this.getServletContext());
 			try {
 				sender.sendCampaignsAnswerNotification(appUser, iinfo);
 			} catch (MessagingException e) {

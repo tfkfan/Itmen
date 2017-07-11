@@ -83,7 +83,7 @@
 				<thead>
 					<tr>
 						<th>#</th>
-						<th>Имя пользователя</th>
+						<% if (isAdminPage) {%><th>Имя пользователя</th> <%} %>
 						<th>Имя кампании</th>
 						<th>E-mail</th>
 						<th>Дата</th>
@@ -110,7 +110,7 @@
 					%>
 					<tr id="<%=answer.getId()%>">
 						<th scope="row"><%=(count)%></th>
-						<td><%=user.getUserName()%></td>
+						<% if (isAdminPage) {%><td><%=user.getUserName()%></td> <%} %>
 						<td><%=answer.getCompanyTitle()%></td>
 						<td><%=answer.getCampaignEmail()%></td>
 						<td><%=date%></td>

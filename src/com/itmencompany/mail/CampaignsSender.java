@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
+
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
@@ -29,6 +31,7 @@ import com.itmencompany.datastore.entities.Campaign;
 import com.itmencompany.datastore.entities.UserOrder;
 
 public class CampaignsSender extends EmailSender {
+	
 	private ServletContext context;
 	private static final String theme = "ITMEN | Order";
 	
@@ -78,6 +81,8 @@ public class CampaignsSender extends EmailSender {
 			photos_str =  photosBufHtml;
 		}else photos_str = " - ";
 		
+		photos_str = photos_str.replace("\"", "");
+		
 		String material = " - ";
 		if (info.getFasade_material() != null)
 			material = info.getFasade_material();
@@ -102,7 +107,9 @@ public class CampaignsSender extends EmailSender {
 		if (info.getAdditional_wishes() != null)
 			add_wishes =  info.getAdditional_wishes();
 		
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd.mm.yy  HH:mm:ss ");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy  HH:mm:ss ");
+		dateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Moscow"));
+		
 		String date = dateFormat.format(userOrder.getDate());
 		String answersUrl = ServerUtils.ANSWERS_URL;
 		String serviceName = ServerUtils.SERVICE_NAME;
@@ -112,7 +119,7 @@ public class CampaignsSender extends EmailSender {
 		GenerateCampaignEmail gce = new GenerateCampaignEmail(photos_str, length, height, material, is_parlor,
 				wishes, add_wishes, date, serviceName, serviceDomain, serviceUrl,
 				campaignName, answersUrl);
-		String mailStr = gce.generateEmailTemplate(context);
+		String mailStr = gce.generateEmailTemplate(context, ServerUtils.RESOURCES_PATH + "campaignMessage.mustache");
 		
 		log.info("ok, data has been fetched");
 		
