@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="/css/styles.css" />
 <script src="/js/jquery-3.2.1.min.js"></script>
 <script src="/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/jquery.validate.min.js"></script>
 <script src="/js/scripts.js"></script>
 <title>
 <%if (url.contains("/private")) { %> Личный кабинет 

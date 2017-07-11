@@ -10,7 +10,12 @@ public class ServerUtils {
 
 	public static final String UPLOAD_PATH = "/upload";
 	public static final String APP_NAME = "itmen-1261";
-
+	public static final String RESOURCES_PATH = "/WEB-INF/resources/";
+	public static final String SERVICE_NAME = "ITMEN Service";
+	public static final String SERVICE_URL = "http://itmen-1261.appspot.com";
+	public static final String SERVICE_DOMAIN = "itmen-1261.appspot.com";
+	public static final String ANSWERS_URL = "answers@itmen-1261.appspotmail.com";
+	
 	public static String readTextFile(String filepath) {
 		String res = "";
 		BufferedReader br = null;

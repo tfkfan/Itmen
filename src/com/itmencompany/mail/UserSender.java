@@ -39,6 +39,8 @@ public class UserSender extends EmailSender{
 
 		body = body.replace("@username@", userName);
 		body = body.replace("@service@", serviceName);
+		if(info.getCompanyTitle() != null)
+			body = body.replace("@campaign@", info.getCompanyTitle());
 
 		List<String> photos = info.getImages();
 		String buf = "";

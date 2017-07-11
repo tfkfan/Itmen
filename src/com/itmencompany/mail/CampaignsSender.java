@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import com.google.appengine.labs.repackaged.org.json.JSONException;
+import com.itmencompany.common.ServerUtils;
 import com.itmencompany.common.UserInfo;
 import com.itmencompany.datastore.dao.CampaignDao;
 import com.itmencompany.datastore.dao.UserOrderDao;
@@ -29,16 +31,6 @@ import com.itmencompany.datastore.entities.UserOrder;
 public class CampaignsSender extends EmailSender {
 	private ServletContext context;
 	private static final String theme = "ITMEN | Order";
-	private static final String htmlBody = "<div><h2 style='text-align:center'>Уважаемый/ая, @campaign@. Пользователь сервиса @service@ отправил вам заявку.</h2>"
-			+ "<hr>@photos@@length@@material@@parlor@@wishes@@height@@addWishes@</div>";
-
-	private static final String photosHTML = "<p><h4>Фотографии/эскизы</h4></p>";
-	private static final String lengthHTML = "<p><h4>Длина гарнитуры</h4></p>";
-	private static final String materialHTML = "<p><h4>Материал фасадов</h4></p>";
-	private static final String parlorHTML = "<p><h4>Необходим ли пристенок</h4></p>";
-	private static final String wishesHTML = "<p><h4>Пожелания по фурнитуре</h4></p>";
-	private static final String heightHTML = "<p><h4>Высота</h4></p>";
-	private static final String addWishesHTML = "<p><h4>Дополнительные пожелания к изделию</h4></p>";
 	
 	public CampaignsSender(ServletContext context) {
 		this.context = context;
@@ -60,7 +52,7 @@ public class CampaignsSender extends EmailSender {
 			return;
 	
 		for (Campaign campaign : campaigns)
-			sendHtmlMessage(campaign.getEmail(), theme, getOrderMultipart(order, campaign.getTitle(), "ITMEN"));
+			sendHtmlMessage(campaign.getEmail(), theme, getOrderMultipart(order, campaign.getTitle()));
 	}
 
 	public List<String> getCampaignsEmailsList(List<Campaign> campaigns) {
@@ -71,63 +63,63 @@ public class CampaignsSender extends EmailSender {
 		return res;
 	}
 
-	public Multipart getOrderMultipart(UserOrder userOrder, String campaignName, String serviceName)
+	public Multipart getOrderMultipart(UserOrder userOrder, String campaignName)
 			throws MessagingException, IOException {
 		UserInfo info = userOrder.getInfo();
-		String body = new String(htmlBody);
-		
-		body = body.replace("@campaign@", campaignName);
-		body = body.replace("@service@", serviceName);
 
 		List<String> photos = info.getFiles();
 		
-		String buf = "";
+		String photos_str = "";
 		if (photos != null && !photos.isEmpty()) {
 			String photosBufHtml = "<div>";
 			for (String photo : photos)
 				photosBufHtml += "<img src='" + photo + "' />";
-			photosBufHtml += "</div>";
-			buf = photosHTML + photosBufHtml;
-		}
-		body = body.replace("@photos@", buf);
-
-		buf = "";
-		if (info.getFasade_material() != null)
-			buf = materialHTML + info.getFasade_material();
-		body = body.replace("@material@", buf);
-
-		buf = "";
-		if (info.getLength() != null)
-			buf = lengthHTML + info.getLength();
-		body = body.replace("@length@", buf);
-
-		buf = "";
-		if (info.getIs_parlor() != null)
-			buf = parlorHTML + (info.getIs_parlor() ? "Необходим" : "Необязателен");
-		body = body.replace("@parlor@", buf);
-
-		buf = "";
-		if (info.getWishes() != null)
-			buf = wishesHTML + info.getWishes();
-		body = body.replace("@wishes@", buf);
-
-		buf = "";
-		if (info.getHeight() != null)
-			buf = heightHTML + info.getHeight();
-		body = body.replace("@height@", buf);
-
-		buf = "";
-		if (info.getAdditional_wishes() != null)
-			buf = addWishesHTML + info.getAdditional_wishes();
-		body = body.replace("@addWishes@", buf);
+			photosBufHtml += "</div><br/>";
+			photos_str =  photosBufHtml;
+		}else photos_str = " - ";
 		
-		log.info("ok, data has been output");
+		String material = " - ";
+		if (info.getFasade_material() != null)
+			material = info.getFasade_material();
+
+		String length = " - ";
+		if (info.getLength() != null)
+			length = info.getLength();
+	
+		String is_parlor = " - ";
+		if (info.getIs_parlor() != null)
+			is_parlor = (info.getIs_parlor() ? "Необходим" : "Необязателен");
+		
+		String wishes = " - ";
+		if (info.getWishes() != null)
+			 wishes = info.getWishes();
+	
+		String height = " - ";
+		if (info.getHeight() != null)
+			height = info.getHeight();
+		
+		String add_wishes = " - ";
+		if (info.getAdditional_wishes() != null)
+			add_wishes =  info.getAdditional_wishes();
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd.mm.yy  HH:mm:ss ");
+		String date = dateFormat.format(userOrder.getDate());
+		String answersUrl = ServerUtils.ANSWERS_URL;
+		String serviceName = ServerUtils.SERVICE_NAME;
+		String serviceDomain = ServerUtils.SERVICE_DOMAIN;
+		String serviceUrl = ServerUtils.SERVICE_URL;
+		
+		GenerateCampaignEmail gce = new GenerateCampaignEmail(photos_str, length, height, material, is_parlor,
+				wishes, add_wishes, date, serviceName, serviceDomain, serviceUrl,
+				campaignName, answersUrl);
+		String mailStr = gce.generateEmailTemplate(context);
+		
+		log.info("ok, data has been fetched");
 		
 		Multipart mp = new MimeMultipart();
 		MimeBodyPart htmlPart = new MimeBodyPart();
-		htmlPart.setContent(body, "text/html; charset=utf-8");
+		htmlPart.setContent(mailStr, "text/html; charset=utf-8");
 		mp.addBodyPart(htmlPart);
-
 
 		//Attachments
 	    MimeBodyPart attachment = new MimeBodyPart();
@@ -136,17 +128,11 @@ public class CampaignsSender extends EmailSender {
 	    attachment.setContent(attachmentDataStream, "application/vnd.ms-excel");
 	    mp.addBodyPart(attachment);
 	    
-	    MimeBodyPart attachment2 = new MimeBodyPart();
-	    InputStream attachmentDataStream2 = new ByteArrayInputStream(getTxtBytes());
-	    attachment2.setFileName("readme.txt");
-	    attachment2.setContent(attachmentDataStream2, "text/plain");
-	    mp.addBodyPart(attachment2);
-	    
 		return mp;
 	}
 	
 	public byte[] getRewritedXlsBytes(Long orderId) throws IOException{
-		InputStream xlsStream = context.getResourceAsStream("/WEB-INF/resources/Message.xls");
+		InputStream xlsStream = context.getResourceAsStream(ServerUtils.RESOURCES_PATH + "Message.xls");
 		HSSFWorkbook wb = new HSSFWorkbook(xlsStream);
 		Sheet sheet = wb.getSheetAt(0);
 		Row row = (Row) sheet.getRow(8);
@@ -158,20 +144,5 @@ public class CampaignsSender extends EmailSender {
 		wb.close();
 		bos.close();
 		return bos.toByteArray();
-	}
-	
-	public byte[] getTxtBytes() throws IOException{
-		InputStream inStream = context.getResourceAsStream("/WEB-INF/resources/readme.txt");
-		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-
-		int nRead;
-		byte[] data = new byte[16384];
-
-		while ((nRead = inStream.read(data, 0, data.length)) != -1)
-		  buffer.write(data, 0, nRead);
-
-		buffer.flush();
-		
-		return data;
 	}
 }

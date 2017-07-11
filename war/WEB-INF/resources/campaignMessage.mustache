@@ -1,0 +1,62 @@
+<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable">
+    <tr>
+        <td align="center" valign="top">
+            <table border="0" cellpadding="20" cellspacing="0" width="1000px" id="emailContainer">
+                <tr>
+                    <td valign="top">
+                        <table border="0" cellpadding="20" cellspacing="0" width="100%" id="emailHeader">
+                            <tr>
+                                <td valign="top">
+								<!--
+<a href='http://www.mtgprice.com'><img align='left' src='#' width='275' style='max-width: 
+275px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;height: auto;line-height: 100%;outline: none;text-decoration: none;'></a>
+-->
+<h1 style="font-family: 'Cinzel', 'Georgia', serif;font-weight: 400">Заявка пользователя {{service}}<br/> {{date}}</h1>                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top">
+                        <table border="0" cellpadding="20" cellspacing="0" width="100%" id="emailBody" style="margin-top:-60px"">
+                            <tr>
+                                <td valign="top">    
+									<h2 style="font-family: 'Cinzel', 'Georgia', serif;font-weight: 400;color: #333333;margin-top:20px">Уважаемый/ая, 
+									{{campaign}}. Пользователь сервиса {{service}} отправил вам заявку.</h2>
+									<hr>
+										<h2 style="font-family: 'Cinzel', 'Georgia', serif;font-weight: 400;color: #333333">Данные о товаре</h2>
+									<div>
+										<table style="width:100%">
+											<thead></thead>
+											<tbody>
+												<tr><td><h4 style="margin:0px;">Фотографии/эскизы</h4></td><td>{{photos}}</td></tr>
+												<tr><td><h4 style="margin:0px;">Длина гарнитуры</h4></td><td>{{length}}</td></tr>
+												<tr><td><h4 style="margin:0px;">Высота</h4></td><td>{{height}}</td></tr>
+												<tr><td><h4 style="margin:0px;">Материал фасадов</h4></td><td>{{material}}</td></tr>
+												<tr><td><h4 style="margin:0px;">Необходим ли пристенок</h4></td><td>{{is_parlor}}</td></tr>
+												<tr><td><h4 style="margin:0px;">Пожелания по фурнитуре</h4></td><td>{{wishes}}</td></tr>
+												<tr><td><h4 style="margin:0px;">Дополнительные пожелания к изделию</h4></td><td>{{add_wishes}}</td></tr>
+											</tbody>
+										</table>
+									</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top">
+                        <table border="0" cellpadding="20" cellspacing="0" width="100%" id="emailFooter">
+                            <tr>
+                                <td valign="top">
+									<p>Вы получили это сообщение, т.к. зарегистрированы на сервисе  
+									<a href="{{service_url}}">{{service_domain}}</a>.<br/></p>
+								</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>

@@ -103,7 +103,7 @@
 	<div class="row">
 		<div class="col-xs-6 col-md-offset-2 col-md-8">
 			<div class="custom-form-container">
-				<form id="privateParams" class="form-horizontal" role="form">
+				<form id="privateParams" class="form-horizontal" action="/private" method="post" role="form">
 					<fieldset>
 						<legend>
 							<h3>Заявка компаниям</h3>
@@ -197,7 +197,7 @@
 							<label for="user_email" class="col-md-6 control-label">Ваша
 								Почта</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" id="user_email"
+								<input type="email" class="form-control" id="user_email"
 									name="user_email" placeholder="Введите почту">
 							</div>
 						</div>
@@ -223,9 +223,12 @@
 							}
 						%>
 						<div class="form-group">
+							
+						</div>
+						<div class="form-group">
 							<label for="sendInfo" class="col-md-6 control-label"></label>
 							<div class="col-md-offset-4 col-md-8">
-								<button id="btn-post-info" name="sendInfo"
+								<button id="btn-post-info" type="submit" name="sendInfo"
 									class="btn btn-default btn-lg">
 									<i class="icon-hand-right"></i> &nbsp Отправить заявку
 								</button>
@@ -244,7 +247,6 @@
 		elem.remove();
 	}
 	$(document).ready(function() {
-		$('#privateParams').submit(false);
 		$('#privateUserInfo').submit(false);
 		$('#photo').on('change',function() {
 			var file = this.files[0];
@@ -358,72 +360,105 @@
 					alert(data.message);
 			});
 		});
+		
+		$("#privateParams").validate({
+			rules: {
+				length: {
+					number: true
+				},
+				height:{
+					number:true
+				},
+			
+				user_phone: "required",
+				user_name: {
+					required: true,
+					minlength: 3
+				},
+				
+				user_email: {
+					required: true,
+					email: true
+				}
+			},
+			messages: {
+				length: "Введите число",
+				height: "Введите число",
+				user_phone: "Введите правильный телефон",
+				user_name: {
+					required: "Введите имя",
+					minlength: "Ваше имя слишком короткое"
+				},
+				user_email: "Введите электронную почту"
+			},
+			submitHandler: function(){
+				try {
+					
+					var files = getImages();
+					var length = $("#length").val();
+					var fasade_material = $(
+							"#fasade_material")
+							.val();
+					var is_parlor = $("#is_parlor")
+							.is(":checked");
+					var wishes = $("#wishes").val();
+					var height = $("#height").val();
+					var additional_wishes = $(
+							"#additional_wishes")
+							.val();
+		
+					var user_email = $(
+							"#user_email").val();
+					var user_phone = $(
+							"#user_phone").val();
+					var user_name = $("#user_name")
+							.val();
 
-		$("#btn-post-info").click(function() {
-			try {
-				var files = getImages();
-				var length = $("#length").val();
-				var fasade_material = $(
-						"#fasade_material")
-						.val();
-				var is_parlor = $("#is_parlor")
-						.is(":checked");
-				var wishes = $("#wishes").val();
-				var height = $("#height").val();
-				var additional_wishes = $(
-						"#additional_wishes")
-						.val();
-	
-				var user_email = $(
-						"#user_email").val();
-				var user_phone = $(
-						"#user_phone").val();
-				var user_name = $("#user_name")
-						.val();
+					$.post("/private",{
+							mode : "post_user_info",
+							images : files,
+							length : length,
+							fasade_material : fasade_material,
+							is_parlor : is_parlor,
+							wishes : wishes,
+							height : height,
+							additional_wishes : additional_wishes,
 
-				$.post("/private",{
-						mode : "post_user_info",
-						images : files,
-						length : length,
-						fasade_material : fasade_material,
-						is_parlor : is_parlor,
-						wishes : wishes,
-						height : height,
-						additional_wishes : additional_wishes,
-
-						user_email : user_email,
-						user_phone : user_phone,
-						user_name : user_name
-					},
-					function(data) {
-						if (data.error != undefined) {
-							printErrorMsg(data.message);
-						} else {
-							alert(data.message);
-							location
-									.reload();
+							user_email : user_email,
+							user_phone : user_phone,
+							user_name : user_name
+						},
+						function(data) {
+							if (data.error != undefined) {
+								printErrorMsg(data.message);
+							} else {
+								alert(data.message);
+								location
+										.reload();
+							}
+						}).fail(function(
+									jqXHR,
+									textStatus,
+									errorThrown) {
+								alert("ERROR "
+										+ textStatus);
+							});
+						} catch (e) {
+							console
+									.log("Some error occured gathering info parameters");
 						}
-					}).fail(function(
-								jqXHR,
-								textStatus,
-								errorThrown) {
-							alert("ERROR "
-									+ textStatus);
-						});
-					} catch (e) {
-						console
-								.log("Some error occured gathering info parameters");
-					}
-				});
+			}
+		});
 
-			$("#clearFiles").click(function() {
-				$("#images").empty();
-				$("#photo").val("");
-			});
 
-			$(".removable").click(function() {
-				removeIMG($(this));
-			});
+		$("#clearFiles").click(function() {
+			$("#images").empty();
+			$("#photo").val("");
+		});
+
+		$(".removable").click(function() {
+			removeIMG($(this));
+		});
 
 	});
 </script>
