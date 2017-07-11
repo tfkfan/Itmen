@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -43,13 +42,11 @@ import com.itmencompany.datastore.dao.IncomingInfoDao;
 import com.itmencompany.datastore.dao.UserOrderDao;
 import com.itmencompany.datastore.entities.IncomingInfo;
 import com.itmencompany.datastore.entities.UserOrder;
-import com.itmencompany.mail.EmailSender;
 import com.itmencompany.mail.UserSender;
 
 @WebServlet("/ah/mail/*")
 public class IncomingMailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String URL_PREFIX = "http://itmen-1261.appspot.com";
 
 	private static final Logger log = Logger.getLogger(IncomingMailServlet.class.getName());
 
@@ -96,7 +93,6 @@ public class IncomingMailServlet extends HttpServlet {
 
 	public void read(InputStream in) throws IOException {
 		IncomingInfo iinfo = new IncomingInfo();
-		String result = "";
 		HSSFWorkbook wb = null;
 		try {
 			wb = new HSSFWorkbook(in);
@@ -175,7 +171,7 @@ public class IncomingMailServlet extends HttpServlet {
 		if (order != null) {
 			iinfo.setUserId(order.getUserId());
 		} else{
-			log.info("CANNOT FIND THE ORDER BY ORDER ID [" + orderID + "]");
+			log.severe("CANNOT FIND THE ORDER BY ORDER ID [" + orderID + "]");
 			return;
 		}
 		IncomingInfoDao dao = new IncomingInfoDao();

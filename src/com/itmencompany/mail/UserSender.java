@@ -38,6 +38,14 @@ public class UserSender extends EmailSender{
 			photos_str = photosBufHtml;
 		}
 
+		String phone = " - ";
+		if(info.getContactPhone() != null)
+			phone = info.getContactPhone();
+		
+		String email = " - ";
+		if(info.getCampaignEmail() != null)
+			email = info.getCampaignEmail();
+		
 		String title = " - ";
 		if (info.getTitle() != null)
 			title = info.getTitle();
@@ -83,7 +91,7 @@ public class UserSender extends EmailSender{
 		String serviceUrl = ServerUtils.SERVICE_URL;
 		
 		GenerateUserEmail gue = new GenerateUserEmail(title, photos_str, length,  height, material, add_info, date, release_date,
-				userName, campaign, cost, description, serviceName, serviceDomain, serviceUrl);
+				userName, campaign, phone, email, cost, description, serviceName, serviceDomain, serviceUrl);
 		String mailStr = gue.generateEmailTemplate(context, ServerUtils.RESOURCES_PATH + "userMessage.mustache");
 		
 		log.info("ok, data has been output");
