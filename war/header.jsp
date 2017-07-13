@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="com.itmencompany.datastore.entities.AppUser"%>
 <%@ page import="com.itmencompany.helpers.AppUserHelper"%>
+<%@ page import="com.itmencompany.common.ServerUtils"%>
 <%
 	String url = request.getRequestURI();
 	AppUser appUser = AppUserHelper.getUserFromRequest(request);
@@ -14,6 +15,7 @@
 <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" href="/bootstrap/css/bootstrap-theme.min.css" />
 <link rel="stylesheet" href="/css/styles.css" />
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script src="/js/jquery-3.2.1.min.js"></script>
 <script src="/bootstrap/js/bootstrap.min.js"></script>
 <script src="/js/jquery.validate.min.js"></script>
@@ -39,7 +41,7 @@ ITMEN Company
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="/">Itmen Company</a>
+				<a class="navbar-brand" href="/"><%=ServerUtils.SERVICE_NAME %></a>
 			</div>
 
 			<div class="collapse navbar-collapse"

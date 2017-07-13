@@ -80,6 +80,9 @@
 									У меня нет аккаунта! <a href="/logup"> Зарегистрироваться
 										здесь </a>
 								</div>
+								<div style="padding-top: 15px; font-size: 85%">
+										<a href="/">На главную</a>
+								</div>
 							</div>
 						</div>
 					</form>

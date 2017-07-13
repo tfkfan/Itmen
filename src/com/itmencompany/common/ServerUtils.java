@@ -15,7 +15,9 @@ public class ServerUtils {
 	public static final String SERVICE_URL = "http://itmen-1261.appspot.com";
 	public static final String SERVICE_DOMAIN = "itmen-1261.appspot.com";
 	public static final String ANSWERS_URL = "answers@itmen-1261.appspotmail.com";
-	
+	public static String insertDiv(String val){
+		return "<div>" + val + "</div>";
+	}
 	public static String readTextFile(String filepath) {
 		String res = "";
 		BufferedReader br = null;

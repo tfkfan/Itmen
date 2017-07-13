@@ -16,6 +16,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import javax.servlet.ServletContext;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -116,11 +117,17 @@ public class CampaignsSender extends EmailSender {
 		String serviceDomain = ServerUtils.SERVICE_DOMAIN;
 		String serviceUrl = ServerUtils.SERVICE_URL;
 		
+		wishes = ServerUtils.insertDiv(wishes);
+		add_wishes = ServerUtils.insertDiv(add_wishes);
+		material = ServerUtils.insertDiv(material);
+		
 		GenerateCampaignEmail gce = new GenerateCampaignEmail(photos_str, length, height, material, is_parlor,
 				wishes, add_wishes, date, serviceName, serviceDomain, serviceUrl,
 				campaignName, answersUrl);
 		String mailStr = gce.generateEmailTemplate(context, ServerUtils.RESOURCES_PATH + "campaignMessage.mustache");
 		
+		//TODO find another no deprecated version
+		mailStr = StringEscapeUtils.unescapeHtml4(mailStr);
 		log.info("ok, data has been fetched");
 		
 		Multipart mp = new MimeMultipart();

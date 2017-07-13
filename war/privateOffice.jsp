@@ -162,11 +162,11 @@
 							}
 						%>
 						<div class="form-group">
-							
+							 <div class="g-recaptcha col-md-offset-5" data-sitekey="6LevjCgUAAAAAAZnfSs3Jv8ufDvgcswpJ9-IFAXS"></div>
 						</div>
 						<div class="form-group">
 							<label for="sendInfo" class="col-md-6 control-label"></label>
-							<div class="col-md-offset-4 col-md-8">
+							<div class="col-md-offset-5 col-md-8">
 								<button id="btn-post-info" type="submit" name="sendInfo"
 									class="btn btn-default btn-lg">
 									<i class="icon-hand-right"></i> &nbsp Отправить заявку
@@ -399,7 +399,13 @@
 			},
 			submitHandler: function(){
 				try {
-					
+					if (grecaptcha.getResponse() == ''){
+						  alert("Подвердите что вы не бот.");
+						  return;
+					}
+						  
+					var submitBtn = $("#btn-post-info");
+					submitBtn.prop('disabled', true);
 					var files = getImages();
 					var length = $("#length").val();
 					var fasade_material = $(

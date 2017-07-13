@@ -1,5 +1,6 @@
 package com.itmencompany.mail;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.TimeZone;
@@ -9,6 +10,8 @@ import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
 import javax.servlet.ServletContext;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.itmencompany.common.ServerUtils;
 import com.itmencompany.datastore.entities.AppUser;
@@ -22,12 +25,12 @@ public class UserSender extends EmailSender{
 		this.context = context;
 	}
 	
-	public void sendCampaignsAnswerNotification(AppUser appUser, IncomingInfo info) throws MessagingException{
+	public void sendCampaignsAnswerNotification(AppUser appUser, IncomingInfo info) throws MessagingException, IOException{
 		sendHtmlMessage(appUser.getEmail(), theme, getInfoMultipart(info, appUser.getUserName()));
 	}
 	
 	public Multipart getInfoMultipart(IncomingInfo info, String userName)
-			throws MessagingException {
+			throws MessagingException, IOException {
 		List<String> photos = info.getImages();
 		String photos_str = "";
 		if (photos != null && !photos.isEmpty()) {
@@ -90,10 +93,13 @@ public class UserSender extends EmailSender{
 		String serviceDomain = ServerUtils.SERVICE_DOMAIN;
 		String serviceUrl = ServerUtils.SERVICE_URL;
 		
+		add_info = ServerUtils.insertDiv(add_info);
+		description = ServerUtils.insertDiv(description);
+		
 		GenerateUserEmail gue = new GenerateUserEmail(title, photos_str, length,  height, material, add_info, date, release_date,
 				userName, campaign, phone, email, cost, description, serviceName, serviceDomain, serviceUrl);
 		String mailStr = gue.generateEmailTemplate(context, ServerUtils.RESOURCES_PATH + "userMessage.mustache");
-		
+		mailStr = StringEscapeUtils.unescapeHtml4(mailStr);
 		log.info("ok, data has been output");
 		
 		Multipart mp = new MimeMultipart();

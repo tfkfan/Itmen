@@ -29,13 +29,13 @@
 										<table style="width:100%">
 											<thead></thead>
 											<tbody>
-												<tr><td><h4 style="margin:0px;">Фотографии/эскизы</h4></td><td>{{photos}}</td></tr>
+												<tr style="background-color:lightgray;"><td><h4 style="margin:0px;">Фотографии/эскизы</h4></td><td>{{photos}}</td></tr>
 												<tr><td><h4 style="margin:0px;">Длина гарнитуры</h4></td><td>{{length}}</td></tr>
-												<tr><td><h4 style="margin:0px;">Высота</h4></td><td>{{height}}</td></tr>
+												<tr style="background-color:lightgray;"><td><h4 style="margin:0px;">Высота</h4></td><td>{{height}}</td></tr>
 												<tr><td><h4 style="margin:0px;">Материал фасадов</h4></td><td>{{material}}</td></tr>
-												<tr><td><h4 style="margin:0px;">Необходим ли пристенок</h4></td><td>{{is_parlor}}</td></tr>
+												<tr style="background-color:lightgray;"><td><h4 style="margin:0px;">Необходим ли пристенок</h4></td><td>{{is_parlor}}</td></tr>
 												<tr><td><h4 style="margin:0px;">Пожелания по фурнитуре</h4></td><td>{{wishes}}</td></tr>
-												<tr><td><h4 style="margin:0px;">Дополнительные пожелания к изделию</h4></td><td>{{add_wishes}}</td></tr>
+												<tr style="background-color:lightgray;"><td><h4 style="margin:0px;">Дополнительные пожелания к изделию</h4></td><td>{{add_wishes}}</td></tr>
 											</tbody>
 										</table>
 									</div>
@@ -54,7 +54,7 @@
 									<ol>
 										<li>Для ответа, скачайте на компьютер файл из вложения message.xls и корректно заполните его.</li>
 										<li>Заполнять можно только соответствующие поля <span style="color:red">кроме поля ID заявки (если его изменить, то ваш ответ мы не получим)</span></li>
-										<li>Заполненный документ отправить по электронной почте <span style="color:blue">{{answers_url}}</span></li>
+										<li>Заполненный документ отправить по электронной почте <a href="mailto:{{answers_url}}?Subject=Hello" target="_top">{{answers_url}}</a></li>
 										<li><span style="font-weight:bold">Внимание!</span> Ответным письмом отвечать нельзя. Только новым письмом.</li>
 										<li>Если товаров несколько то прикрепить можно несколько файлов.</li>
 										<li><span style="font-weight:bold">Внимание!</span> Если имеется фото товара, фото необходимо вставить в Excel-документ(В любую ячейку снизу).</li>
