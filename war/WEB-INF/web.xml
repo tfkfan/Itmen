@@ -174,7 +174,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     <url-pattern>/delete_answer</url-pattern>
   </servlet-mapping>
   
-<servlet>
+  <servlet>
     <servlet-name>DeleteOrderService</servlet-name>
     <servlet-class>com.itmencompany.servlets.services.DeleteOrderService</servlet-class>
   </servlet>
@@ -182,6 +182,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     <servlet-name>DeleteOrderService</servlet-name>
     <url-pattern>/delete_order</url-pattern>
   </servlet-mapping>
+  
   <servlet>
     <servlet-name>IncomingMailServlet</servlet-name>
     <servlet-class>com.itmencompany.servlets.IncomingMailServlet</servlet-class>
@@ -190,6 +191,17 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     <servlet-name>IncomingMailServlet</servlet-name>
     <url-pattern>/_ah/mail/*</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>_ah_sessioncleanup</servlet-name>
+    <servlet-class>com.google.apphosting.utils.servlet.SessionCleanupServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>_ah_sessioncleanup</servlet-name>
+    <url-pattern>/_ah/sessioncleanup</url-pattern>
+  </servlet-mapping>
+  
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>mail</web-resource-name>
@@ -199,6 +211,18 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
       <role-name>admin</role-name>
     </auth-constraint>
   </security-constraint>
+  
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>session-clean-up</web-resource-name>
+      <url-pattern>/_ah/sessioncleanup</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>admin</role-name>
+    </auth-constraint>
+  </security-constraint>
+  
+  
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
