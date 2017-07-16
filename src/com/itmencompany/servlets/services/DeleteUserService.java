@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.itmencompany.datastore.dao.AppUserDao;
 import com.itmencompany.datastore.entities.AppUser;
-import com.itmencompany.helpers.AppUserHelper;
+import com.itmencompany.mvc.application.AppUserHelper;
 
 @WebServlet("/delete_user")
 public class DeleteUserService extends HttpServlet {

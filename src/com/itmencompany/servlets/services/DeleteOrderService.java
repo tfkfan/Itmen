@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.itmencompany.datastore.dao.UserOrderDao;
 import com.itmencompany.datastore.entities.AppUser;
 import com.itmencompany.datastore.entities.UserOrder;
-import com.itmencompany.helpers.AppUserHelper;
+import com.itmencompany.mvc.application.AppUserHelper;
 
 @WebServlet("/delete_order")
 public class DeleteOrderService extends HttpServlet {

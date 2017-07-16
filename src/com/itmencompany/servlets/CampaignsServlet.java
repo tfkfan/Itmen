@@ -12,7 +12,7 @@ import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.itmencompany.datastore.dao.CampaignDao;
 import com.itmencompany.datastore.entities.AppUser;
 import com.itmencompany.datastore.entities.Campaign;
-import com.itmencompany.helpers.AppUserHelper;
+import com.itmencompany.mvc.application.AppUserHelper;
 
 @WebServlet(name = "CampaignsServlet", urlPatterns = { "/campaigns" })
 public class CampaignsServlet extends HttpServlet {

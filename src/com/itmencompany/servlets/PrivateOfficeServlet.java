@@ -16,8 +16,8 @@ import com.google.appengine.labs.repackaged.org.json.JSONObject;
 import com.itmencompany.common.UserInfo;
 import com.itmencompany.datastore.dao.AppUserDao;
 import com.itmencompany.datastore.entities.AppUser;
-import com.itmencompany.helpers.AppUserHelper;
 import com.itmencompany.mail.CampaignsSender;
+import com.itmencompany.mvc.application.AppUserHelper;
 
 @WebServlet("/private")
 public class PrivateOfficeServlet extends HttpServlet {

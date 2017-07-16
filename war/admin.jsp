@@ -7,7 +7,7 @@
 <%@ page import="com.itmencompany.datastore.dao.AppUserDao"%>
 <%@ page import="com.itmencompany.datastore.dao.UserOrderDao"%>
 <%@ page import="com.itmencompany.datastore.dao.IncomingInfoDao"%>
-<%@ page import="com.itmencompany.helpers.AppUserHelper"%>
+<%@ page import="com.itmencompany.mvc.application.AppUserHelper"%>
 <%@ page import="com.itmencompany.common.UserInfo"%>
 <%@ page import="java.util.logging.Logger"%>
 <%@ page import="java.util.List"%>

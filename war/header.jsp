@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="com.itmencompany.datastore.entities.AppUser"%>
-<%@ page import="com.itmencompany.helpers.AppUserHelper"%>
+<%@ page import="com.itmencompany.mvc.application.AppUserHelper"%>
 <%@ page import="com.itmencompany.common.ServerUtils"%>
 <%
 	String url = request.getRequestURI();

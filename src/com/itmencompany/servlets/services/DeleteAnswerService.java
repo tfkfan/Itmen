@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.itmencompany.datastore.dao.IncomingInfoDao;
 import com.itmencompany.datastore.entities.AppUser;
 import com.itmencompany.datastore.entities.IncomingInfo;
-import com.itmencompany.helpers.AppUserHelper;
+import com.itmencompany.mvc.application.AppUserHelper;
 
 @WebServlet("/delete_answer")
 public class DeleteAnswerService extends HttpServlet {

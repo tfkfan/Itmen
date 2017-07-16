@@ -11,7 +11,7 @@
 <%@ attribute name="limit" type="java.lang.Integer" required="true"%>
 <%@ attribute name="isAdminPage" type="java.lang.Boolean"
 	required="false"%>
-<%@ tag import="com.itmencompany.helpers.AppUserHelper"%>
+<%@ tag import="com.itmencompany.mvc.application.AppUserHelper"%>
 <%
 	AppUser appUser = AppUserHelper.getUserFromRequest(request);
 	Logger log = Logger.getLogger("CompanyAnswers.tag");
