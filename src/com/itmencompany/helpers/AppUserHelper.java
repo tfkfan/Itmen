@@ -13,12 +13,12 @@ import com.itmencompany.datastore.entities.AppUser;
 import com.itmencompany.mail.EmailSender;
 
 public class AppUserHelper {
-	protected static String USER_NAME_PARAM = "user_name";
-	protected static String USER_PASSWORD_PARAM = "user_password";
-	protected static String USER_EMAIL_PARAM = "user_email";
-	protected static String USER_PHONE_PARAM = "user_phone";
+	public final static String USER_NAME_PARAM = "user_name";
+	public final static String USER_PASSWORD_PARAM = "user_password";
+	public final static String USER_EMAIL_PARAM = "user_email";
+	public final static String USER_PHONE_PARAM = "user_phone";
 
-	protected static String USER_SESSION_KEY = "loggedInUser";
+	public final static String USER_SESSION_KEY = "appUser";
 
 	public static AppUser getUserFromRequest(HttpServletRequest req)
 			throws IOException {
