@@ -1,18 +1,25 @@
 package com.itmencompany.mvc.application;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Logger;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.mortbay.log.Log;
 import com.itmencompany.Exceptions.InvalidPrivateInfoException;
 import com.itmencompany.Exceptions.UserAlreadyExistsException;
 import com.itmencompany.common.RandomString;
+import com.itmencompany.common.UserInfo;
 import com.itmencompany.datastore.dao.AppUserDao;
 import com.itmencompany.datastore.entities.AppUser;
 import com.itmencompany.mail.EmailSender;
 
 public class AppUserHelper {
+	final static Logger log = Logger.getLogger(AppUserHelper.class.getName());
+	
 	public final static String USER_NAME_PARAM = "user_name";
 	public final static String USER_PASSWORD_PARAM = "user_password";
 	public final static String USER_EMAIL_PARAM = "user_email";
@@ -54,6 +61,59 @@ public class AppUserHelper {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static String editPrivateUserInfo(HttpServletRequest request, AppUser appUser) throws Exception {
+		if (appUser == null || request == null)
+			throw new NullPointerException("App user is null or request is forbidden");
+		String property = request.getParameter("property");
+		String value = request.getParameter("value");
+		AppUserDao dao = new AppUserDao(AppUser.class);
+		String res = value;
+		switch (property) {
+			case "user_name":
+				appUser.setUserName(value);
+				
+				break;
+			case "user_phone":
+				appUser.setPhone(value);
+				break;
+			case "user_email":
+				appUser.setEmail(value);
+				break;
+			case "user_notifications":
+				Boolean isEnabled = !appUser.getIsNtfsEnabled();
+				log.info(isEnabled.toString());
+				res = isEnabled.toString();
+				appUser.setIsNtfsEnabled(isEnabled);
+				break;
+			default:
+				log.info("Uknown user's property");
+				break;
+		}
+		dao.save(appUser);
+		AppUserHelper.updateUserSession(request, appUser);
+		return res;
+	}
+	
+	public static UserInfo getUserInfo(HttpServletRequest request){
+		String[] files = request.getParameterValues("images[]");
+		List<String> images = new ArrayList<String>();
+	
+		if(files != null)
+		for(String img : files)
+			images.add(img);
+
+		String length = request.getParameter("length");
+		String fasade_material = request.getParameter("fasade_material");
+		Boolean is_parlor = Boolean.parseBoolean(request.getParameter("is_parlor"));
+		String wishes = request.getParameter("wishes");
+		String height = request.getParameter("height");
+		String additional_wishes = request.getParameter("additional_wishes");
+
+		UserInfo info = new UserInfo(images, length, fasade_material, is_parlor, wishes, height, additional_wishes);
+		log.info(info.toString());
+		return info;
 	}
 	
 	public static AppUser getUserFromDB(String user_email, String user_password) {

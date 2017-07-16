@@ -290,8 +290,7 @@
 
 		var btnNtfs = $("#userNotifications");
 		btnNtfs.click(function(){
-			$.post("/private", {
-				mode : "edit_private_info",
+			$.post("/private/edit", {
 				property : "user_notifications"
 			}, function(data) {
 				var isEnabled = data["value"];
@@ -335,8 +334,7 @@
 		});
 
 		editableElemClickHandler($("#p_user_name"), function(val) {
-			$.post("/private", {
-				mode : "edit_private_info",
+			$.post("/private/edit", {
 				property : "user_name",
 				value : val
 			}, function(data) {
@@ -345,8 +343,7 @@
 			});
 		});
 		editableElemClickHandler($("#p_user_phone"), function(val) {
-			$.post("/private", {
-				mode : "edit_private_info",
+			$.post("/private/edit", {
 				property : "user_phone",
 				value : val
 			}, function(data) {
@@ -355,8 +352,7 @@
 			});
 		});
 		editableElemClickHandler($("#p_user_email"), function(val) {
-			$.post("/private", {
-				mode : "edit_private_info",
+			$.post("/private/edit", {
 				property : "user_email",
 				value : val
 			}, function(data) {
@@ -424,8 +420,7 @@
 					var user_name = $("#user_name")
 							.val();
 
-					$.post("/private",{
-							mode : "post_user_info",
+					$.post("/private/send",{
 							images : files,
 							length : length,
 							fasade_material : fasade_material,

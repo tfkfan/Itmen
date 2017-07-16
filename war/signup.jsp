@@ -25,7 +25,7 @@
 				</div>
 				<div class="panel-body">
 					<form id="signupform" class="form-horizontal" role="form"
-						action="/logup" method="post">
+						action="/signup" method="post">
 						<div id="signuperrors" style="display: none"
 							class="alert alert-danger">
 							<p>Ошибки:</p>

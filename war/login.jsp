@@ -67,7 +67,7 @@
 							<div class="col-md-12 control">
 								<div
 									style="border-top: 1px solid #888; padding-top: 15px; font-size: 85%">
-									У меня нет аккаунта! <a href="/logup"> Зарегистрироваться
+									У меня нет аккаунта! <a href="/signup"> Зарегистрироваться
 										здесь </a>
 								</div>
 								<div style="padding-top: 15px; font-size: 85%">
