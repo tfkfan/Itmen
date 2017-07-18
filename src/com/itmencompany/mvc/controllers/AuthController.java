@@ -1,4 +1,4 @@
-package com.itmencompany.mvc.application;
+package com.itmencompany.mvc.controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import com.itmencompany.Exceptions.InvalidPrivateInfoException;
 import com.itmencompany.Exceptions.UserAlreadyExistsException;
+import com.itmencompany.common.AppUserHelper;
 import com.itmencompany.datastore.entities.AppUser;
 
 @Controller

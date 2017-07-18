@@ -1,4 +1,4 @@
-package com.itmencompany.mvc.application;
+package com.itmencompany.mvc.controllers;
 
 import java.io.IOException;
 import java.util.List;

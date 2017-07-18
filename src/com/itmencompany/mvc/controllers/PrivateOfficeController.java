@@ -1,4 +1,4 @@
-package com.itmencompany.mvc.application;
+package com.itmencompany.mvc.controllers;
 
 import java.util.logging.Logger;
 import javax.servlet.ServletContext;
@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.itmencompany.common.AppUserHelper;
 import com.itmencompany.common.UserInfo;
 import com.itmencompany.datastore.entities.AppUser;
 import com.itmencompany.mail.CampaignsSender;

@@ -1,4 +1,4 @@
-package com.itmencompany.mvc.adapters;
+package com.itmencompany.mvc.interceptors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

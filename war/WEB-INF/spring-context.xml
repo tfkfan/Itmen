@@ -11,7 +11,7 @@
 
     <mvc:annotation-driven />
     <mvc:interceptors>
-    	<bean class="com.itmencompany.mvc.adapters.SessionHandler" />
+    	<bean class="com.itmencompany.mvc.interceptors.SessionHandler" />
 	</mvc:interceptors>
 
     <bean

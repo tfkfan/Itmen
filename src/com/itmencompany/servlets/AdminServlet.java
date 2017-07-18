@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
+import com.itmencompany.common.AppUserHelper;
 import com.itmencompany.datastore.entities.AppUser;
-import com.itmencompany.mvc.application.AppUserHelper;
 
 @WebServlet("/admin")
 public class AdminServlet extends HttpServlet {

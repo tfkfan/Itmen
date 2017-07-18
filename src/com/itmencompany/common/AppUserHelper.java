@@ -1,4 +1,4 @@
-package com.itmencompany.mvc.application;
+package com.itmencompany.common;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,18 +44,18 @@ public class AppUserHelper {
 				appUser = getUserFromDB(user_email, user_password);
 
 				if (appUser == null) {
-					Log.info("User is not found in db");
+					log.info("User is not found in db");
 				} else {
 					if(user_password != null){
 						if(!user_password.equals(appUser.getPassword()))
 								return null;
 					}
-					Log.info("You have been logged in");
+					log.info("You have been logged in");
 					updateUserSession(req, appUser);
 				}
 			}
 			else
-				Log.info("You have been logged in");
+				log.info("You have been logged in");
 			return appUser;
 		} catch (Exception e) {
 			e.printStackTrace();

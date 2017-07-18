@@ -9,10 +9,6 @@
 %>
 <%@ include file="header.jsp"%>
 <%
-	if (appUser == null) {
-		response.sendRedirect("/login");
-		return;
-	}
 	String pageObj =  request.getParameter("page");
 	Integer pageNum = 1;
 	try{
@@ -153,12 +149,12 @@
 	}
 
 	function remove(id){
-		$.post("/campaigns", {
-			mode : "to_delete",
+		$.post("/campaigns/delete", {
 			id : id
 		}, function(data) {
+			if(data == "")
+				return;
 			$("tr#" + id).remove();
-			
 		});
 	}
 	
@@ -174,13 +170,15 @@
 			var title = $("#title").val();
 			var email = $("#email").val();
 			var id = $("#id").val();
-			$.post("/campaigns", {
-				mode : "to_save",
+			$.post("/campaigns/edit", {
 				title : title,
 				email : email,
 				id : id
 			}, function(data) {
-				addChangeCampaign(data);
+				if(data == "")
+					return;
+				var json = JSON.parse(data);
+				addChangeCampaign(json);
 				$("#campaignEdit").modal('hide');
 			});
 		});
