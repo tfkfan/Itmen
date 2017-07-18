@@ -12,6 +12,13 @@
     <mvc:annotation-driven />
     <mvc:interceptors>
     	<bean class="com.itmencompany.mvc.interceptors.SessionHandler" />
+    	<mvc:interceptor>
+            <mvc:mapping path="/admin"/>
+            <mvc:mapping path="/admin/*"/>
+            <mvc:mapping path="/campaigns"/>
+            <mvc:mapping path="/campaigns/*"/>
+            <bean class="com.itmencompany.mvc.interceptors.AdminInterceptor"/>
+        </mvc:interceptor>
 	</mvc:interceptors>
 
     <bean

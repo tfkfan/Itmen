@@ -352,7 +352,7 @@ function choseUser(id){
 }
 
 function isAdminChange(id, elem){
-	$.post("/save_user", {
+	$.post("/admin/edit_user", {
 		user_id : id,
 		isAdmin : elem.checked
 	}, function(data) {
@@ -360,9 +360,10 @@ function isAdminChange(id, elem){
 	});
 }
 function editUser(id){
-	$.post("/get_user", {
+	$.post("/admin/get_user", {
 		user_id : id
-	}, function(json) {
+	}, function(data) {
+		var json = JSON.parse(data);
 		$("#id").val(id);
 		$("#user_name").val(json["username"]);
 		$("#user_phone").val(json["phone"]);
@@ -381,7 +382,7 @@ function deleteUser(id){
 
 function saveUser(){
 	var id = $("#id").val();
-	$.post("/save_user", {
+	$.post("/admin/edit_user", {
 		user_id : id,
 		username : $("#user_name").val(),
 		phone : $("#user_phone").val(),
@@ -401,12 +402,14 @@ function deleteOrder(id){
 }
 
 function showOrder(id){
-	$.post("/get_order", {
+	$.post("/admin/get_order", {
 		order_id : id
-	}, function(json1) {
-		$.post("/get_user", {
+	}, function(data1) {
+		var json1 = JSON.parse(data1);
+		$.post("/admin/get_user", {
 			user_id : json1["userId"]
-		}, function(json2) {
+		}, function(data2) {
+			var json2 = JSON.parse(data2);
 			$("#order_user_name").val(json2["username"]);
 			$("#order_user_email").val(json2["email"]);
 			
