@@ -138,7 +138,7 @@
 			tds[1].innerHTML = campaign["email"];
 		}else{
 			var max = $("#campaignsTable tr").length;
-			table.append("<tr><th scope='row'>" + (max + 1) + "</th><td>"
+			table.append("<tr id='" + campaign["id"] + "'><th scope='row'>" + (max + 1) + "</th><td>"
 					+ campaign["title"] + "</td>" + "<td>" + campaign["email"]
 					+ "</td>" + "<td style='display: none;'>" + campaign["id"] + "</td>"
 			+ "<td><button class='btn btn-info' onclick='edit(" + campaign["id"] + ", '" + campaign["title"] +  "', '" + campaign["email"] + "')'>"
@@ -178,6 +178,7 @@
 				if(data == "")
 					return;
 				var json = JSON.parse(data);
+				alert(data);
 				addChangeCampaign(json);
 				$("#campaignEdit").modal('hide');
 			});

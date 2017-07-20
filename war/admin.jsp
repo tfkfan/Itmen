@@ -373,7 +373,7 @@ function editUser(id){
 }
 
 function deleteUser(id){
-	$.post("/delete_user", {
+	$.post("/admin/delete_user", {
 		user_id : id
 	}, function(data) {
 		location.reload();
@@ -394,7 +394,7 @@ function saveUser(){
 }
 
 function deleteOrder(id){
-	$.post("/delete_order", {
+	$.post("/admin/delete_order", {
 		order_id : id
 	}, function(data) {
 		location.reload();

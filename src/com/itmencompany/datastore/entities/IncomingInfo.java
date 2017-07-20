@@ -49,7 +49,7 @@ public class IncomingInfo extends DatabaseObject implements JSONObj{
 	private List<String> images;
 	
 	@Index
-	private Long orderID;
+	private Long order_id;
 	
 	@Index
 	private Long userId;
@@ -59,7 +59,7 @@ public class IncomingInfo extends DatabaseObject implements JSONObj{
 
 
 	@Index
-	private String date;
+	private String release_date;
 	
 	public IncomingInfo() {
 		isFavorite = false;
@@ -170,19 +170,19 @@ public class IncomingInfo extends DatabaseObject implements JSONObj{
 	}
 
 	public Long getOrderID() {
-		return orderID;
+		return order_id;
 	}
 
 	public void setOrderID(Long orderID) {
-		this.orderID = orderID;
+		this.order_id = orderID;
 	}
 	
 	public String getDate() {
-		return date;
+		return release_date;
 	}
 
 	public void setDate(String date) {
-		this.date = date;
+		this.release_date = date;
 	}
 
 	public String getCampaignEmail() {
@@ -208,8 +208,8 @@ public class IncomingInfo extends DatabaseObject implements JSONObj{
 			res.put("description", description);
 		if(height != null)
 			res.put("height", height);
-		if(date != null)
-			res.put("release_date", date);
+		if(release_date != null)
+			res.put("release_date", release_date);
 		if(cost != null)
 			res.put("cost", cost);
 		if(addInfo != null)
@@ -220,8 +220,8 @@ public class IncomingInfo extends DatabaseObject implements JSONObj{
 			res.put("campaign_email", campaignEmail);
 		if(companyTitle != null)
 			res.put("campaign_title", companyTitle);
-		if(orderID != null)
-			res.put("order_id", orderID);
+		if(order_id != null)
+			res.put("order_id", order_id);
 		
 		return res.toString();
 	}

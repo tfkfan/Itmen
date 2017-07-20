@@ -22,7 +22,7 @@ function favoriteAnswers() {
 }
 
 function setFavorite(id, val) {
-	$.post("/update_answer", {
+	$.post("/edit_answer", {
 		answer_id : id,
 		set_favorite : val
 	}, function(res) {
@@ -74,7 +74,7 @@ function showAnswer(id) {
 }
 
 function deleteAnswer(id) {
-	$.post("/delete_answer", {
+	$.post("/admin/delete_answer", {
 		answer_id : id
 	}, function(data) {
 		location.reload();

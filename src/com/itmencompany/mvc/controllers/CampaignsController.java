@@ -23,7 +23,7 @@ public class CampaignsController {
 		return "campaigns";
 	}
 
-	@RequestMapping(value = "/edit", method = RequestMethod.POST)
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String editOrCreateCampaign(HttpServletRequest request, @RequestParam String title,
 			@RequestParam String email, @RequestParam Long id) {
