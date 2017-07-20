@@ -26,7 +26,7 @@ public class AdminController {
 		return "admin";
 	}
 
-	@RequestMapping(value = "/get_order", method = RequestMethod.POST)
+	@RequestMapping(value = "/get_order", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String getOrder(@RequestParam Long order_id) {
 		String res = "";
@@ -60,7 +60,7 @@ public class AdminController {
 		return res;
 	}
 
-	@RequestMapping(value = "/get_user", method = RequestMethod.POST)
+	@RequestMapping(value = "/get_user", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String getUser(@RequestParam Long user_id) {
 		String res = "";

@@ -25,8 +25,9 @@ function setFavorite(id, val) {
 	$.post("/edit_answer", {
 		answer_id : id,
 		set_favorite : val
-	}, function(res) {
-		val = !res["isFavorite"];
+	}, function(data) {
+		var json = JSON.parse(data);
+		val = !json["isFavorite"];
 		var td = $("td#favoriteAnswer" + id);
 		td.empty();
 		td.append("<button class='btn btn-success'" + "onclick='setFavorite("
@@ -42,7 +43,8 @@ function showAnswer(id) {
 			{
 				answer_id : id
 			},
-			function(info) {
+			function(data) {
+				var info = JSON.parse(data);
 				$("#answer_order_id").val(info["order_id"]);
 				$("#answer_length").val(info["length"]);
 				$("#answer_height").val(info["height"]);

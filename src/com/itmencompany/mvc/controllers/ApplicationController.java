@@ -78,39 +78,34 @@ public class ApplicationController {
 			if (answer_id != null) {
 				IncomingInfo answer = dao.get(answer_id);
 				answer.setIsFavorite(set_favorite);
-				dao.save(answer);
+				answer = dao.saveAndReturn(answer);
 				JSONObject resObj = new JSONObject();
-
 				resObj.put("isFavorite", answer.getIsFavorite());
-
 				res = resObj.toString();
 			} else
 				res = "error";
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		return res;
 	}
 
-	@RequestMapping(value = "/get_answer", method = RequestMethod.POST)
+	@RequestMapping(value = "/get_answer", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public IncomingInfo getAnswer(@RequestParam Long answer_id) {
-
+	public String getAnswer(@RequestParam Long answer_id) throws JSONException {
 		IncomingInfoDao dao = new IncomingInfoDao();
 		if (answer_id != null) {
 			IncomingInfo answer = dao.get(answer_id);
-			return answer;
+			String val = answer.toJSON();
+			log.info(val);
+			return val;
 		}
-
 		return null;
 	}
-	
+
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public void test() {
-
-		
 
 	}
 }

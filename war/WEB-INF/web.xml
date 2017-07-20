@@ -16,10 +16,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     <filter-name>ObjectifyFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+  
   <listener>
     <listener-class>com.itmencompany.datastore.objectify.OfyHelper</listener-class>
   </listener>
-  
+
   <servlet>
     <servlet-name>IncomingMailServlet</servlet-name>
     <servlet-class>com.itmencompany.servlets.IncomingMailServlet</servlet-class>

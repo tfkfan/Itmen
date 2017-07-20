@@ -178,7 +178,6 @@
 				if(data == "")
 					return;
 				var json = JSON.parse(data);
-				alert(data);
 				addChangeCampaign(json);
 				$("#campaignEdit").modal('hide');
 			});
