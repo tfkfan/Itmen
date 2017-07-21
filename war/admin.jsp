@@ -362,10 +362,9 @@ function isAdminChange(id, elem){
 function editUser(id){
 	$.post("/admin/get_user", {
 		user_id : id
-	}, function(data) {
-		var json = JSON.parse(data);
+	}, function(json) {
 		$("#id").val(id);
-		$("#user_name").val(json["username"]);
+		$("#user_name").val(json["userName"]);
 		$("#user_phone").val(json["phone"]);
 		$("#user_email").val(json["email"]);
 		$("#userEdit").modal('show');
@@ -404,19 +403,15 @@ function deleteOrder(id){
 function showOrder(id){
 	$.post("/admin/get_order", {
 		order_id : id
-	}, function(data1) {
-		var json1 = JSON.parse(data1);
+	}, function(json1) {
 		$.post("/admin/get_user", {
 			user_id : json1["userId"]
-		}, function(data2) {
-			var json2 = JSON.parse(data2);
-			$("#order_user_name").val(json2["username"]);
+		}, function(json2) {
+			$("#order_user_name").val(json2["userName"]);
 			$("#order_user_email").val(json2["email"]);
-			
 			$("#order_id").val(json1["Id"]);
-			
 			$("#date").val(json1["date"]);
-			
+		
 			var campaignsElem = $("#campaigns");
 			campaignsElem.empty();
 			var campaignsList = json1["campaigns"];
@@ -424,8 +419,8 @@ function showOrder(id){
 				var campaign = campaignsList[key];
 				campaignsElem.append('<li class="list-group-item">' + campaign + '</li>');
 			}
-	
-			var info = JSON.parse(json1["userInfo"]);
+		
+			var info = json1["info"];
 			$("#length").val(info["length"]);
 			$("#height").val(info["height"]);
 			$("#wishes").val(info["wishes"]);
@@ -435,7 +430,6 @@ function showOrder(id){
 			$("#fasade_material").val(info["fasade_material"]);
 			
 			var images = info["images"];
-			
 			var imgJUMB = $("#images");
 			imgJUMB.empty();
         	for(var key in images){
