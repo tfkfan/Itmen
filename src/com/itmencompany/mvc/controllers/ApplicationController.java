@@ -19,8 +19,8 @@ import com.google.appengine.api.images.ServingUrlOptions;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
 import com.itmencompany.common.ServerUtils;
-import com.itmencompany.datastore.dao.IncomingInfoDao;
-import com.itmencompany.datastore.entities.IncomingInfo;
+import com.itmencompany.mvc.datastore.dao.IncomingInfoDao;
+import com.itmencompany.mvc.datastore.entities.IncomingInfo;
 
 @Controller
 public class ApplicationController {

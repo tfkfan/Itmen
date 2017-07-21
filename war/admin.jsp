@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="h" %>
-<%@ page import="com.itmencompany.datastore.entities.AppUser"%>
-<%@ page import="com.itmencompany.datastore.entities.UserOrder"%>
-<%@ page import="com.itmencompany.datastore.entities.IncomingInfo"%>
-<%@ page import="com.itmencompany.datastore.dao.AppUserDao"%>
-<%@ page import="com.itmencompany.datastore.dao.UserOrderDao"%>
-<%@ page import="com.itmencompany.datastore.dao.IncomingInfoDao"%>
+<%@ page import="com.itmencompany.mvc.datastore.entities.AppUser"%>
+<%@ page import="com.itmencompany.mvc.datastore.entities.UserOrder"%>
+<%@ page import="com.itmencompany.mvc.datastore.entities.IncomingInfo"%>
+<%@ page import="com.itmencompany.mvc.datastore.dao.AppUserDao"%>
+<%@ page import="com.itmencompany.mvc.datastore.dao.UserOrderDao"%>
+<%@ page import="com.itmencompany.mvc.datastore.dao.IncomingInfoDao"%>
 <%@ page import="com.itmencompany.common.UserInfo"%>
 <%@ page import="java.util.logging.Logger"%>
 <%@ page import="java.util.List"%>

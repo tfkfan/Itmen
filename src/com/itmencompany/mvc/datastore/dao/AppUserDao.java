@@ -1,11 +1,18 @@
-package com.itmencompany.datastore.dao;
+package com.itmencompany.mvc.datastore.dao;
 
 import java.util.HashMap;
 
-import com.itmencompany.datastore.entities.AppUser;
+import org.springframework.stereotype.Repository;
 
+import com.itmencompany.mvc.datastore.entities.AppUser;
+
+@Repository("userDao")
 public class AppUserDao extends BaseDao<AppUser> {
 
+	public AppUserDao(){
+		super(AppUser.class);
+	}
+	
 	public AppUserDao(Class<AppUser> clazz) {
 		super(clazz);
 	}

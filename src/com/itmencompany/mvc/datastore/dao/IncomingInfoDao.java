@@ -1,8 +1,9 @@
-package com.itmencompany.datastore.dao;
+package com.itmencompany.mvc.datastore.dao;
 
 import java.util.HashMap;
 import java.util.List;
-import com.itmencompany.datastore.entities.IncomingInfo;
+
+import com.itmencompany.mvc.datastore.entities.IncomingInfo;
 public class IncomingInfoDao extends BaseDao<IncomingInfo> {
 
 	public IncomingInfoDao() {

@@ -3,8 +3,8 @@ package com.itmencompany.beans;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.itmencompany.datastore.dao.IncomingInfoDao;
-import com.itmencompany.datastore.entities.IncomingInfo;
+import com.itmencompany.mvc.datastore.dao.IncomingInfoDao;
+import com.itmencompany.mvc.datastore.entities.IncomingInfo;
 
 public class CompanyAnswersBean {
 

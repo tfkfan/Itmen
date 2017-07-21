@@ -1,7 +1,8 @@
-package com.itmencompany.datastore.dao;
+package com.itmencompany.mvc.datastore.dao;
 
 import java.util.List;
-import com.itmencompany.datastore.entities.UserOrder;
+
+import com.itmencompany.mvc.datastore.entities.UserOrder;
 
 public class UserOrderDao extends BaseDao<UserOrder> {
 

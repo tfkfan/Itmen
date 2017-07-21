@@ -13,9 +13,9 @@ import com.itmencompany.Exceptions.InvalidPrivateInfoException;
 import com.itmencompany.Exceptions.UserAlreadyExistsException;
 import com.itmencompany.common.RandomString;
 import com.itmencompany.common.UserInfo;
-import com.itmencompany.datastore.dao.AppUserDao;
-import com.itmencompany.datastore.entities.AppUser;
 import com.itmencompany.mail.EmailSender;
+import com.itmencompany.mvc.datastore.dao.AppUserDao;
+import com.itmencompany.mvc.datastore.entities.AppUser;
 
 public class AppUserHelper {
 	final static Logger log = Logger.getLogger(AppUserHelper.class.getName());

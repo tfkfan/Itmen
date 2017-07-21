@@ -36,13 +36,13 @@ import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.itmencompany.common.ServerUtils;
-import com.itmencompany.datastore.dao.AppUserDao;
-import com.itmencompany.datastore.entities.AppUser;
-import com.itmencompany.datastore.dao.IncomingInfoDao;
-import com.itmencompany.datastore.dao.UserOrderDao;
-import com.itmencompany.datastore.entities.IncomingInfo;
-import com.itmencompany.datastore.entities.UserOrder;
 import com.itmencompany.mail.UserSender;
+import com.itmencompany.mvc.datastore.dao.AppUserDao;
+import com.itmencompany.mvc.datastore.dao.IncomingInfoDao;
+import com.itmencompany.mvc.datastore.dao.UserOrderDao;
+import com.itmencompany.mvc.datastore.entities.AppUser;
+import com.itmencompany.mvc.datastore.entities.IncomingInfo;
+import com.itmencompany.mvc.datastore.entities.UserOrder;
 
 @WebServlet("/ah/mail/*")
 public class IncomingMailServlet extends HttpServlet {

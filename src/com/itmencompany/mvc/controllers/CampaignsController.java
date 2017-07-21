@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.itmencompany.common.AppUserHelper;
-import com.itmencompany.datastore.dao.CampaignDao;
-import com.itmencompany.datastore.entities.AppUser;
-import com.itmencompany.datastore.entities.Campaign;
+import com.itmencompany.mvc.datastore.dao.CampaignDao;
+import com.itmencompany.mvc.datastore.entities.AppUser;
+import com.itmencompany.mvc.datastore.entities.Campaign;
 
 @Controller
 @RequestMapping(value = "/campaigns")

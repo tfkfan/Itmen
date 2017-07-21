@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itmencompany.common.AppUserHelper;
 import com.itmencompany.common.UserInfo;
-import com.itmencompany.datastore.entities.AppUser;
 import com.itmencompany.mail.CampaignsSender;
+import com.itmencompany.mvc.datastore.entities.AppUser;
 import com.itmencompany.mvc.model.ResultMessage;
 
 @Controller

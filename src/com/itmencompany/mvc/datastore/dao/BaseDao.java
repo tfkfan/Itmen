@@ -1,4 +1,4 @@
-package com.itmencompany.datastore.dao;
+package com.itmencompany.mvc.datastore.dao;
 
 import java.util.ArrayList;
 import java.util.Collection;

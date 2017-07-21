@@ -1,4 +1,4 @@
-package com.itmencompany.datastore.entities;
+package com.itmencompany.mvc.datastore.entities;
 
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;

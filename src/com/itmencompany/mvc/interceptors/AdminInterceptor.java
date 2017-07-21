@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.itmencompany.common.AppUserHelper;
-import com.itmencompany.datastore.entities.AppUser;
+import com.itmencompany.mvc.datastore.entities.AppUser;
 
 @Component
 public class AdminInterceptor extends HandlerInterceptorAdapter {

@@ -13,8 +13,8 @@ import javax.servlet.ServletContext;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.itmencompany.common.ServerUtils;
-import com.itmencompany.datastore.entities.AppUser;
-import com.itmencompany.datastore.entities.IncomingInfo;
+import com.itmencompany.mvc.datastore.entities.AppUser;
+import com.itmencompany.mvc.datastore.entities.IncomingInfo;
 
 public class UserSender extends EmailSender{
 	private ServletContext context;

@@ -1,9 +1,9 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ tag import="com.itmencompany.beans.CompanyAnswersBean"%>
-<%@ tag import="com.itmencompany.datastore.entities.IncomingInfo"%>
-<%@ tag import="com.itmencompany.datastore.entities.AppUser"%>
-<%@ tag import="com.itmencompany.datastore.dao.AppUserDao"%>
-<%@ tag import="com.itmencompany.datastore.dao.IncomingInfoDao"%>
+<%@ tag import="com.itmencompany.mvc.datastore.entities.IncomingInfo"%>
+<%@ tag import="com.itmencompany.mvc.datastore.entities.AppUser"%>
+<%@ tag import="com.itmencompany.mvc.datastore.dao.AppUserDao"%>
+<%@ tag import="com.itmencompany.mvc.datastore.dao.IncomingInfoDao"%>
 <%@ tag import="java.util.logging.Logger"%>
 <%@ tag import="java.util.List"%>
 <%@ tag import="java.text.SimpleDateFormat"%>

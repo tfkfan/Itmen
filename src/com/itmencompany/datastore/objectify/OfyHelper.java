@@ -3,10 +3,10 @@ package com.itmencompany.datastore.objectify;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import com.googlecode.objectify.ObjectifyService;
-import com.itmencompany.datastore.entities.AppUser;
-import com.itmencompany.datastore.entities.Campaign;
-import com.itmencompany.datastore.entities.IncomingInfo;
-import com.itmencompany.datastore.entities.UserOrder;
+import com.itmencompany.mvc.datastore.entities.AppUser;
+import com.itmencompany.mvc.datastore.entities.Campaign;
+import com.itmencompany.mvc.datastore.entities.IncomingInfo;
+import com.itmencompany.mvc.datastore.entities.UserOrder;
 
 public class OfyHelper implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent event) {

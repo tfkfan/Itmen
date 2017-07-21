@@ -1,4 +1,4 @@
-package com.itmencompany.datastore.entities;
+package com.itmencompany.mvc.datastore.entities;
 
 import java.util.List;
 

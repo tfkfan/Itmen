@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.itmencompany.Exceptions.InvalidPrivateInfoException;
 import com.itmencompany.Exceptions.UserAlreadyExistsException;
 import com.itmencompany.common.AppUserHelper;
-import com.itmencompany.datastore.entities.AppUser;
+import com.itmencompany.mvc.datastore.entities.AppUser;
 
 @Controller
 public class AuthController {
