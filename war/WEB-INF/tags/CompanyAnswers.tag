@@ -111,8 +111,8 @@
 					<tr id="<%=answer.getId()%>">
 						<th scope="row"><%=(count)%></th>
 						<% if (isAdminPage) {%><td><%=user.getUserName()%></td> <%} %>
-						<td><%=answer.getCompanyTitle()%></td>
-						<td><%=answer.getCampaignEmail()%></td>
+						<td><%=answer.getCampaign_title()%></td>
+						<td><%=answer.getCampaign_email()%></td>
 						<td><%=date%></td>
 						<td><button class="btn btn-info"
 								onclick="showAnswer(<%=answer.getId()%>)">

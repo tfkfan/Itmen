@@ -43,8 +43,7 @@ function showAnswer(id) {
 			{
 				answer_id : id
 			},
-			function(data) {
-				var info = JSON.parse(data);
+			function(info) {
 				$("#answer_order_id").val(info["order_id"]);
 				$("#answer_length").val(info["length"]);
 				$("#answer_height").val(info["height"]);

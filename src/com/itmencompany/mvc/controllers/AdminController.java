@@ -1,21 +1,19 @@
 package com.itmencompany.mvc.controllers;
 
 import java.util.logging.Logger;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.itmencompany.mvc.datastore.dao.AppUserDao;
 import com.itmencompany.mvc.datastore.dao.IncomingInfoDao;
 import com.itmencompany.mvc.datastore.dao.UserOrderDao;
 import com.itmencompany.mvc.datastore.entities.AppUser;
 import com.itmencompany.mvc.datastore.entities.IncomingInfo;
 import com.itmencompany.mvc.datastore.entities.UserOrder;
 import com.itmencompany.mvc.model.ResultMessage;
+import com.itmencompany.mvc.services.OrderService;
 import com.itmencompany.mvc.services.UserService;
 
 @Controller
@@ -25,6 +23,9 @@ public class AdminController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	OrderService orderService;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String showAdmin() {
@@ -34,17 +35,12 @@ public class AdminController {
 	@RequestMapping(value = "/get_order", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public UserOrder getOrder(@RequestParam Long order_id) {
-		UserOrderDao dao = new UserOrderDao(UserOrder.class);
-		if (order_id != null)
-			return dao.get(order_id);
-		return null;
+		return orderService.get(order_id);
 	}
 
 	@RequestMapping(value = "/delete_order", method = RequestMethod.POST)
 	public void deleteOrder(@RequestParam Long order_id) {
-		UserOrderDao dao = new UserOrderDao(UserOrder.class);
-		if (order_id != null)
-			dao.delete(order_id);
+		orderService.delete(order_id);
 	}
 
 	@RequestMapping(value = "/get_user", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
@@ -52,7 +48,6 @@ public class AdminController {
 	public AppUser getUser(@RequestParam Long user_id) {
 		return userService.get(user_id);
 	}
-	
 
 	@RequestMapping(value = "/edit_user", method = RequestMethod.POST)
 	public void editUser(@RequestParam Long user_id, @RequestParam(required = false) String username,

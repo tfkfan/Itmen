@@ -37,13 +37,13 @@ public class IncomingInfo extends DatabaseObject implements JSONObj{
 	private String addInfo;
 	
 	@Index
-	private String contactPhone;
+	private String campaign_phone;
 
 	@Index
-	private String companyTitle;
+	private String campaign_title;
 
 	@Index
-	private String campaignEmail;
+	private String campaign_email;
 	
 	@Index
 	private List<String> images;
@@ -145,20 +145,20 @@ public class IncomingInfo extends DatabaseObject implements JSONObj{
 		this.addInfo = addInfo;
 	}
 
-	public String getContactPhone() {
-		return contactPhone;
+	public String getCampaign_phone() {
+		return campaign_phone;
 	}
 
-	public void setContactPhone(String contactPhone) {
-		this.contactPhone = contactPhone;
+	public void setCampaign_phone(String contactPhone) {
+		this.campaign_phone = contactPhone;
 	}
 
-	public String getCompanyTitle() {
-		return companyTitle;
+	public String getCampaign_title() {
+		return campaign_title;
 	}
 
-	public void setCompanyTitle(String companyTitle) {
-		this.companyTitle = companyTitle;
+	public void setCampaign_title(String companyTitle) {
+		this.campaign_title = companyTitle;
 	}
 
 	public List<String> getImages() {
@@ -177,20 +177,20 @@ public class IncomingInfo extends DatabaseObject implements JSONObj{
 		this.order_id = orderID;
 	}
 	
-	public String getDate() {
+	public String getRelease_date() {
 		return release_date;
 	}
 
-	public void setDate(String date) {
+	public void setRelease_date(String date) {
 		this.release_date = date;
 	}
 
-	public String getCampaignEmail() {
-		return campaignEmail;
+	public String getCampaign_email() {
+		return campaign_email;
 	}
 
-	public void setCampaignEmail(String campaignEmail) {
-		this.campaignEmail = campaignEmail;
+	public void setCampaign_email(String campaignEmail) {
+		this.campaign_email = campaignEmail;
 	}
 
 	@Override
@@ -214,12 +214,12 @@ public class IncomingInfo extends DatabaseObject implements JSONObj{
 			res.put("cost", cost);
 		if(addInfo != null)
 			res.put("add_info", addInfo);
-		if(contactPhone!= null)
-			res.put("campaign_phone", contactPhone);
-		if(campaignEmail != null)
-			res.put("campaign_email", campaignEmail);
-		if(companyTitle != null)
-			res.put("campaign_title", companyTitle);
+		if(campaign_phone!= null)
+			res.put("campaign_phone", campaign_phone);
+		if(campaign_email != null)
+			res.put("campaign_email", campaign_email);
+		if(campaign_title != null)
+			res.put("campaign_title", campaign_title);
 		if(order_id != null)
 			res.put("order_id", order_id);
 		

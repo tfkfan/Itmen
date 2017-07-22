@@ -91,15 +91,13 @@ public class ApplicationController {
 		return res;
 	}
 
-	@RequestMapping(value = "/get_answer", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+	@RequestMapping(value = "/get_answer", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public String getAnswer(@RequestParam Long answer_id) throws JSONException {
+	public IncomingInfo getAnswer(@RequestParam Long answer_id) throws JSONException {
 		IncomingInfoDao dao = new IncomingInfoDao();
 		if (answer_id != null) {
 			IncomingInfo answer = dao.get(answer_id);
-			String val = answer.toJSON();
-			log.info(val);
-			return val;
+			return answer;
 		}
 		return null;
 	}

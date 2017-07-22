@@ -141,7 +141,7 @@ public class IncomingMailServlet extends HttpServlet {
 
 		// Release date
 		String releaseDate = getCellValue(sheet, 5, 1);
-		iinfo.setDate(releaseDate);
+		iinfo.setRelease_date(releaseDate);
 		// Cost
 		String cost = getCellValue(sheet, 6, 1);
 		iinfo.setCost(cost);
@@ -157,15 +157,15 @@ public class IncomingMailServlet extends HttpServlet {
 
 		// Phone
 		String phone = getCellValue(sheet, 9, 1);
-		iinfo.setContactPhone(phone);
+		iinfo.setCampaign_phone(phone);
 
 		// Email
 		String email = getCellValue(sheet, 10, 1);
-		iinfo.setCampaignEmail(email);
+		iinfo.setCampaign_email(email);
 
 		// company name
 		String companyTitle = getCellValue(sheet, 11, 1);
-		iinfo.setCompanyTitle(companyTitle);
+		iinfo.setCampaign_title(companyTitle);
 
 		UserOrder order = orderDao.get(orderID);
 		if (order != null) {
