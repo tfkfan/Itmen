@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="com.itmencompany.datastore.entities.Campaign"%>
-<%@ page import="com.itmencompany.datastore.dao.CampaignDao" %>
+<%@ page import="com.itmencompany.mvc.datastore.entities.Campaign"%>
+<%@ page import="com.itmencompany.mvc.datastore.dao.CampaignDao" %>
 <%@ page import="java.util.logging.Logger"%>
 <%@ page import="java.util.List"%>
 <%
