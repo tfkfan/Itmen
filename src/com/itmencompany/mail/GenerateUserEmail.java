@@ -37,5 +37,6 @@ public class GenerateUserEmail extends CustomMustacheLoader {
 		this.service_domain = service_domain;
 		this.service_url = service_url;
 		this.campaign = campaign;
+		this.add_info = add_info;
 	}
 }
