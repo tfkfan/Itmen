@@ -366,7 +366,7 @@
 					alert(data.message);
 			});
 		});
-		
+		$("#user_phone").inputmask("+7(999)999-99-99");
 		$("#privateParams").validate({
 			rules: {
 				length: {
@@ -376,7 +376,9 @@
 					number:true
 				},
 			
-				user_phone: "required",
+				user_phone: {
+					required: true
+				},
 				user_name: {
 					required: true,
 					minlength: 3

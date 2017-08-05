@@ -19,6 +19,8 @@
 <script src="/js/jquery-3.2.1.min.js"></script>
 <script src="/bootstrap/js/bootstrap.min.js"></script>
 <script src="/js/jquery.validate.min.js"></script>
+<script src="/js/additional-methods.min.js"></script>
+<script type="text/javascript" src="/js/jquery.inputmask.js"></script>
 <script src="/js/scripts.js"></script>
 <title>
 <%if (url.contains("/private")) { %> Личный кабинет 

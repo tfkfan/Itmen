@@ -19,6 +19,9 @@
 <link rel="stylesheet" href="/css/styles.css" />
 <script src="/js/jquery-3.2.1.min.js"></script>
 <script src="/bootstrap/js/bootstrap.min.js"></script>
+<script src="/js/jquery.validate.min.js"></script>
+<script src="/js/additional-methods.min.js"></script>
+<script type="text/javascript" src="/js/jquery.inputmask.js"></script>
 <title>Регистрация</title>
 </head>
 <body id="black-container">
@@ -34,7 +37,7 @@
 					</div>
 				</div>
 				<div class="panel-body">
-					<form id="signupform" class="form-horizontal" role="form"
+					<form id="signupForm" class="form-horizontal" role="form"
 						action="/logup" method="post">
 						<div id="signuperrors" style="display: none"
 							class="alert alert-danger">
@@ -62,7 +65,7 @@
 							<label for="user_phone" class="col-md-3 control-label">Номер
 								телефона</label>
 							<div class="col-md-9">
-								<input type="text" class="form-control" name="user_phone"
+								<input id="user_phone" type="text" class="form-control" name="user_phone"
 									placeholder="Введите номер телефона">
 							</div>
 						</div>
@@ -79,5 +82,30 @@
 			</div>
 		</div>
 	</div>
+	<script>
+	$("#user_phone").inputmask("+7(999)999-99-99");
+		$("#signupForm").validate({
+			rules : {
+				user_email : {
+					required : true,
+					email : true
+				},
+				user_name : {
+					required : true
+				},
+				user_phone : {
+					required: true
+				}
+			},
+			messages : {
+				user_phone : "Введите правильный телефон",
+				user_name : "Введите имя",
+				user_email : "Введите электронную почту"
+			},
+			submitHandler : function(form) {
+				form.submit();
+			}
+		});
+	</script>
 </body>
 </html>
