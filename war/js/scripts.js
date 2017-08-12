@@ -22,11 +22,12 @@ function favoriteAnswers() {
 }
 
 function setFavorite(id, val) {
-	$.post("/update_answer", {
+	$.post("/edit_answer", {
 		answer_id : id,
 		set_favorite : val
-	}, function(res) {
-		val = !res["isFavorite"];
+	}, function(data) {
+		var json = JSON.parse(data);
+		val = !json["isFavorite"];
 		var td = $("td#favoriteAnswer" + id);
 		td.empty();
 		td.append("<button class='btn btn-success'" + "onclick='setFavorite("
@@ -50,7 +51,7 @@ function showAnswer(id) {
 				$("#answer_title").val(info["title"]);
 				$("#answer_material").val(info["material"]);
 				$("#answer_release").val(info["release_date"]);
-				$("#answer_additional_info").val(info["add_info"]);
+				$("#answer_additional_info").val(info["addInfo"]);
 				$("#answer_phone").val(info["campaign_phone"]);
 				$("#answer_cost").val(info["cost"]);
 				$("#answer_campaign_title").val(info["campaign_title"]);
@@ -74,7 +75,7 @@ function showAnswer(id) {
 }
 
 function deleteAnswer(id) {
-	$.post("/delete_answer", {
+	$.post("/admin/delete_answer", {
 		answer_id : id
 	}, function(data) {
 		location.reload();

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.TimeZone;
-
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
@@ -14,8 +13,8 @@ import javax.servlet.ServletContext;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.itmencompany.common.ServerUtils;
-import com.itmencompany.datastore.entities.AppUser;
-import com.itmencompany.datastore.entities.IncomingInfo;
+import com.itmencompany.mvc.datastore.entities.AppUser;
+import com.itmencompany.mvc.datastore.entities.IncomingInfo;
 
 public class UserSender extends EmailSender{
 	private ServletContext context;
@@ -42,12 +41,12 @@ public class UserSender extends EmailSender{
 		}
 
 		String phone = " - ";
-		if(info.getContactPhone() != null)
-			phone = info.getContactPhone();
+		if(info.getCampaign_phone() != null)
+			phone = info.getCampaign_phone();
 		
 		String email = " - ";
-		if(info.getCampaignEmail() != null)
-			email = info.getCampaignEmail();
+		if(info.getCampaign_email() != null)
+			email = info.getCampaign_email();
 		
 		String title = " - ";
 		if (info.getTitle() != null)
@@ -70,16 +69,16 @@ public class UserSender extends EmailSender{
 			material = info.getMaterial();
 		
 		String release_date = " - ";
-		if (info.getDate() != null)
-			release_date =  info.getDate();
+		if (info.getRelease_date() != null)
+			release_date =  info.getRelease_date();
 		
 		String cost = " - ";
 		if (info.getCost() != null)
 			cost = info.getCost();
 		
 		String campaign = " - ";
-		if (info.getCompanyTitle() != null)
-			campaign =  info.getCompanyTitle();
+		if (info.getCampaign_title() != null)
+			campaign =  info.getCampaign_title();
 		
 		String add_info = " - ";
 		if (info.getAddInfo() != null)

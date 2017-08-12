@@ -1,13 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="h" %>
-<%@ page import="com.itmencompany.datastore.entities.AppUser"%>
-<%@ page import="com.itmencompany.datastore.entities.UserOrder"%>
-<%@ page import="com.itmencompany.datastore.entities.IncomingInfo"%>
-<%@ page import="com.itmencompany.datastore.dao.AppUserDao"%>
-<%@ page import="com.itmencompany.datastore.dao.UserOrderDao"%>
-<%@ page import="com.itmencompany.datastore.dao.IncomingInfoDao"%>
-<%@ page import="com.itmencompany.helpers.AppUserHelper"%>
+<%@ page import="com.itmencompany.mvc.datastore.entities.AppUser"%>
+<%@ page import="com.itmencompany.mvc.datastore.entities.UserOrder"%>
+<%@ page import="com.itmencompany.mvc.datastore.entities.IncomingInfo"%>
+<%@ page import="com.itmencompany.mvc.datastore.dao.AppUserDao"%>
+<%@ page import="com.itmencompany.mvc.datastore.dao.UserOrderDao"%>
+<%@ page import="com.itmencompany.mvc.datastore.dao.IncomingInfoDao"%>
 <%@ page import="com.itmencompany.common.UserInfo"%>
 <%@ page import="java.util.logging.Logger"%>
 <%@ page import="java.util.List"%>
@@ -353,7 +352,7 @@ function choseUser(id){
 }
 
 function isAdminChange(id, elem){
-	$.post("/save_user", {
+	$.post("/admin/edit_user", {
 		user_id : id,
 		isAdmin : elem.checked
 	}, function(data) {
@@ -361,11 +360,11 @@ function isAdminChange(id, elem){
 	});
 }
 function editUser(id){
-	$.post("/get_user", {
+	$.post("/admin/get_user", {
 		user_id : id
 	}, function(json) {
 		$("#id").val(id);
-		$("#user_name").val(json["username"]);
+		$("#user_name").val(json["userName"]);
 		$("#user_phone").val(json["phone"]);
 		$("#user_email").val(json["email"]);
 		$("#userEdit").modal('show');
@@ -373,7 +372,7 @@ function editUser(id){
 }
 
 function deleteUser(id){
-	$.post("/delete_user", {
+	$.post("/admin/delete_user", {
 		user_id : id
 	}, function(data) {
 		location.reload();
@@ -382,7 +381,7 @@ function deleteUser(id){
 
 function saveUser(){
 	var id = $("#id").val();
-	$.post("/save_user", {
+	$.post("/admin/edit_user", {
 		user_id : id,
 		username : $("#user_name").val(),
 		phone : $("#user_phone").val(),
@@ -390,11 +389,12 @@ function saveUser(){
 	}, function(data) {
 		//TODO change table row
 		$("#userEdit").modal('hide');
+		location.reload();
 	});
 }
 
 function deleteOrder(id){
-	$.post("/delete_order", {
+	$.post("/admin/delete_order", {
 		order_id : id
 	}, function(data) {
 		location.reload();
@@ -402,19 +402,17 @@ function deleteOrder(id){
 }
 
 function showOrder(id){
-	$.post("/get_order", {
+	$.post("/admin/get_order", {
 		order_id : id
 	}, function(json1) {
-		$.post("/get_user", {
+		$.post("/admin/get_user", {
 			user_id : json1["userId"]
 		}, function(json2) {
-			$("#order_user_name").val(json2["username"]);
+			$("#order_user_name").val(json2["userName"]);
 			$("#order_user_email").val(json2["email"]);
-			
 			$("#order_id").val(json1["Id"]);
-			
 			$("#date").val(json1["date"]);
-			
+		
 			var campaignsElem = $("#campaigns");
 			campaignsElem.empty();
 			var campaignsList = json1["campaigns"];
@@ -422,8 +420,8 @@ function showOrder(id){
 				var campaign = campaignsList[key];
 				campaignsElem.append('<li class="list-group-item">' + campaign + '</li>');
 			}
-	
-			var info = JSON.parse(json1["userInfo"]);
+		
+			var info = json1["info"];
 			$("#length").val(info["length"]);
 			$("#height").val(info["height"]);
 			$("#wishes").val(info["wishes"]);
@@ -433,7 +431,6 @@ function showOrder(id){
 			$("#fasade_material").val(info["fasade_material"]);
 			
 			var images = info["images"];
-			
 			var imgJUMB = $("#images");
 			imgJUMB.empty();
         	for(var key in images){

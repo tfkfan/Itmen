@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
-import com.itmencompany.datastore.dao.AppUserDao;
-import com.itmencompany.datastore.entities.AppUser;
+import com.itmencompany.mvc.datastore.dao.AppUserDao;
+import com.itmencompany.mvc.datastore.entities.AppUser;
 
 @WebServlet("/verify")
 public class FormVerifyingServlet extends HttpServlet {

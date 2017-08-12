@@ -1,9 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
 <%@ taglib tagdir="/WEB-INF/tags" prefix="h"%>
-<%@ page import="com.itmencompany.datastore.entities.AppUser"%>
-<%@ page import="com.itmencompany.helpers.AppUserHelper"%>
+<%@ page import="com.itmencompany.mvc.datastore.entities.AppUser"%>
 <%@ page import="com.itmencompany.common.UserInfo"%>
 <%@ page import="java.util.logging.Logger"%>
 <%@ page import="java.util.List"%>
@@ -162,7 +160,7 @@
 							}
 						%>
 						<div class="form-group">
-							 <div class="g-recaptcha col-md-offset-5" data-sitekey="6Lf-9CgUAAAAAMyBlBoERxoEXblOrE7t1CP6mt1X"></div>
+							 <div class="g-recaptcha col-md-offset-5" data-sitekey="6LevjCgUAAAAAAZnfSs3Jv8ufDvgcswpJ9-IFAXS"></div>
 						</div>
 						<div class="form-group">
 							<label for="sendInfo" class="col-md-6 control-label"></label>
@@ -292,8 +290,7 @@
 
 		var btnNtfs = $("#userNotifications");
 		btnNtfs.click(function(){
-			$.post("/private", {
-				mode : "edit_private_info",
+			$.post("/private/edit", {
 				property : "user_notifications"
 			}, function(data) {
 				var isEnabled = data["value"];
@@ -337,8 +334,7 @@
 		});
 
 		editableElemClickHandler($("#p_user_name"), function(val) {
-			$.post("/private", {
-				mode : "edit_private_info",
+			$.post("/private/edit", {
 				property : "user_name",
 				value : val
 			}, function(data) {
@@ -347,8 +343,7 @@
 			});
 		});
 		editableElemClickHandler($("#p_user_phone"), function(val) {
-			$.post("/private", {
-				mode : "edit_private_info",
+			$.post("/private/edit", {
 				property : "user_phone",
 				value : val
 			}, function(data) {
@@ -357,8 +352,7 @@
 			});
 		});
 		editableElemClickHandler($("#p_user_email"), function(val) {
-			$.post("/private", {
-				mode : "edit_private_info",
+			$.post("/private/edit", {
 				property : "user_email",
 				value : val
 			}, function(data) {
@@ -428,8 +422,7 @@
 					var user_name = $("#user_name")
 							.val();
 
-					$.post("/private",{
-							mode : "post_user_info",
+					$.post("/private/send",{
 							images : files,
 							length : length,
 							fasade_material : fasade_material,

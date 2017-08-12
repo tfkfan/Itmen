@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="com.itmencompany.datastore.entities.Campaign"%>
-<%@ page import="com.itmencompany.datastore.dao.CampaignDao" %>
+<%@ page import="com.itmencompany.mvc.datastore.entities.Campaign"%>
+<%@ page import="com.itmencompany.mvc.datastore.dao.CampaignDao" %>
 <%@ page import="java.util.logging.Logger"%>
 <%@ page import="java.util.List"%>
 <%
@@ -9,10 +9,6 @@
 %>
 <%@ include file="header.jsp"%>
 <%
-	if (appUser == null) {
-		response.sendRedirect("/login");
-		return;
-	}
 	String pageObj =  request.getParameter("page");
 	Integer pageNum = 1;
 	try{
@@ -142,7 +138,7 @@
 			tds[1].innerHTML = campaign["email"];
 		}else{
 			var max = $("#campaignsTable tr").length;
-			table.append("<tr><th scope='row'>" + (max + 1) + "</th><td>"
+			table.append("<tr id='" + campaign["id"] + "'><th scope='row'>" + (max + 1) + "</th><td>"
 					+ campaign["title"] + "</td>" + "<td>" + campaign["email"]
 					+ "</td>" + "<td style='display: none;'>" + campaign["id"] + "</td>"
 			+ "<td><button class='btn btn-info' onclick='edit(" + campaign["id"] + ", '" + campaign["title"] +  "', '" + campaign["email"] + "')'>"
@@ -153,12 +149,12 @@
 	}
 
 	function remove(id){
-		$.post("/campaigns", {
-			mode : "to_delete",
+		$.post("/campaigns/delete", {
 			id : id
 		}, function(data) {
+			if(data == "")
+				return;
 			$("tr#" + id).remove();
-			
 		});
 	}
 	
@@ -174,13 +170,15 @@
 			var title = $("#title").val();
 			var email = $("#email").val();
 			var id = $("#id").val();
-			$.post("/campaigns", {
-				mode : "to_save",
+			$.post("/campaigns/edit", {
 				title : title,
 				email : email,
 				id : id
 			}, function(data) {
-				addChangeCampaign(data);
+				if(data == "")
+					return;
+				var json = JSON.parse(data);
+				addChangeCampaign(json);
 				$("#campaignEdit").modal('hide');
 			});
 		});

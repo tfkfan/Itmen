@@ -25,11 +25,11 @@ import org.apache.poi.ss.usermodel.Sheet;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.itmencompany.common.ServerUtils;
 import com.itmencompany.common.UserInfo;
-import com.itmencompany.datastore.dao.CampaignDao;
-import com.itmencompany.datastore.dao.UserOrderDao;
-import com.itmencompany.datastore.entities.AppUser;
-import com.itmencompany.datastore.entities.Campaign;
-import com.itmencompany.datastore.entities.UserOrder;
+import com.itmencompany.mvc.datastore.dao.CampaignDao;
+import com.itmencompany.mvc.datastore.dao.UserOrderDao;
+import com.itmencompany.mvc.datastore.entities.AppUser;
+import com.itmencompany.mvc.datastore.entities.Campaign;
+import com.itmencompany.mvc.datastore.entities.UserOrder;
 
 public class CampaignsSender extends EmailSender {
 	
