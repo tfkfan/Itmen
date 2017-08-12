@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.itmencompany.mvc.datastore.dao.IncomingInfoDao;
-import com.itmencompany.mvc.datastore.dao.UserOrderDao;
 import com.itmencompany.mvc.datastore.entities.AppUser;
 import com.itmencompany.mvc.datastore.entities.IncomingInfo;
 import com.itmencompany.mvc.datastore.entities.UserOrder;
@@ -39,8 +38,10 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/delete_order", method = RequestMethod.POST)
-	public void deleteOrder(@RequestParam Long order_id) {
+	@ResponseBody
+	public String deleteOrder(@RequestParam Long order_id) {
 		orderService.delete(order_id);
+		return "";
 	}
 
 	@RequestMapping(value = "/get_user", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
@@ -50,18 +51,23 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/edit_user", method = RequestMethod.POST)
-	public void editUser(@RequestParam Long user_id, @RequestParam(required = false) String username,
+	@ResponseBody
+	public String editUser(@RequestParam Long user_id, @RequestParam(required = false) String username,
 			@RequestParam(required = false) String phone, @RequestParam(required = false) String email,
 			@RequestParam(required = false) Boolean isAdmin) {
 		userService.save(user_id, username, phone, email, isAdmin);
+		return "";
 	}
 
 	@RequestMapping(value = "/delete_user", method = RequestMethod.POST)
-	public void deleteUser(@RequestParam Long user_id) {
+	@ResponseBody
+	public String deleteUser(@RequestParam Long user_id) {
 		userService.delete(user_id);
+		return "";
 	}
 
 	@RequestMapping(value = "/delete_answer", method = RequestMethod.POST)
+	@ResponseBody
 	public ResultMessage deleteAnswer(@RequestParam Long answer_id) {
 		ResultMessage res = new ResultMessage();
 		IncomingInfoDao dao = new IncomingInfoDao();

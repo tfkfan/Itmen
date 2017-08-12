@@ -389,6 +389,7 @@ function saveUser(){
 	}, function(data) {
 		//TODO change table row
 		$("#userEdit").modal('hide');
+		location.reload();
 	});
 }
 

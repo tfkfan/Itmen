@@ -103,7 +103,7 @@ public class ApplicationController {
 	}
 
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
-	public void test() {
-
+	public String test() {
+		return "";
 	}
 }
